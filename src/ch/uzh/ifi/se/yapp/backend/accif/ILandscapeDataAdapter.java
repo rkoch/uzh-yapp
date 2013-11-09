@@ -19,8 +19,46 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
+import java.util.Calendar;
+import java.util.List;
+
+import ch.uzh.ifi.se.yapp.model.landscape.District;
+import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
+
 
 public interface ILandscapeDataAdapter
         extends IBaseAdapter {
+
+    /**
+     * <b>getDistrictById</b>
+     * <br>Description: returns a District with a certain id in a certain Year
+     * @param pId
+     * @param pDate Date
+     * @return District according to the given parameters
+     */
+    District getDistrictById(String pId, Calendar pDate);
+
+    /**
+     * <b>getAllDistricts</b>
+     * <br>Description: returns a List with all districts in switzerland
+     * @return List<District>
+     */
+    List<District> getAllDistricts();
+
+    /**
+     * <b>getDistrictResultById</b>
+     * <br>Description: returns a DistrictResult of a certain District, identified with DistrictId
+     * @param pId Id of desired District
+     * @return DistrictResult
+     */
+    DistrictResult getDistrictResultById(String pId);
+
+    /**
+     * <b>getAllDistrictResults</b>
+     * <br>Description: returns a List with all DistrictResults in it
+     * @return List<DistrictResult>
+     */
+    List<DistrictResult> getAllDistrictResults();
+
 
 }

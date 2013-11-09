@@ -19,8 +19,51 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
+import java.util.List;
+
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
+
 
 public interface IVisualisationDataAdapter
         extends IBaseAdapter {
+
+    /**
+     * <b>getVisualizationById</b>
+     * <br>Description: returns a Visualization by a certain Id
+     * @param pId not defined yet... (integer?, string->hash?, unique?)
+     * @return Visualization
+     */
+    Visualization getVisualizationById(String pId);
+
+    /**
+     * <b>getVisualizationByElectionId</b>
+     * <br>Description: returns a Visualization by an ElectionId
+     * @param pId "VorlageNummer", e.g. 552.1
+     * @return Visualization
+     */
+    Visualization getVisualizationByElectionId(String pId);
+
+    /**
+     * <b>getAllVisualizations</b>
+     * <br>Description: returns a List with all created Visualizations
+     * @return List<Visualization>
+     */
+    List<Visualization> getAllVisualizations();
+
+    /**
+     * <b>getVisualizationTypeById</b>
+     * <br>Description: returns a VisualizationType
+     * @param pId not defined yet... (integer?->auto-increment?, string->hash?, unique?)
+     * @return VisualizationType
+     */
+    VisualizationType getVisualizationTypeById(String pId);
+
+    /**
+     * <b>getAllVisualizationTypes</b>
+     * <br>Description: returns a List with all VisualizationTypes in it
+     * @return List<VisualizationType>
+     */
+    List<VisualizationType> getAllVisualizationTypes();
 
 }

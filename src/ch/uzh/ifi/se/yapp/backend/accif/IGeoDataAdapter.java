@@ -19,8 +19,29 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
+import java.util.Calendar;
+import java.util.List;
+
+import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
+
 
 public interface IGeoDataAdapter
         extends IBaseAdapter {
+
+    /**
+     * <b>getAllGeoBoundary</b>
+     * <br>Description:
+     * @return
+     */
+    List<GeoBoundary> getAllGeoBoundary();
+
+    /**
+     * <b>getGeoBoundaryByDistrict</b>
+     * <br>Description: returns the GeoBoundary from a certain District
+     * @param pDistrictId
+     * @return GeoBoundary
+     */
+    GeoBoundary getGeoBoundaryByDistrict(String pDistrictId, Calendar pCalendar);
+
 
 }

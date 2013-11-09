@@ -19,8 +19,40 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+
+import ch.uzh.ifi.se.yapp.model.landscape.Election;
+
 
 public interface IElectionDataAdapter
         extends IBaseAdapter {
+
+    /**
+     * <b>getElectionById</b>
+     * <br>Description: get an election by its id (SubmissionNr, e.g. 552.1)
+     * @param pId
+     * @return Election
+     */
+    Election getElectionById(String pId);
+
+   // void insertElection(Election pElection);
+
+    /**
+     * <b>getElectionsByDateRange</b>
+     * <br>Description:
+     * @param Calendar object with a certain Date
+     * @return List of Elections
+     */
+    List<Election> getElectionsByDateRange(Calendar pDate1, Calendar pDate2);
+
+    /**
+     * <b>listElections</b>
+     * <br>Description:
+     * @return
+     */
+    Map<String, String> listElections();
+
 
 }

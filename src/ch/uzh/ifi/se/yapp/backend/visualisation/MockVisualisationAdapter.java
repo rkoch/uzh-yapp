@@ -19,7 +19,12 @@
  */
 package ch.uzh.ifi.se.yapp.backend.visualisation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -27,9 +32,66 @@ public class MockVisualisationAdapter
         extends BaseObject
         implements IVisualisationDataAdapter {
 
+    private VisualizationType vt = new VisualizationType();
+    private VisualizationType vt2 = new VisualizationType();
+
+    public MockVisualisationAdapter() {
+        vt.setKey("1");
+    }
+
     @Override
     public void cleanup() {
         // TODO Auto-generated method stub
     }
 
+    @Override
+    public Visualization getVisualizationById(String pId) {
+        Visualization v = new Visualization();
+        v.setElectionId("552.1");
+        v.setId("123456");
+        v.setType(vt);
+        return v;
+    }
+
+    @Override
+    public Visualization getVisualizationByElectionId(String pId) {
+        Visualization v = new Visualization();
+        v.setElectionId("552.1");
+        v.setId("123456");
+        v.setType(vt);
+        return v;
+    }
+
+    @Override
+    public List<Visualization> getAllVisualizations() {
+        List<Visualization> tmpList = new ArrayList<Visualization>();
+
+        Visualization v = new Visualization();
+        v.setElectionId("552.1");
+        v.setId("123456");
+        v.setType(vt);
+
+        Visualization v2 = new Visualization();
+        v2.setElectionId("552.1");
+        v2.setId("123456");
+        v2.setType(vt2);
+
+        tmpList.add(v);
+        tmpList.add(v2);
+
+        return tmpList;
+    }
+
+    @Override
+    public VisualizationType getVisualizationTypeById(String pId) {
+        return vt;
+    }
+
+    @Override
+    public List<VisualizationType> getAllVisualizationTypes() {
+        List<VisualizationType> tmpList = new ArrayList<VisualizationType>();
+        tmpList.add(vt);
+        tmpList.add(vt2);
+        return tmpList;
+    }
 }
