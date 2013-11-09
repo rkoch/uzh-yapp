@@ -1,3 +1,8 @@
+# Google App Engine ignores
+/war/WEB-INF/classes/
+/war/WEB-INF/appengine-generated/
+
+
 # Default ignores
 /bin/
 /classes/
@@ -18,7 +23,7 @@ build-local.properties
 
 # Default Java ignores
 *.class
-*.jar
+#*.jar
 *.war
 *.ear
 
