@@ -17,10 +17,13 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.ctrl.accif;
+package ch.uzh.ifi.se.yapp.ctrl.mgr;
+
+import ch.uzh.ifi.se.yapp.ctrl.accif.IVisualisationAccessor;
 
 
-public interface IVisualisationAccessor
-        extends IBaseAccessor {
+public class VisualisationManager
+        extends AbstractManager
+        implements IVisualisationAccessor {
 
 }

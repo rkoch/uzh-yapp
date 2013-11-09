@@ -20,7 +20,6 @@
 package ch.uzh.ifi.se.yapp.ctrl.accif;
 
 
-public interface IVisualisationAccessor
-        extends IBaseAccessor {
+interface IBaseAccessor {
 
 }

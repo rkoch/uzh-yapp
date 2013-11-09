@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.ctrl.accif;
 
 
-public interface IMetadataAccessor {
+public interface IMetadataAccessor
+        extends IBaseAccessor {
 
 }
