@@ -30,12 +30,27 @@ public class GeoBoundary
     /**
      * The geopoint list is sorted
      */
-    private List<GeoPoint> mGeoPoints;
+    private List<GeoPoint>  mGeoPoints;
+    private String          mId;
 
 
     public GeoBoundary() {
     }
 
+    /**
+     * <b>setId</b>
+     * <br>Description: sets Id of the GeoBoundary. Is defined as the
+     * name of a District respective a Canton, which the GeoBoundary represents.
+     * <br>E.g. "Imboden", "Graubuenden"
+     * @param pId Id of the GeoBoundary.
+     */
+    public void setId(String pId) {
+        mId = pId;
+    }
+
+    public String getId() {
+        return mId;
+    }
 
     public List<GeoPoint> getGeoPoints() {
         return mGeoPoints;
