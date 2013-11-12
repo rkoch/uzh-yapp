@@ -13,10 +13,8 @@
   <url-pattern>/_ah/spi/*</url-pattern>
  </servlet-mapping>
  
-   <!-- Default page to serve -->
-<!-- 
+ <!-- Default page to serve -->
  <welcome-file-list>
-  <welcome-file>StockWatcher.html</welcome-file>
+  <welcome-file>index.html</welcome-file>
  </welcome-file-list>
--->
 </web-app>
