@@ -22,7 +22,7 @@ package ch.uzh.ifi.se.yapp.backend.accif;
 import ch.uzh.ifi.se.yapp.backend.election.MockElectionAdapter;
 import ch.uzh.ifi.se.yapp.backend.geo.MockGeoDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.landscape.MockLandscapeAdapter;
-import ch.uzh.ifi.se.yapp.backend.visualisation.MockVisualisationAdapter;
+import ch.uzh.ifi.se.yapp.backend.visualisation.MockVisualizationAdapter;
 
 
 public abstract class BackendAccessorFactory {
@@ -30,14 +30,14 @@ public abstract class BackendAccessorFactory {
     private static final IElectionDataAdapter      sElectionAdpt;
     private static final IGeoDataAdapter           sGeoAdpt;
     private static final ILandscapeDataAdapter     sLandAdpt;
-    private static final IVisualisationDataAdapter sVisAdpt;
+    private static final IVisualizationDataAdapter sVisAdpt;
 
 
     static {
         sElectionAdpt = new MockElectionAdapter();
         sGeoAdpt = new MockGeoDataAdapter();
         sLandAdpt = new MockLandscapeAdapter();
-        sVisAdpt = new MockVisualisationAdapter();
+        sVisAdpt = new MockVisualizationAdapter();
     }
 
 
@@ -53,7 +53,7 @@ public abstract class BackendAccessorFactory {
         return sLandAdpt;
     }
 
-    public static IVisualisationDataAdapter getVisualisationDataAdapter() {
+    public static IVisualizationDataAdapter getVisualisationDataAdapter() {
         return sVisAdpt;
     }
 

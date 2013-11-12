@@ -22,20 +22,20 @@ package ch.uzh.ifi.se.yapp.backend.visualisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
 import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class MockVisualisationAdapter
+public class MockVisualizationAdapter
         extends BaseObject
-        implements IVisualisationDataAdapter {
+        implements IVisualizationDataAdapter {
 
     private VisualizationType vt  = new VisualizationType();
     private VisualizationType vt2 = new VisualizationType();
 
-    public MockVisualisationAdapter() {
+    public MockVisualizationAdapter() {
         vt.setKey("1");
         vt2.setKey("2");
     }

@@ -24,7 +24,7 @@ import java.util.List;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
 
 
-public interface IVisualisationDataAdapter
+public interface IVisualizationDataAdapter
         extends IBaseAdapter {
 
     /**
