@@ -21,7 +21,7 @@ package ch.uzh.ifi.se.yapp.model.landscape;
 
 import java.util.List;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -30,11 +30,11 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class Election
         extends BaseObject {
 
-    private String               mId; // SubmissionNr ("VorlagsNr"), e.g. 552.1
+    private String               mId;         // SubmissionNr ("VorlagsNr"), e.g. 552.1
     private String               mTitle;
     private String               mDescription;
     private List<DistrictResult> mResults;
-    private DateTime             mDateTime;
+    private LocalDate            mDate;
 
 
     public Election() {
@@ -42,10 +42,11 @@ public class Election
 
 
     /**
-     * <b>getId</b>
-     * <br>Description: returns the id of the election. Defined as "SubmissionNr",
-     * <br>e.g. 552.1 .
-     * <br>Note: The format can vary in its form: e.g. "550", but "552.1" and "552.2".
+     * <b>getId</b> <br>
+     * Description: returns the id of the election. Defined as "SubmissionNr", <br>
+     * e.g. 552.1 . <br>
+     * Note: The format can vary in its form: e.g. "550", but "552.1" and "552.2".
+     *
      * @return Id ("SubmissionNr")
      */
     public String getId() {
@@ -53,10 +54,11 @@ public class Election
     }
 
     /**
-     * <b>setId</b>
-     * <br>Description: sets the id of the election. Defined as "SubmissionNr",
-     * <br>e.g. 552.1 .
-     * <br>Note: The format can vary in its form: e.g. "550", but "552.1" and "552.2".
+     * <b>setId</b> <br>
+     * Description: sets the id of the election. Defined as "SubmissionNr", <br>
+     * e.g. 552.1 . <br>
+     * Note: The format can vary in its form: e.g. "550", but "552.1" and "552.2".
+     *
      * @param pId Id of the election.
      */
     public void setId(String pId) {
@@ -87,12 +89,12 @@ public class Election
         mResults = pResults;
     }
 
-    public void setDateTime(DateTime pDateTime) {
-        mDateTime = pDateTime;
+    public void setDate(LocalDate pDate) {
+        mDate = pDate;
     }
 
-    public DateTime getDateTime() {
-        return mDateTime;
+    public LocalDate getDate() {
+        return mDate;
     }
 
 }
