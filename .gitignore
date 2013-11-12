@@ -1,7 +1,15 @@
+# GWT Caches
+/war/yapp/
+
 # Google App Engine ignores
+/.apt_generated/
+/gwt-unitCache/
+
+/war/gwt_bree/
 /war/WEB-INF/classes/
 /war/WEB-INF/appengine-generated/
-
+/war/WEB-INF/deploy/
+/war/WEB-INF/*.api
 
 # Default ignores
 /bin/
@@ -23,7 +31,7 @@ build-local.properties
 
 # Default Java ignores
 *.class
-#*.jar
+*.jar
 *.war
 *.ear
 
@@ -37,3 +45,4 @@ build-local.properties
 Thumbs.db 
 Desktop.ini
 $RECYCLE.BIN/
+
