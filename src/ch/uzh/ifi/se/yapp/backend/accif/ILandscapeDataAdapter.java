@@ -19,46 +19,48 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
-import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+
 import ch.uzh.ifi.se.yapp.model.landscape.District;
-import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
 
 
 public interface ILandscapeDataAdapter
         extends IBaseAdapter {
 
     /**
-     * <b>getDistrictById</b>
-     * <br>Description: returns a District with a certain id in a certain Year
-     * @param pId
-     * @param pDate Date
+     * <b>getDistrictById</b> <br>
+     * Description: returns a District with a certain id
+     *
+     * @param pId DistrictId of a specific district, ("BezirksNr")
      * @return District according to the given parameters
      */
-    District getDistrictById(String pId, Calendar pDate);
+    District getDistrictById(String pId);
 
     /**
-     * <b>getAllDistricts</b>
-     * <br>Description: returns a List with all districts in switzerland
+     * <b>getDistrictByIdAndDate</b> <br>
+     * Description: returns a District with a certain id in a certain date.
+     *
+     * @param pId DistrictId of a specific district, "BezirksNr"
+     * @param pDate Date
+     * @return District in a certain year with a certain id.
+     */
+    District getDistrictByIdAndDate(String pId, LocalDate pDate);
+
+    /**
+     * <b>getAllDistricts</b> <br>
+     * Description: returns a List with all districts
+     *
      * @return List<District>
      */
     List<District> getAllDistricts();
 
     /**
-     * <b>getDistrictResultById</b>
-     * <br>Description: returns a DistrictResult of a certain District, identified with DistrictId
-     * @param pId Id of desired District
-     * @return DistrictResult
+     * <b>insertDistrict</b> <br>
+     * Description: Stores a District object on the server.
+     *
+     * @param pDistrict District object to be saved.
      */
-    DistrictResult getDistrictResultById(String pId);
-
-    /**
-     * <b>getAllDistrictResults</b>
-     * <br>Description: returns a List with all DistrictResults in it
-     * @return List<DistrictResult>
-     */
-    List<DistrictResult> getAllDistrictResults();
-
-
+    void insertDistrict(District pDistrict);
 }

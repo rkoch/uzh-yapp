@@ -19,8 +19,9 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
-import java.util.Calendar;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
 
@@ -30,18 +31,25 @@ public interface IGeoDataAdapter
 
     /**
      * <b>getAllGeoBoundary</b>
-     * <br>Description:
+     * <br>Description: returns a List with all GeoBoundaries in it
      * @return
      */
     List<GeoBoundary> getAllGeoBoundary();
 
     /**
      * <b>getGeoBoundaryByDistrict</b>
-     * <br>Description: returns the GeoBoundary from a certain District
-     * @param pDistrictId
+     * <br>Description: returns the GeoBoundary from a certain District at a certain Date
+     * @param pDistrictId DistrictId of desired District ("BezirksNr")
+     * @param pDate Date of GeoBoundary
      * @return GeoBoundary
      */
-    GeoBoundary getGeoBoundaryByDistrict(String pDistrictId, Calendar pCalendar);
+    GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, DateTime pDate);
 
-
+    /**
+     * <b>insertGeoBoundary</b>
+     * <br>Description: stores a GeoBoundary object on the server
+     * @param pGeoBoundary GeoBoundary to be saved
+     * @param pDate Date of GeoBoundary
+     */
+    void insertGeoBoundary(GeoBoundary pGeoBoundary);
 }

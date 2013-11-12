@@ -20,12 +20,15 @@
 package ch.uzh.ifi.se.yapp.backend.landscape;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
+import org.joda.time.LocalDate;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
-import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -33,13 +36,24 @@ public class MockLandscapeAdapter
         extends BaseObject
         implements ILandscapeDataAdapter {
 
+    private DatastoreService landscapeDatastore = DatastoreServiceFactory.getDatastoreService();
+
     @Override
     public void cleanup() {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
-    public District getDistrictById(String pId, Calendar pDate) {
+    public District getDistrictById(String pId) {
+        District d = new District();
+        d.setId("Imboden");
+        d.setCanton("Graubünden");
+        return d;
+    }
+
+    @Override
+    public District getDistrictByIdAndDate(String pId, LocalDate pDate) {
+        // Date is stored in District.mDateTime
         District d = new District();
         d.setId("Imboden");
         d.setCanton("Graubünden");
@@ -69,59 +83,10 @@ public class MockLandscapeAdapter
     }
 
     @Override
-    public DistrictResult getDistrictResultById(String pId) {
-        District d = new District();
-        d.setId("Imboden");
-        d.setCanton("Graubünden");
-
-        DistrictResult dr = new DistrictResult();
-        dr.setDistrict(d);
-        dr.setTotalEligibleCount(230);
-        dr.setInvalidVoteCount(50);
-        dr.setEmptyVoteCount(50);
-        dr.setDeliveredVoteCount(100);
-        dr.setNoVoteCount(10);
-        dr.setYesVoteCount(70);
-
-        return dr;
+    public void insertDistrict(District pDistrict) {
+        // DateTime is  stored in District.mDateTime
+        // using java data object (jdo)
+        //google data store
     }
-
-    @Override
-    public List<DistrictResult> getAllDistrictResults() {
-        List<DistrictResult> tmpList = new ArrayList<DistrictResult>();
-
-        District d = new District();
-        d.setId("Zürich");
-        d.setCanton("Zürich");
-
-        District d2 = new District();
-        d2.setId("Genève");
-        d2.setCanton("Genève");
-
-        DistrictResult dr = new DistrictResult();
-        dr.setDistrict(d);
-        dr.setTotalEligibleCount(230);
-        dr.setInvalidVoteCount(50);
-        dr.setEmptyVoteCount(50);
-        dr.setDeliveredVoteCount(100);
-        dr.setNoVoteCount(10);
-        dr.setYesVoteCount(70);
-
-        DistrictResult dr2 = new DistrictResult();
-        dr2.setDistrict(d2);
-        dr2.setTotalEligibleCount(230);
-        dr2.setInvalidVoteCount(50);
-        dr2.setEmptyVoteCount(50);
-        dr2.setDeliveredVoteCount(100);
-        dr2.setNoVoteCount(10);
-        dr2.setYesVoteCount(70);
-
-        tmpList.add(dr);
-        tmpList.add(dr2);
-
-        return tmpList;
-    }
-
-
 
 }

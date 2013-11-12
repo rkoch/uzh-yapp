@@ -32,11 +32,12 @@ public class MockVisualisationAdapter
         extends BaseObject
         implements IVisualisationDataAdapter {
 
-    private VisualizationType vt = new VisualizationType();
+    private VisualizationType vt  = new VisualizationType();
     private VisualizationType vt2 = new VisualizationType();
 
     public MockVisualisationAdapter() {
         vt.setKey("1");
+        vt2.setKey("2");
     }
 
     @Override
@@ -48,16 +49,6 @@ public class MockVisualisationAdapter
     public Visualization getVisualizationById(String pId) {
         Visualization v = new Visualization();
         v.setElectionId("552.1");
-        v.setId("123456");
-        v.setType(vt);
-        return v;
-    }
-
-    @Override
-    public Visualization getVisualizationByElectionId(String pId) {
-        Visualization v = new Visualization();
-        v.setElectionId("552.1");
-        v.setId("123456");
         v.setType(vt);
         return v;
     }
@@ -68,12 +59,10 @@ public class MockVisualisationAdapter
 
         Visualization v = new Visualization();
         v.setElectionId("552.1");
-        v.setId("123456");
         v.setType(vt);
 
         Visualization v2 = new Visualization();
         v2.setElectionId("552.1");
-        v2.setId("123456");
         v2.setType(vt2);
 
         tmpList.add(v);
@@ -83,15 +72,8 @@ public class MockVisualisationAdapter
     }
 
     @Override
-    public VisualizationType getVisualizationTypeById(String pId) {
-        return vt;
+    public void insertVisualization(Visualization pVisualization) {
+        // TODO: implementation of jdo
     }
 
-    @Override
-    public List<VisualizationType> getAllVisualizationTypes() {
-        List<VisualizationType> tmpList = new ArrayList<VisualizationType>();
-        tmpList.add(vt);
-        tmpList.add(vt2);
-        return tmpList;
-    }
 }

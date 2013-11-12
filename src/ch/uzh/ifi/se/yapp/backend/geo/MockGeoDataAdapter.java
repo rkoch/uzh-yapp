@@ -21,8 +21,13 @@ package ch.uzh.ifi.se.yapp.backend.geo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
+import org.joda.time.DateTime;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
@@ -33,6 +38,8 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class MockGeoDataAdapter
         extends BaseObject
         implements IGeoDataAdapter {
+
+    private DatastoreService geoDatastore = DatastoreServiceFactory.getDatastoreService();
 
     private List<GeoBoundary> tmpList = new ArrayList<GeoBoundary>();
     private List<GeoPoint> tmpGpList = new ArrayList<GeoPoint>();
@@ -85,8 +92,19 @@ public class MockGeoDataAdapter
     }
 
     @Override
-    public GeoBoundary getGeoBoundaryByDistrict(String pDistrictId, Calendar pCalendar) {
+    public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, DateTime pDate) {
         return gb;
+    }
+
+    @Override
+    public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
+        // DateTime is stored in object pGeoBoundary
+       Entity gb = new Entity("GeoBoundary", pGeoBoundary.getId());
+
+       gb.setProperty("id", pGeoBoundary.getId());
+       gb.setProperty("geopoints", pGeoBoundary.getGeoPoints());
+
+       geoDatastore.put(gb);
     }
 
 
