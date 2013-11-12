@@ -21,6 +21,8 @@ package ch.uzh.ifi.se.yapp.model.landscape;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -32,6 +34,7 @@ public class Election
     private String               mTitle;
     private String               mDescription;
     private List<DistrictResult> mResults;
+    private DateTime             mDateTime;
 
 
     public Election() {
@@ -82,6 +85,14 @@ public class Election
 
     public void setResults(List<DistrictResult> pResults) {
         mResults = pResults;
+    }
+
+    public void setDateTime(DateTime pDateTime) {
+        mDateTime = pDateTime;
+    }
+
+    public DateTime getDateTime() {
+        return mDateTime;
     }
 
 }
