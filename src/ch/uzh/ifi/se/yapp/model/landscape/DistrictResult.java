@@ -62,10 +62,11 @@ public class DistrictResult
     /**
      * <b>setInvalidVoteCount</b>
      * <br>Description: Computes invalid vote count
-     * @pre: mDeliveredVoteCount and mTotalEligibleCount have to be defined.
+     * @pre: mDeliveredVoteCount, mYesVoteCount, mNoVotecount and mEmptyVoteCount have to be defined.
+     * @pre: mEmptyVoteCount has to be computed first.
      */
     public void computeInvalidVoteCount() {
-        mInvalidVoteCount = mDeliveredVoteCount - mTotalEligibleCount;
+        mInvalidVoteCount = mDeliveredVoteCount - mYesVoteCount - mNoVoteCount - mEmptyVoteCount;
     }
 
     public int getEmptyVoteCount() {
