@@ -21,6 +21,8 @@ package ch.uzh.ifi.se.yapp.model.geo;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -30,12 +32,35 @@ public class GeoBoundary
     /**
      * The geopoint list is sorted
      */
-    private List<GeoPoint> mGeoPoints;
+    private List<GeoPoint>  mGeoPoints;
+    private String          mId;
+    private DateTime        mDateTime;
 
 
     public GeoBoundary() {
     }
 
+    /**
+     * <b>setId</b>
+     * <br>Description: sets Id of the GeoBoundary. Is defined as the
+     * name of a District respective a Canton, which the GeoBoundary represents.
+     * <br>E.g. "Imboden", "Graubuenden"
+     * @param pId Id of the GeoBoundary.git
+     */
+    public void setId(String pId) {
+        mId = pId;
+    }
+
+    /**
+     * <b>getId</b>
+     * <br>Description: returns the id of the GeoBoundary. Is defined as the
+     * name of a District respective a Canton, which the GeoBoundary represents.
+     * <br>E.g. "Imboden", "Graubuenden"
+     * @return Id of the GeoBoundary
+     */
+    public String getId() {
+        return mId;
+    }
 
     public List<GeoPoint> getGeoPoints() {
         return mGeoPoints;
@@ -43,6 +68,14 @@ public class GeoBoundary
 
     public void setGeoPoints(List<GeoPoint> pGeoPoints) {
         mGeoPoints = pGeoPoints;
+    }
+
+    public void setDateTime(DateTime pDateTime) {
+        mDateTime = pDateTime;
+    }
+
+    public DateTime getDateTime() {
+        return mDateTime;
     }
 
 }

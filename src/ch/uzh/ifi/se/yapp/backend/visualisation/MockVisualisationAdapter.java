@@ -19,7 +19,12 @@
  */
 package ch.uzh.ifi.se.yapp.backend.visualisation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -27,9 +32,48 @@ public class MockVisualisationAdapter
         extends BaseObject
         implements IVisualisationDataAdapter {
 
+    private VisualizationType vt  = new VisualizationType();
+    private VisualizationType vt2 = new VisualizationType();
+
+    public MockVisualisationAdapter() {
+        vt.setKey("1");
+        vt2.setKey("2");
+    }
+
     @Override
     public void cleanup() {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public Visualization getVisualizationById(String pId) {
+        Visualization v = new Visualization();
+        v.setElectionId("552.1");
+        v.setType(vt);
+        return v;
+    }
+
+    @Override
+    public List<Visualization> getAllVisualizations() {
+        List<Visualization> tmpList = new ArrayList<Visualization>();
+
+        Visualization v = new Visualization();
+        v.setElectionId("552.1");
+        v.setType(vt);
+
+        Visualization v2 = new Visualization();
+        v2.setElectionId("552.1");
+        v2.setType(vt2);
+
+        tmpList.add(v);
+        tmpList.add(v2);
+
+        return tmpList;
+    }
+
+    @Override
+    public void insertVisualization(Visualization pVisualization) {
+        // TODO: implementation of jdo
     }
 
 }

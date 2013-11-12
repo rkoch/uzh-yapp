@@ -19,8 +19,37 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
+import java.util.List;
+
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+
 
 public interface IVisualisationDataAdapter
         extends IBaseAdapter {
+
+    /**
+     * <b>getVisualizationById</b> <br>
+     * Description: returns a Visualization by a certain Id
+     *
+     * @param pId not defined yet... (integer?, string->hash?, unique?)
+     * @return Visualization
+     */
+    Visualization getVisualizationById(String pId);
+
+    /**
+     * <b>getAllVisualizations</b> <br>
+     * Description: returns a List with all created Visualizations.
+     *
+     * @return List<Visualization>
+     */
+    List<Visualization> getAllVisualizations();
+
+    /**
+     * <b>saveVisualization</b> <br>
+     * Description: saves a List<Visualization> on the server.
+     *
+     * @param pVisualization Visualization to be saved.
+     */
+    void insertVisualization(Visualization pVisualization);
 
 }

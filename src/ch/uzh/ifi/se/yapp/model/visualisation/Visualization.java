@@ -1,16 +1,16 @@
 /*
  * The MIT License (MIT)
  * Copyright © 2013 different authors
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the “Software”), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge, publish, distribute,
  * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all copies or substantial
  * portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
  * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
@@ -19,26 +19,34 @@
  */
 package ch.uzh.ifi.se.yapp.model.visualisation;
 
+import java.util.UUID;
+
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Visualization
         extends BaseObject {
 
-    private String            mId;
+    private UUID              mId;
     private String            mElectionId;
     private VisualizationType mType;
 
     public Visualization() {
+        generateId();
     }
 
 
-    public String getId() {
+    public UUID getId() {
         return mId;
     }
 
-    public void setId(String pId) {
-        mId = pId;
+    /**
+     * <b>generateId</b>
+     * <br>Description: sets an Id for a Visualization.
+     * UUID is used as a random generated Id.
+     */
+    private void generateId() {
+        mId = UUID.randomUUID();
     }
 
     public String getElectionId() {

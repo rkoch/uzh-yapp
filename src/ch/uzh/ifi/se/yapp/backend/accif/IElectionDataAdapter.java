@@ -19,8 +19,49 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
+import java.util.List;
+import java.util.Map;
+
+import org.joda.time.LocalDate;
+
+import ch.uzh.ifi.se.yapp.model.landscape.Election;
+
 
 public interface IElectionDataAdapter
         extends IBaseAdapter {
+
+    /**
+     * <b>getElectionById</b>
+     * <br>Description: get an election by its id (SubmissionNr, e.g. 552.1).
+     * @param pId
+     * @return Election
+     */
+    Election getElectionById(String pId);
+
+    /**
+     * <b>getElectionsByDateRange</b>
+     * <br>Description: Returns a List with election objects, between a range date1 and date2
+     * @param Calendar object with a certain Date
+     * @return List of Elections
+     */
+    List<Election> getElectionsByDateRange(LocalDate pDate1, LocalDate pDate2);
+
+    /**
+     * <b>listElections</b>
+     * <br>Description: returns a Map<String, String> with all Elections in it.
+     * <br>Key: ElectionId (SubmissionNr)
+     * <br>Values: Title of election.
+     * This method returns the elections without any results (so only metadata for now)
+     * @return
+     */
+    Map<String, Election> listElections();
+
+    /**
+     * <b>insertElection</b>
+     * <br>Description: Stores an election object on the server
+     * @param pElection Election object to be saved.
+     * @param pDate Date of Election
+     */
+    void insertElection(Election pElection);
 
 }
