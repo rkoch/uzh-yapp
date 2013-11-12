@@ -31,7 +31,7 @@ build-local.properties
 
 # Default Java ignores
 *.class
-*.jar
+#*.jar
 *.war
 *.ear
 
@@ -45,4 +45,3 @@ build-local.properties
 Thumbs.db 
 Desktop.ini
 $RECYCLE.BIN/
-
