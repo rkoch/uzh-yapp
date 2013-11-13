@@ -21,7 +21,7 @@ package ch.uzh.ifi.se.yapp.model.geo;
 
 import java.util.List;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -34,7 +34,7 @@ public class GeoBoundary
      */
     private List<GeoPoint>  mGeoPoints;
     private String          mId;
-    private DateTime        mDateTime;
+    private LocalDate       mLocalDate;
 
 
     public GeoBoundary() {
@@ -43,8 +43,8 @@ public class GeoBoundary
     /**
      * <b>setId</b>
      * <br>Description: sets Id of the GeoBoundary. Is defined as the
-     * name of a District respective a Canton, which the GeoBoundary represents.
-     * <br>E.g. "Imboden", "Graubuenden"
+     * number of a District respective a Canton, which the GeoBoundary represents.
+     * <br>E.g. 13 for a canton, 2603 for a district
      * @param pId Id of the GeoBoundary.git
      */
     public void setId(String pId) {
@@ -54,8 +54,8 @@ public class GeoBoundary
     /**
      * <b>getId</b>
      * <br>Description: returns the id of the GeoBoundary. Is defined as the
-     * name of a District respective a Canton, which the GeoBoundary represents.
-     * <br>E.g. "Imboden", "Graubuenden"
+     * number of a District respective a Canton, which the GeoBoundary represents.
+     * <br>E.g. 13 for a canton, 2603 for a district
      * @return Id of the GeoBoundary
      */
     public String getId() {
@@ -70,12 +70,12 @@ public class GeoBoundary
         mGeoPoints = pGeoPoints;
     }
 
-    public void setDateTime(DateTime pDateTime) {
-        mDateTime = pDateTime;
+    public void setDateTime(LocalDate pLocalDate) {
+        mLocalDate = pLocalDate;
     }
 
-    public DateTime getDateTime() {
-        return mDateTime;
+    public LocalDate getLocalDate() {
+        return mLocalDate;
     }
 
 }

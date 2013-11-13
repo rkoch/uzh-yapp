@@ -20,7 +20,7 @@
 package ch.uzh.ifi.se.yapp.model.landscape;
 
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -32,7 +32,7 @@ public class District
     private String mName; // Name of District
     private String mCantonId; // Id of Canton ("KantonsNr")
     private String mCanton; // Name of Canton
-    private DateTime mDateTime; // Date in which above properties existed
+    private LocalDate mLocalDate; // Date in which above properties existed
 
 
     public District() {
@@ -69,12 +69,12 @@ public class District
         mCanton = pCanton;
     }
 
-    public void setDateTime(DateTime pDateTime) {
-        mDateTime = pDateTime;
+    public void setDateTime(LocalDate pLocalDate) {
+        mLocalDate = pLocalDate;
     }
 
-    public DateTime getDateTime() {
-        return mDateTime;
+    public LocalDate getLocalDate() {
+        return mLocalDate;
     }
 
 }
