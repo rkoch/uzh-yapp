@@ -70,7 +70,7 @@ public class GeoBoundary
         mGeoPoints = pGeoPoints;
     }
 
-    public void setDateTime(LocalDate pLocalDate) {
+    public void setLocalDate(LocalDate pLocalDate) {
         mLocalDate = pLocalDate;
     }
 
