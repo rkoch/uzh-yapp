@@ -92,6 +92,11 @@ public class MockGeoDataAdapter
     }
 
     @Override
+    public List<GeoBoundary> getAllGeoBoundaryByDate(DateTime pDate) {
+        return tmpList;
+    }
+
+    @Override
     public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, DateTime pDate) {
         return gb;
     }

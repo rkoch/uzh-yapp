@@ -32,9 +32,18 @@ public interface IGeoDataAdapter
     /**
      * <b>getAllGeoBoundary</b>
      * <br>Description: returns a List with all GeoBoundaries in it
-     * @return
+     * @return List<GeoBoundary>
      */
     List<GeoBoundary> getAllGeoBoundary();
+
+    /**
+     * <b>getAllGeoBoundaryByDate</b>
+     * <br>Description: returns a List with all GeoBoundaries in it which are
+     * up-to-date at the given Date
+     * @param pDate
+     * @return List<GeoBoundary>
+     */
+    List<GeoBoundary> getAllGeoBoundaryByDate(DateTime pDate);
 
     /**
      * <b>getGeoBoundaryByDistrict</b>
