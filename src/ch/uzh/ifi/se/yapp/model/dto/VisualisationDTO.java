@@ -19,6 +19,11 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.util.List;
+
+import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
+import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
+
 
 /**
  * @author rko
@@ -26,4 +31,40 @@ package ch.uzh.ifi.se.yapp.model.dto;
 public class VisualisationDTO
         extends BaseDTO {
 
+    private String mId;
+    private ElectionDTO mElection;
+    private List<DistrictResult> mElectionResults;
+    private List<GeoBoundary> mBoundary;  //NULL if GeoBoundary not necessary (visualization is a table)
+
+    public void setId(String pId){
+        mId = pId;
+    }
+
+    public String getId(){
+        return mId;
+    }
+
+    public void setElectionDTO(ElectionDTO elecDTO){
+        mElection = elecDTO;
+    }
+
+    public ElectionDTO getElectionDTO(){
+        return mElection;
+    }
+
+    public void setElectionResults(List<DistrictResult> list){
+        mElectionResults = list;
+    }
+
+    public List<DistrictResult> getElectionResults(){
+        return mElectionResults;
+    }
+
+    public void setGeoBoundary(List<GeoBoundary> pBoundary){
+        mBoundary = pBoundary;
+    }
+
+    public List<GeoBoundary> getGeoBoundary(){
+        return mBoundary;
+    }
 }

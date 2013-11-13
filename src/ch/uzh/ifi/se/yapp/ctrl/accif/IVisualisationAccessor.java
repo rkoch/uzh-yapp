@@ -19,8 +19,35 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.accif;
 
+import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
+
 
 public interface IVisualisationAccessor
         extends IBaseAccessor {
 
+    /**
+     * <b>getVisualisationById</b>
+     * <br>gets a already saved visualization by id
+     * @param pId
+     * @return VisualisationDTO
+     */
+    VisualisationDTO getVisualisationById(String pId);
+
+    /**
+     * <b>getElectoinById</b>
+     * <br>Description: Returns an ElectionDTO
+     * @param pId
+     * @return ElectionDTO
+     */
+    ElectionDTO getElectoinById(String pId);
+
+    /**
+     * <b>getNewVisualisationDTO</b>
+     * <br>Description: Creates new visualization for election and returns the visualizationDTO
+     * @param electionId
+     * @param visualisationType (0 for "Table", 1 for "Map")
+     * @return VisualisationDTO
+     */
+    VisualisationDTO getNewVisualisationDTO(String electionId, String visualisationType);
 }

@@ -19,8 +19,27 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.accif;
 
+import java.util.List;
+
+import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
+
 
 public interface IMetadataAccessor
         extends IBaseAccessor {
 
+    /**
+     * <b>getElectionList</b>
+     * <br>Description: Returns a chronological sorted List with ElectionDTO objects
+     * @return List of ElectionDTO
+     */
+    public List<ElectionDTO> getElectionList();
+
+    /**
+     * <b>getElectionsByDateRange</b>
+     * <br>Description: Returns a chronological sorted List with election objects between a range date1 and date2
+     * @param pDate1
+     * @param pDate2
+     * @return
+     */
+    public List<ElectionDTO> getElectionsByDateRange(String pDate1, String pDate2);
 }

@@ -17,44 +17,10 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.dto;
+package ch.uzh.ifi.se.yapp.base;
 
 
-public class ElectionDTO
-        extends BaseDTO implements Comparable<ElectionDTO>{
-
-    private String mId;
-    private String mTitle;
-    private String mDate;
-
-
-    public String getId() {
-        return mId;
-    }
-
-    public void setId(String pId) {
-        mId = pId;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String pTitle) {
-        mTitle = pTitle;
-    }
-
-    public String getDate() {
-        return mDate;
-    }
-
-    public void setDate(String pDate) {
-        mDate = pDate;
-    }
-
-    @Override
-    public int compareTo(ElectionDTO pO) {
-        return this.mDate.compareTo(pO.getDate());
-    }
+public class ValidationException
+        extends Exception {
 
 }

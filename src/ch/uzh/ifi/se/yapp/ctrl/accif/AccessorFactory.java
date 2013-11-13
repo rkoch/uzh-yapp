@@ -19,7 +19,25 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.accif;
 
+import ch.uzh.ifi.se.yapp.ctrl.mgr.MetaDataManager;
+import ch.uzh.ifi.se.yapp.ctrl.mgr.VisualisationManager;
+
 
 public abstract class AccessorFactory {
 
+    private static final IMetadataAccessor      sMetadataAccessor;
+    private static final IVisualisationAccessor sVisualisationAccessor;
+
+    static{
+        sMetadataAccessor = new MetaDataManager();
+        sVisualisationAccessor = new VisualisationManager();
+    }
+
+    public static IMetadataAccessor getMetaDataAccessor(){
+        return sMetadataAccessor;
+    }
+
+    public static IVisualisationAccessor getVisualisationAccessor(){
+        return sVisualisationAccessor;
+    }
 }
