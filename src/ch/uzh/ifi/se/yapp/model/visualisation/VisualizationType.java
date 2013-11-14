@@ -19,31 +19,8 @@
  */
 package ch.uzh.ifi.se.yapp.model.visualisation;
 
-import ch.uzh.ifi.se.yapp.util.BaseObject;
+public enum VisualizationType{
 
-@Deprecated
-public class VisualizationType
-        extends BaseObject {
-
-    private String mId;
-
-    public VisualizationType() {
-    }
-
-    /**
-     * <b>getId()</b>
-     * Description: Id is either 0 ("Table"), 1 ("Map")
-     * @return the id
-     */
-    public String getId() {
-        return mId;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
-        mId = id;
-    }
+   TABLE, MAP
 
 }
