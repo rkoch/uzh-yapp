@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -92,12 +92,12 @@ public class MockGeoDataAdapter
     }
 
     @Override
-    public List<GeoBoundary> getAllGeoBoundaryByDate(DateTime pDate) {
+    public List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate) {
         return tmpList;
     }
 
     @Override
-    public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, DateTime pDate) {
+    public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate) {
         return gb;
     }
 
@@ -111,7 +111,4 @@ public class MockGeoDataAdapter
 
        geoDatastore.put(gb);
     }
-
-
-
 }
