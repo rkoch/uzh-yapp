@@ -69,7 +69,7 @@ public class District
         mCanton = pCanton;
     }
 
-    public void setDateTime(LocalDate pLocalDate) {
+    public void setLocalDate(LocalDate pLocalDate) {
         mLocalDate = pLocalDate;
     }
 
