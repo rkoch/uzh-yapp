@@ -35,6 +35,15 @@ public class Visualization
         generateId();
     }
 
+    /**
+     * <b>setId</b>
+     * <br>Description: Only needed to <i>modify</i> the id of a Visualizationobject.
+     * <br><b>Note: The id is set in the constructor during the instantiation of the object.</b>
+     * @param pId modified id
+     */
+    public void setId(UUID pId) {
+        mId = pId;
+    }
 
     public UUID getId() {
         return mId;
