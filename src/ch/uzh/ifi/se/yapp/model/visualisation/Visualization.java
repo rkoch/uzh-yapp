@@ -25,11 +25,11 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Visualization
-        extends BaseObject {
+extends BaseObject {
 
-    private UUID              mId;
-    private String            mElectionId;
-    private VisualizationType mType;
+    private UUID              mId = null;
+    private String            mElectionId = null;
+    private VisualizationType mType = null;
 
     public Visualization() {
         generateId();
@@ -43,6 +43,15 @@ public class Visualization
      */
     public void setId(UUID pId) {
         mId = pId;
+    }
+
+    /**
+     * <b>setId</b>
+     * <br>Description: modify visualizationobject
+     * @param pId
+     */
+    public void setId(String pId) {
+        mId = UUID.fromString(pId);
     }
 
     public UUID getId() {
