@@ -22,13 +22,10 @@ package ch.uzh.ifi.se.yapp.backend.visualisation;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.DatastoreFailureException;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -39,6 +36,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityConst;
+import ch.uzh.ifi.se.yapp.backend.persistence.DatastoreFactory;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
 import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -47,11 +45,6 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class VisualizationAdapter
         extends BaseObject
         implements IVisualizationDataAdapter {
-
-    /**
-     * Datastore for Visualizations
-     */
-    private DatastoreService visualizatonDatastore = DatastoreServiceFactory.getDatastoreService();
 
     /**
      * Logger to list exceptions and errors for this class.
@@ -64,26 +57,22 @@ public class VisualizationAdapter
 
     @Override
     public Visualization getVisualizationById(String pId) {
-        // generate uuid from string
-        try {
-            // IllegalArgumentException - If name does not conform to the string representation as described in toString
-            UUID tmpUUID = UUID.fromString(pId);
-        } catch (IllegalArgumentException iae) {
-            log.log(Level.WARNING, iae.toString(), iae);
-        }
-
         Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
 
         Query visQuery = new Query(EntityConst.VISUALIZATION);
         visQuery.setFilter(idFilter);
-
-        PreparedQuery pq = visualizatonDatastore.prepare(visQuery);
+        PreparedQuery pq = DatastoreFactory.visualizationDatastore.prepare(visQuery);
 
         Visualization resVis = new Visualization();
         for (Entity result : pq.asIterable()) {
-            resVis.setId((UUID) result.getProperty(EntityConst.ID));
+            // set id
+            String id = (String) result.getProperty(EntityConst.ID);
+            resVis.setId(id);
+            // set electionid
             resVis.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
-            resVis.setType((VisualizationType) result.getProperty(EntityConst.VISUALIZATION_TYPE));
+            // set type
+            VisualizationType vt = VisualizationType.valueOf(((String) result.getProperty(EntityConst.VISUALIZATION_TYPE)));
+            resVis.setType(vt);
         }
         return resVis;
     }
@@ -100,13 +89,18 @@ public class VisualizationAdapter
             log.log(Level.WARNING, npe.toString(), npe);
         }
 
-        PreparedQuery pq = visualizatonDatastore.prepare(visQuery);
+        PreparedQuery pq = DatastoreFactory.visualizationDatastore.prepare(visQuery);
 
         for (Entity result : pq.asIterable()) {
             Visualization tmp = new Visualization();
-            tmp.setId((UUID) result.getProperty(EntityConst.ID));
+            // set id
+            String id = (String) result.getProperty(EntityConst.ID);
+            tmp.setId(id);
+            // setElection Id
             tmp.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
-            tmp.setType((VisualizationType) result.getProperty(EntityConst.VISUALIZATION_TYPE));
+            // set type
+            VisualizationType vt = VisualizationType.valueOf(((String) result.getProperty(EntityConst.VISUALIZATION_TYPE)));
+            tmp.setType(vt);
             try {
                 // UnsupportedOperationException - if the add operation is not supported by this list
                 // ClassCastException - if the class of the specified element prevents it from being added to this list
@@ -129,16 +123,15 @@ public class VisualizationAdapter
     @Override
     public void insertVisualization(Visualization pVisualization) {
         Entity visualization = new Entity(EntityConst.VISUALIZATION);
-
-        visualization.setProperty(EntityConst.ID, pVisualization.getId());
+        visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
         visualization.setProperty(EntityConst.ELECTION_ID, pVisualization.getElectionId());
-        visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType());
+        visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType().toString(pVisualization.getType()));
 
         try {
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            visualizatonDatastore.put(visualization);
+            DatastoreFactory.visualizationDatastore.put(visualization);
         } catch (IllegalArgumentException iae) {
             log.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
