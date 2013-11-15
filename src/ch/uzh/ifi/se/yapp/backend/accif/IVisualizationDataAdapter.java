@@ -29,9 +29,9 @@ public interface IVisualizationDataAdapter
 
     /**
      * <b>getVisualizationById</b> <br>
-     * Description: returns a Visualization by a certain Id
-     *
-     * @param pId not defined yet... (integer?, string->hash?, unique?)
+     * Description: returns a Visualization by a certain Id.
+     *<br><b>Note: Id must be a String generated through the UUID.toString() method.</b>
+     * @param pId String wich represents the UUID.
      * @return Visualization
      */
     Visualization getVisualizationById(String pId);
