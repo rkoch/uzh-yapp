@@ -21,6 +21,16 @@ package ch.uzh.ifi.se.yapp.model.visualisation;
 
 public enum VisualizationType{
 
-   TABLE, MAP
+   TABLE, MAP;
+
+   public String toString(VisualizationType pVT) {
+       if (pVT == MAP) {
+           return "MAP";
+       }
+       if (pVT == TABLE) {
+           return "TABLE";
+       }
+       return null;
+   }
 
 }
