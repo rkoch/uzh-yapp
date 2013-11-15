@@ -85,10 +85,20 @@ public class DistrictResult
         return mEmptyVoteCount = mValidVoteCount - mYesVoteCount - mNoVoteCount;
     }
 
+    /** <b>getRatio</b>
+     * <br>Description: computes part of eligible voter who actually voted
+     * @pre     mDelivededVoteCount && mTotalEligible are set
+     * @return  Ratio
+     */
     public double getRatio() {
-        return mRatio = (double)mYesVoteCount / (double)mNoVoteCount;
+        return mRatio = mDeliveredVoteCount / (double)mTotalEligibleCount;
     }
 
+    /** <b>getYesVoteRatio</b>
+     * <br>Description: computes part of valid votes which are yes-votes
+     * @pre     mYesVoteCount && mValidVoteCount are set
+     * @return  YesVoteRatio
+     */
     public double getYesVoteRatio() {
         return mYesVoteRatio =  (double)mYesVoteCount / (double)mValidVoteCount;
     }

@@ -20,9 +20,10 @@
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.joda.time.LocalDate;
 
@@ -30,23 +31,25 @@ import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
+import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class CsvImport {
+public class Import extends BaseObject {
+
+    private Logger log = BaseObject.getLogger(Import.class);
 
     /**
      * <b>importElection</b> <br>
      * Description: import a csv file and instance an election and save it on the server
-     *
-     * @param pFile
+     * @pre pFile.exist() == true
+     * @param pFile in .csv format
      * @throws IOException
      */
-    public void importElection(File pFile)
-            throws IOException {
+    public void importElection(String pFilePath) {
         try {
             Election pElection = new Election();
 
-            BufferedReader br = new BufferedReader(new FileReader(pFile));
+            BufferedReader br = new BufferedReader(new FileReader(pFilePath));
             String line = null;
             int count = 0;
 
@@ -83,7 +86,7 @@ public class CsvImport {
             IElectionDataAdapter adpt = BackendAccessorFactory.getElectionDataAdapter();
             adpt.insertElection(pElection);
         } catch (IOException e) {
-            System.out.println("ERRO: IOException.");
+            log.log(Level.WARNING, e.toString(), e);
         }
     }
 
