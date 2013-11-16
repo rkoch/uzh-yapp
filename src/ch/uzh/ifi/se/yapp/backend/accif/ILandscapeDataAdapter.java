@@ -51,7 +51,6 @@ public interface ILandscapeDataAdapter
     /**
      * <b>getAllDistricts</b> <br>
      * Description: returns a List with all districts
-     *
      * @return List<District>
      */
     List<District> getAllDistricts();
