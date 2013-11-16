@@ -40,7 +40,5 @@ public class DatastoreFactory {
 
     public static DatastoreService visualizationDatastore = DatastoreServiceFactory.getDatastoreService();
 
-    public static DatastoreService visualizationTypeDatastore = DatastoreServiceFactory.getDatastoreService();
-
 
 }
