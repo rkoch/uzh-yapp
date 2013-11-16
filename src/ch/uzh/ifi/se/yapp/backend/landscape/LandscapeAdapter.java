@@ -70,7 +70,6 @@ public class LandscapeAdapter
         District tmp = new District();
 
         for (Entity result : pq.asIterable()) {
-            // Unique id
             tmp.setId((String) result.getProperty(EntityConst.ID));
             tmp.setName((String) result.getProperty(EntityConst.NAME));
             tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
@@ -88,7 +87,7 @@ public class LandscapeAdapter
 
         try {
             // IllegalArgumentException - If the provided filter values are not supported.
-            Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate);
+            Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString());
 
             Query districtQuery = new Query(EntityConst.DISTRICT).setFilter(dateMaxFilter);
             PreparedQuery pq = landscapeDatastore.prepare(districtQuery);
@@ -103,7 +102,10 @@ public class LandscapeAdapter
                 tmp.setName((String) result.getProperty(EntityConst.NAME));
                 tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
                 tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
-                tmp.setLocalDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
+                // create LocalDate out of a String
+                String str = (String) result.getProperty(EntityConst.LOCAL_DATE);
+                LocalDate ld = new LocalDate(str);
+                tmp.setLocalDate(ld);
                 // check if tmp.localDate is newer or not
                 if (tmpMaxDate.isBefore(tmp.getLocalDate())) {
                     tmpMaxDate = tmp.getLocalDate();
@@ -136,7 +138,10 @@ public class LandscapeAdapter
             tmp.setName((String) result.getProperty(EntityConst.NAME));
             tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
             tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
-            tmp.setLocalDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
+            // create LocalDate out of a String
+            String str = (String) result.getProperty(EntityConst.LOCAL_DATE);
+            LocalDate ld = new LocalDate(str);
+            tmp.setLocalDate(ld);
 
             try {
                 // UnsupportedOperationException - if the add operation is not supported by this list
@@ -165,7 +170,7 @@ public class LandscapeAdapter
         district.setProperty(EntityConst.NAME, pDistrict.getName());
         district.setProperty(EntityConst.CANTON_ID, pDistrict.getCantonId());
         district.setProperty(EntityConst.CANTON, pDistrict.getCanton());
-        district.setProperty(EntityConst.LOCAL_DATE, pDistrict.getLocalDate());
+        district.setProperty(EntityConst.LOCAL_DATE, pDistrict.getLocalDate().toString());
 
         try {
             // IllegalArgumentException - If the specified entity was incomplete.
