@@ -35,6 +35,21 @@ public class District
     private LocalDate mLocalDate; // Date in which above properties existed
 
 
+
+    /**
+     * <b>District</b>
+     * <br>Description: Creates a new instance of this object using a string. Its format must be: id,name,cantonId,canton,localdate
+     * @param pString
+     */
+    public District(String pString) {
+        String[] arr = pString.split(",");
+        mId = arr[0];
+        mName = arr[1];
+        mCantonId = arr[2];
+        mCanton = arr[3];
+        mLocalDate = new LocalDate(arr[4]);
+    }
+
     public District() {
     }
 
@@ -75,6 +90,14 @@ public class District
 
     public LocalDate getLocalDate() {
         return mLocalDate;
+    }
+
+    /**
+     * Format: id,name,cantonId,canton,localdate
+     */
+    @Override
+    public String toString() {
+        return (mId + "," + mName + "," + mCantonId + "," + mCanton + "," + mLocalDate.toString());
     }
 
 }
