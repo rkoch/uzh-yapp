@@ -29,6 +29,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
+import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.ctrl.accif.IMetadataAccessor;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
@@ -41,9 +42,11 @@ public class MetaDataManager
     @Override
     public List<ElectionDTO> getElectionList() {
 
+        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
+
         List<ElectionDTO> list = new ArrayList<ElectionDTO>();
 
-        Map<String, Election> map = BackendAccessorFactory.getElectionDataAdapter().listElections();
+        Map<String, Election> map = elecAdpt.listElections();
 
         for (Map.Entry<String, Election> entry : map.entrySet()) {
             Election elec = entry.getValue();
@@ -61,22 +64,25 @@ public class MetaDataManager
 
     @Override
     public List<ElectionDTO> getElectionsByDateRange(String pDate1, String pDate2) {
+
+        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
+
         List<ElectionDTO> elecDtoList = new ArrayList<>();
         // convert String to LocalDate
         final DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
         final LocalDate dt1 = dtf.parseLocalDate(pDate1);
         final LocalDate dt2 = dtf.parseLocalDate(pDate2);
-        List<Election> elecList = BackendAccessorFactory.getElectionDataAdapter().getElectionsByDateRange(dt1, dt2);
+        List<Election> elecList = elecAdpt.getElectionsByDateRange(dt1, dt2);
 
         for (Election e : elecList) {
             ElectionDTO elecDTO = new ElectionDTO();
             elecDTO.setId(e.getId());
             elecDTO.setTitle(e.getTitle());
-            elecDTO.setDate(e.getDate().toString());
+            //elecDTO.setDate(e.getDate().toString());  //not specified in MockElectionAdapter
             elecDtoList.add(elecDTO);
         }
 
-        Collections.sort(elecDtoList);
+        //Collections.sort(elecDtoList);        //consequence of the above
 
         return elecDtoList;
     }
@@ -87,7 +93,7 @@ public class MetaDataManager
         Election elec = BackendAccessorFactory.getElectionDataAdapter().getElectionById(pId);
         elecDTO.setId(pId);
         elecDTO.setTitle(elec.getTitle());
-        elecDTO.setDate(elec.getDate().toString());
+        //elecDTO.setDate(elec.getDate().toString());   //not specified in MockElectionAdapter
 
         return elecDTO;
     }

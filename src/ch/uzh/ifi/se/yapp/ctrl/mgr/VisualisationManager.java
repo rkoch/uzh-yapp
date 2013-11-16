@@ -238,7 +238,7 @@ public class VisualisationManager
         visDTO.setCantonResultList(canList);
         visDTO.setDistrictResultList(disList);
         visDTO.setElectionDTO(elecDTO);
-        visDTO.setId("first Visualisation");
+        visDTO.setId(pId);
 
         return visDTO;
     }
