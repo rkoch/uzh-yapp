@@ -45,7 +45,7 @@ public class MetaDataManager
 
         Map<String, Election> map = BackendAccessorFactory.getElectionDataAdapter().listElections();
 
-        for(Map.Entry<String, Election> entry : map.entrySet()){
+        for (Map.Entry<String, Election> entry : map.entrySet()) {
             Election elec = entry.getValue();
             ElectionDTO elecDTO = new ElectionDTO();
             elecDTO.setId(elec.getId());
@@ -61,24 +61,34 @@ public class MetaDataManager
 
     @Override
     public List<ElectionDTO> getElectionsByDateRange(String pDate1, String pDate2) {
-        List<ElectionDTO> DTOlist = new ArrayList<ElectionDTO>();
-        //convert String to LocalDate
+        List<ElectionDTO> elecDtoList = new ArrayList<>();
+        // convert String to LocalDate
         final DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
         final LocalDate dt1 = dtf.parseLocalDate(pDate1);
         final LocalDate dt2 = dtf.parseLocalDate(pDate2);
         List<Election> elecList = BackendAccessorFactory.getElectionDataAdapter().getElectionsByDateRange(dt1, dt2);
 
-        for(Election e : elecList){
+        for (Election e : elecList) {
             ElectionDTO elecDTO = new ElectionDTO();
             elecDTO.setId(e.getId());
             elecDTO.setTitle(e.getTitle());
             elecDTO.setDate(e.getDate().toString());
-            DTOlist.add(elecDTO);
+            elecDtoList.add(elecDTO);
         }
 
-        Collections.sort(DTOlist);
+        Collections.sort(elecDtoList);
 
-        return DTOlist;
+        return elecDtoList;
     }
 
+    @Override
+    public ElectionDTO getElectoinById(String pId) {
+        ElectionDTO elecDTO = new ElectionDTO();
+        Election elec = BackendAccessorFactory.getElectionDataAdapter().getElectionById(pId);
+        elecDTO.setId(pId);
+        elecDTO.setTitle(elec.getTitle());
+        elecDTO.setDate(elec.getDate().toString());
+
+        return elecDTO;
+    }
 }

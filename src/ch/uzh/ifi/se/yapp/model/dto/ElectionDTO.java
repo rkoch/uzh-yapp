@@ -21,7 +21,8 @@ package ch.uzh.ifi.se.yapp.model.dto;
 
 
 public class ElectionDTO
-        extends BaseDTO implements Comparable<ElectionDTO>{
+        extends BaseDTO
+        implements Comparable<ElectionDTO> {
 
     private String mId;
     private String mTitle;

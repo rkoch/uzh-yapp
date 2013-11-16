@@ -28,18 +28,29 @@ public interface IMetadataAccessor
         extends IBaseAccessor {
 
     /**
-     * <b>getElectionList</b>
-     * <br>Description: Returns a chronological sorted List with ElectionDTO objects
+     * <b>getElectionList</b> <br>
+     * Description: Returns a chronological sorted List with ElectionDTO objects
+     *
      * @return List of ElectionDTO
      */
-    public List<ElectionDTO> getElectionList();
+    List<ElectionDTO> getElectionList();
 
     /**
-     * <b>getElectionsByDateRange</b>
-     * <br>Description: Returns a chronological sorted List with election objects between a range date1 and date2
+     * <b>getElectionsByDateRange</b> <br>
+     * Description: Returns a chronological sorted List with election objects between a range date1 and date2
+     *
      * @param pDate1
      * @param pDate2
      * @return
      */
-    public List<ElectionDTO> getElectionsByDateRange(String pDate1, String pDate2);
+    List<ElectionDTO> getElectionsByDateRange(String pDate1, String pDate2);
+
+    /**
+     * <b>getElectoinById</b> <br>
+     * Description: Returns an ElectionDTO
+     *
+     * @param pId
+     * @return ElectionDTO
+     */
+    ElectionDTO getElectoinById(String pId);
 }

@@ -23,4 +23,5 @@ public enum VisualizationType{
 
    TABLE, MAP
 
+
 }

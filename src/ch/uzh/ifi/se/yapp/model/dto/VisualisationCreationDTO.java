@@ -19,51 +19,29 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
-import java.util.List;
+import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 
-
-
-/**
- * @author rko
- */
-public class VisualisationDTO
+public class VisualisationCreationDTO
         extends BaseDTO {
 
-    private String          mId;
-    private ElectionDTO     mElection;
-    private List<ResultDTO> mCantonResultList;
-    private List<ResultDTO> mDistrictResultList;
+    private String            mElectionId;
+    private VisualizationType mVisualizationType;
 
-    public void setId(String pId) {
-        mId = pId;
+    public void setElectionId(String pElectionId) {
+        mElectionId = pElectionId;
     }
 
-    public String getId() {
-        return mId;
+    public String getElectionId() {
+        return mElectionId;
     }
 
-    public void setElectionDTO(ElectionDTO elecDTO) {
-        mElection = elecDTO;
+    public void setVisualizationType(VisualizationType pVisualizationType) {
+        mVisualizationType = pVisualizationType;
     }
 
-    public ElectionDTO getElectionDTO() {
-        return mElection;
+    public VisualizationType getVisualizationType() {
+        return mVisualizationType;
     }
 
-    public List<ResultDTO> getCantonResultList() {
-        return mCantonResultList;
-    }
-
-    public void setCantonResultList(List<ResultDTO> pCantonResultList) {
-        mCantonResultList = pCantonResultList;
-    }
-
-    public List<ResultDTO> getDistrictResultList() {
-        return mDistrictResultList;
-    }
-
-    public void setDistrictResultList(List<ResultDTO> pDistrictResultList) {
-        mDistrictResultList = pDistrictResultList;
-    }
 }

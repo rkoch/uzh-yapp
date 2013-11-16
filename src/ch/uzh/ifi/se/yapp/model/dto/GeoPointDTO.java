@@ -19,51 +19,29 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 
-
-
-/**
- * @author rko
- */
-public class VisualisationDTO
+public class GeoPointDTO
         extends BaseDTO {
 
-    private String          mId;
-    private ElectionDTO     mElection;
-    private List<ResultDTO> mCantonResultList;
-    private List<ResultDTO> mDistrictResultList;
+    private BigDecimal mX;
+    private BigDecimal mY;
 
-    public void setId(String pId) {
-        mId = pId;
+    public BigDecimal getX() {
+        return mX;
     }
 
-    public String getId() {
-        return mId;
+    public void setX(BigDecimal pX) {
+        mX = pX;
     }
 
-    public void setElectionDTO(ElectionDTO elecDTO) {
-        mElection = elecDTO;
+    public BigDecimal getY() {
+        return mY;
     }
 
-    public ElectionDTO getElectionDTO() {
-        return mElection;
+    public void setY(BigDecimal pY) {
+        mY = pY;
     }
 
-    public List<ResultDTO> getCantonResultList() {
-        return mCantonResultList;
-    }
-
-    public void setCantonResultList(List<ResultDTO> pCantonResultList) {
-        mCantonResultList = pCantonResultList;
-    }
-
-    public List<ResultDTO> getDistrictResultList() {
-        return mDistrictResultList;
-    }
-
-    public void setDistrictResultList(List<ResultDTO> pDistrictResultList) {
-        mDistrictResultList = pDistrictResultList;
-    }
 }

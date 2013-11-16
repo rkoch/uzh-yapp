@@ -22,48 +22,34 @@ package ch.uzh.ifi.se.yapp.model.dto;
 import java.util.List;
 
 
+public class CantonDTO {
 
-
-/**
- * @author rko
- */
-public class VisualisationDTO
-        extends BaseDTO {
-
-    private String          mId;
-    private ElectionDTO     mElection;
-    private List<ResultDTO> mCantonResultList;
-    private List<ResultDTO> mDistrictResultList;
-
-    public void setId(String pId) {
-        mId = pId;
-    }
+    private String       mId;
+    private String       mName;
+    private List<String> mDistrictIdList;
 
     public String getId() {
         return mId;
     }
 
-    public void setElectionDTO(ElectionDTO elecDTO) {
-        mElection = elecDTO;
+    public void setId(String id) {
+        mId = id;
     }
 
-    public ElectionDTO getElectionDTO() {
-        return mElection;
+    public String getName() {
+        return mName;
     }
 
-    public List<ResultDTO> getCantonResultList() {
-        return mCantonResultList;
+    public void setName(String name) {
+        mName = name;
     }
 
-    public void setCantonResultList(List<ResultDTO> pCantonResultList) {
-        mCantonResultList = pCantonResultList;
+    public List<String> getDistrictIdList() {
+        return mDistrictIdList;
     }
 
-    public List<ResultDTO> getDistrictResultList() {
-        return mDistrictResultList;
+    public void setDistrictIdList(List<String> districtIdList) {
+        mDistrictIdList = districtIdList;
     }
 
-    public void setDistrictResultList(List<ResultDTO> pDistrictResultList) {
-        mDistrictResultList = pDistrictResultList;
-    }
 }

@@ -22,4 +22,27 @@ package ch.uzh.ifi.se.yapp.base;
 
 public enum ErrorTags {
 
+    VISUALIZATION_NOT_FOUND(1000, "Visualization could not be found"),
+
+    ;
+
+
+    private final int    mId;
+    private final String mDescription;
+
+
+    private ErrorTags(int pId, String pDescription) {
+        mId = pId;
+        mDescription = pDescription;
+    }
+
+
+    public int id() {
+        return mId;
+    }
+
+    public String description() {
+        return mDescription;
+    }
+
 }
