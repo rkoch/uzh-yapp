@@ -28,8 +28,6 @@ import java.util.logging.Logger;
 import org.joda.time.LocalDate;
 
 import com.google.appengine.api.datastore.DatastoreFailureException;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -39,6 +37,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityConst;
+import ch.uzh.ifi.se.yapp.backend.persistence.DatastoreFactory;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -47,12 +46,7 @@ public class LandscapeAdapter
         extends BaseObject
         implements ILandscapeDataAdapter {
 
-    /**
-     * Datastore for Districts
-     */
-    private DatastoreService landscapeDatastore = DatastoreServiceFactory.getDatastoreService();
-
-    /**
+   /**
      * Logger to list exceptions and errors for this class.
      */
     private Logger           log                = BaseObject.getLogger(LandscapeAdapter.class);
@@ -66,7 +60,7 @@ public class LandscapeAdapter
     public District getDistrictById(String pId) {
         Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
         Query districtQuery = new Query(EntityConst.DISTRICT).setFilter(idFilter);
-        PreparedQuery pq = landscapeDatastore.prepare(districtQuery);
+        PreparedQuery pq = DatastoreFactory.districtDatastore.prepare(districtQuery);
         District tmp = new District();
 
         for (Entity result : pq.asIterable()) {
@@ -90,7 +84,7 @@ public class LandscapeAdapter
             Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString());
 
             Query districtQuery = new Query(EntityConst.DISTRICT).setFilter(dateMaxFilter);
-            PreparedQuery pq = landscapeDatastore.prepare(districtQuery);
+            PreparedQuery pq = DatastoreFactory.districtDatastore.prepare(districtQuery);
 
             // tmpMaxDate is newest Change of District pDistrictId
             LocalDate tmpMaxDate = new LocalDate(1848, 1, 1); // year, month, dayOfmonth
@@ -130,7 +124,7 @@ public class LandscapeAdapter
             log.log(Level.WARNING, npe.toString(), npe);
         }
 
-        PreparedQuery pq = landscapeDatastore.prepare(districtQuery);
+        PreparedQuery pq = DatastoreFactory.districtDatastore.prepare(districtQuery);
 
         for (Entity result : pq.asIterable()) {
             District tmp = new District();
@@ -176,7 +170,7 @@ public class LandscapeAdapter
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            landscapeDatastore.put(district);
+            DatastoreFactory.districtDatastore.put(district);
         } catch (IllegalArgumentException iae) {
             log.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
