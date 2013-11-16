@@ -28,7 +28,7 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Election
-        extends BaseObject {
+extends BaseObject {
 
     private String               mId;         // SubmissionNr ("VorlagsNr"), e.g. 552.1
     private String               mTitle;
@@ -38,6 +38,23 @@ public class Election
 
 
     public Election() {
+    }
+
+
+    /**
+     * <b>Election</b>
+     * Creates an Electionobject.
+     * @param pString Containing the member variables except mResults. Must have this Format: mId,mTitle,mDescription,YYYY-MM-DD
+     * @param pDistrictResult districtResults
+     */
+    public Election(String pString, List<DistrictResult> pDistrictResult) {
+        //(mId + "," + mTitle + "," + mDescription + "," + mDate.toString()
+        String[] arr = pString.split(",");
+        mId = arr[0];
+        mTitle = arr[1];
+        mDescription = arr[2];
+        mDate = new LocalDate(arr[3]);
+        mResults = pDistrictResult;
     }
 
 
@@ -96,5 +113,18 @@ public class Election
     public LocalDate getDate() {
         return mDate;
     }
+
+    /**
+     *<b>toString</b>
+     *<br>Description: Returns a String containing the member variables prepared
+     *to store them in the Datastore.
+     *<br><b>Note:</b> DistrictResults are not contained. Use getDistrictResultIdAsString additionally.
+     *@return String
+     */
+    @Override
+    public String toString() {
+        return (mId + "," + mTitle + "," + mDescription + "," + mDate.toString());
+    }
+
 
 }

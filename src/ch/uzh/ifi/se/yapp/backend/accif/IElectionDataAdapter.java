@@ -41,7 +41,8 @@ public interface IElectionDataAdapter
     /**
      * <b>getElectionsByDateRange</b>
      * <br>Description: Returns a List with election objects, between a range date1 and date2
-     * @param Calendar object with a certain Date
+     * @param pDate1 upper bound
+     * @param pDate2 lower bound
      * @return List of Elections
      */
     List<Election> getElectionsByDateRange(LocalDate pDate1, LocalDate pDate2);
@@ -51,8 +52,7 @@ public interface IElectionDataAdapter
      * <br>Description: returns a Map<String, String> with all Elections in it.
      * <br>Key: ElectionId (SubmissionNr)
      * <br>Values: Title of election.
-     * This method returns the elections without any results (so only metadata for now)
-     * @return
+     * @return This method returns the elections without any results (so only metadata for now)
      */
     Map<String, Election> listElections();
 

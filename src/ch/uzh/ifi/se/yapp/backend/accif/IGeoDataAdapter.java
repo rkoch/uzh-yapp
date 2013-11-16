@@ -21,7 +21,7 @@ package ch.uzh.ifi.se.yapp.backend.accif;
 
 import java.util.List;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
 
@@ -43,7 +43,7 @@ public interface IGeoDataAdapter
      * @param pDate
      * @return List<GeoBoundary>
      */
-    List<GeoBoundary> getAllGeoBoundaryByDate(DateTime pDate);
+    List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate);
 
     /**
      * <b>getGeoBoundaryByDistrict</b>
@@ -52,7 +52,7 @@ public interface IGeoDataAdapter
      * @param pDate Date of GeoBoundary
      * @return GeoBoundary
      */
-    GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, DateTime pDate);
+    GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate);
 
     /**
      * <b>insertGeoBoundary</b>
