@@ -31,8 +31,6 @@ import java.util.logging.Logger;
 import org.joda.time.LocalDate;
 
 import com.google.appengine.api.datastore.DatastoreFailureException;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -45,6 +43,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityConst;
+import ch.uzh.ifi.se.yapp.backend.persistence.DatastoreFactory;
 import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -54,10 +53,6 @@ public class ElectionAdapter
         extends BaseObject
         implements IElectionDataAdapter {
 
-    /**
-     * Datastore for Elections.
-     */
-    private DatastoreService electionDatastore = DatastoreServiceFactory.getDatastoreService();
 
     /**
      * Logger to list exceptions and errors for this class.
@@ -79,21 +74,23 @@ public class ElectionAdapter
         Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
 
         Query electionQuery = new Query(EntityConst.ELECTION).setFilter(idFilter);
-        PreparedQuery pq = electionDatastore.prepare(electionQuery);
+        PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
 
-        int ctr = 0;
         for (Entity result : pq.asIterable()) {
-            // more than one result -> Error
-            if (ctr > 1) {
-                // TODO throw Exception: more than one result for the same id
-            }
             tmpElection.setId((String) result.getProperty(EntityConst.ID));
             tmpElection.setTitle((String) result.getProperty(EntityConst.TITLE));
             tmpElection.setDescription((String) result.getProperty(EntityConst.DESCRIPTION));
-            // Note: conversion from object to List<DistrictResult> may be unsafely
-            tmpElection.setResults((List<DistrictResult>) result.getProperty(EntityConst.DISTRICT_RESULT));
-            tmpElection.setDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
-            ++ctr;
+
+            // create districtResults out of a string
+            List<String> districtResultsId = (List<String>) result.getProperty(EntityConst.DISTRICT_RESULT);
+            List<DistrictResult> districtResults = new ArrayList<>();
+            for (int i=0; i<districtResultsId.size(); i++) {
+                districtResults.add(new DistrictResult(districtResultsId.get(i)));
+            }
+
+            // create localdate out of a string
+            String tmp = (String) result.getProperty(EntityConst.LOCAL_DATE);
+            tmpElection.setDate(new LocalDate(tmp));
         }
         return tmpElection;
     }
@@ -107,13 +104,19 @@ public class ElectionAdapter
         // results between pDate1 and pDate2
         try {
             // IllegalArgumentException - If the provided filter values are not supported.
-            Filter dateMinFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.GREATER_THAN_OR_EQUAL, pDate1);
-            Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate2);
+            Filter dateMinFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate1.toString());
+            Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.GREATER_THAN_OR_EQUAL, pDate2.toString());
             Filter dateRangeFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(dateMinFilter, dateMaxFilter));
 
 
             Query electionQuery = new Query(EntityConst.ELECTION).setFilter(dateRangeFilter);
-            PreparedQuery pq = electionDatastore.prepare(electionQuery);
+            try {
+                // NullPointerException - If any argument is null.
+                electionQuery.addSort(EntityConst.LOCAL_DATE, SortDirection.ASCENDING);
+            } catch (NullPointerException npe) {
+                log.log(Level.WARNING, npe.toString(), npe);
+            }
+            PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
 
             // go over all received results
             for (Entity result : pq.asIterable()) {
@@ -121,9 +124,17 @@ public class ElectionAdapter
                 tmpElection.setId((String) result.getProperty(EntityConst.ID));
                 tmpElection.setTitle((String) result.getProperty(EntityConst.TITLE));
                 tmpElection.setDescription((String) result.getProperty(EntityConst.DESCRIPTION));
-                // TODO: Note: conversion from object to List<DistrictResult> may be unsafely
-                tmpElection.setResults((List<DistrictResult>) result.getProperty(EntityConst.DISTRICT_RESULT));
-                tmpElection.setDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
+
+                // create districtResults out of a string
+                List<String> districtResultsId = (List<String>) result.getProperty(EntityConst.DISTRICT_RESULT);
+                List<DistrictResult> districtResults = new ArrayList<>();
+                for (int i=0; i<districtResultsId.size(); i++) {
+                    districtResults.add(new DistrictResult(districtResultsId.get(i)));
+                }
+
+                // create localdate out of a string
+                String tmp = (String) result.getProperty(EntityConst.LOCAL_DATE);
+                tmpElection.setDate(new LocalDate(tmp));
                 // add tmpElection to tmpMap
                 // UnsupportedOperationException - if the put operation is not supported by this map
                 // ClassCastException - if the class of the specified key or value prevents it from being stored in this map
@@ -144,6 +155,7 @@ public class ElectionAdapter
         return tmpList;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Map<String, Election> listElections() {
         Map<String, Election> tmpMap = new HashMap<>();
@@ -157,8 +169,8 @@ public class ElectionAdapter
         } catch (NullPointerException npe) {
             log.log(Level.WARNING, npe.toString(), npe);
         }
-        // retreive results
-        PreparedQuery pq = electionDatastore.prepare(electionQuery);
+        // retrieve results
+        PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
 
         // go over all received results
         for (Entity result : pq.asIterable()) {
@@ -166,7 +178,17 @@ public class ElectionAdapter
             tmpElection.setId((String) result.getProperty(EntityConst.ID));
             tmpElection.setTitle((String) result.getProperty(EntityConst.TITLE));
             tmpElection.setDescription((String) result.getProperty(EntityConst.DESCRIPTION));
-            tmpElection.setDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
+            // create localdate out of a string
+            String tmpStr = (String) result.getProperty(EntityConst.LOCAL_DATE);
+            LocalDate ld = new LocalDate(tmpStr);
+            tmpElection.setDate(ld);
+
+            // create districtResults out of a string
+            List<String> districtResultsId = (List<String>) result.getProperty(EntityConst.DISTRICT_RESULT);
+            List<DistrictResult> districtResults = new ArrayList<>();
+            for (int i=0; i<districtResultsId.size(); i++) {
+                districtResults.add(new DistrictResult(districtResultsId.get(i)));
+            }
 
             // add tmpElection to tmpMap
             try {
@@ -196,14 +218,20 @@ public class ElectionAdapter
         election.setProperty(EntityConst.ID, pElection.getId());
         election.setProperty(EntityConst.TITLE, pElection.getTitle());
         election.setProperty(EntityConst.DESCRIPTION, pElection.getDescription());
-        election.setProperty(EntityConst.DISTRICT_RESULT, pElection.getResults());
-        election.setProperty(EntityConst.LOCAL_DATE, pElection.getDate());
+        // insert districtResults as a String list
+        List<DistrictResult> dr = pElection.getResults();
+        List<String> districtResults = new ArrayList<>();
+        for (int i=0; i< dr.size(); i++) {
+            districtResults.add(dr.get(i).toString());
+        }
+        election.setProperty(EntityConst.DISTRICT_RESULT, districtResults);
+        election.setProperty(EntityConst.LOCAL_DATE, pElection.getDate().toString()); // Format: YYYY-MM-DD
 
         try {
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            electionDatastore.put(election);
+            DatastoreFactory.electionDatastore.put(election);
         } catch (IllegalArgumentException iae) {
             log.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
