@@ -29,8 +29,6 @@ import java.util.logging.Logger;
 import org.joda.time.LocalDate;
 
 import com.google.appengine.api.datastore.DatastoreFailureException;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -41,6 +39,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityConst;
+import ch.uzh.ifi.se.yapp.backend.persistence.DatastoreFactory;
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
 import ch.uzh.ifi.se.yapp.model.geo.GeoPoint;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -49,11 +48,6 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class GeoDataAdapter
 extends BaseObject
 implements IGeoDataAdapter {
-
-    /**
-     * Datastore for GeoBoundaries.
-     */
-    private DatastoreService geoBoundaryDatastore = DatastoreServiceFactory.getDatastoreService();
 
     /**
      * Logger to list exceptions and errors for this class.
@@ -78,12 +72,24 @@ implements IGeoDataAdapter {
             log.log(Level.WARNING, npe.toString(), npe);
         }
 
-        PreparedQuery pq = geoBoundaryDatastore.prepare(geoBoundaryQuery);
+        PreparedQuery pq = DatastoreFactory.geoBoundaryDatastore.prepare(geoBoundaryQuery);
         for (Entity result : pq.asIterable()) {
             GeoBoundary tmpGeoBoundary = new GeoBoundary();
             tmpGeoBoundary.setId((String) result.getProperty("Id"));
-            tmpGeoBoundary.setLocalDate((LocalDate) result.getProperty("LocalDate"));
-            tmpGeoBoundary.setGeoPoints((List<GeoPoint>) result.getProperty("GeoPoint"));
+            // set localdate out of string
+            String str = (String) result.getProperty(EntityConst.LOCAL_DATE);
+            LocalDate ld = new LocalDate(str);
+            tmpGeoBoundary.setLocalDate(ld);
+            // create geopoints out of a string
+            List<GeoPoint> geoPoints = new ArrayList<>();
+            List<String> geoPointsAsString = new ArrayList<>();
+            geoPointsAsString = ((List<String>) result.getProperty(EntityConst.GEO_POINT));
+            GeoPoint tmpGP;
+            for (int i=0; i<geoPointsAsString.size(); i++) {
+                tmpGP = new GeoPoint(geoPointsAsString.get(i));
+                geoPoints.add(tmpGP);
+            }
+            tmpGeoBoundary.setGeoPoints(geoPoints);
             try {
                 // UnsupportedOperationException - if the add operation is not supported by this list
                 // ClassCastException - if the class of the specified element prevents it from being added to this list
@@ -113,24 +119,37 @@ implements IGeoDataAdapter {
         try {
             // get newest and older GeoBoundary
             // IllegalArgumentException - If the provided filter values are not supported
-            Filter dateFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate);
+            Filter dateFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString());
 
             // sort alphabetically (ascending) and max LocalDate first of each geoBoundary
-            // TODO: to be tested
             Query geoBoundaryQuery = new Query(EntityConst.GEO_BOUNDARY);
             geoBoundaryQuery.setFilter(dateFilter);
             // NullPointerException - If any argument is null.
-            geoBoundaryQuery.addSort(EntityConst.ID, SortDirection.ASCENDING);
-            // NullPointerException - If any argument is null.
             geoBoundaryQuery.addSort(EntityConst.LOCAL_DATE, SortDirection.DESCENDING);
+            // NullPointerException - If any argument is null.
+            geoBoundaryQuery.addSort(EntityConst.ID, SortDirection.ASCENDING);
 
-            PreparedQuery pq = geoBoundaryDatastore.prepare(geoBoundaryQuery);
+            PreparedQuery pq = DatastoreFactory.geoBoundaryDatastore.prepare(geoBoundaryQuery);
 
+            // create all geoboundaries out of elements stored in the datastore
             for (Entity result : pq.asIterable()) {
                 GeoBoundary tmpGeoBoundary = new GeoBoundary();
                 tmpGeoBoundary.setId((String) result.getProperty(EntityConst.ID));
-                tmpGeoBoundary.setGeoPoints((List<GeoPoint>) result.getProperty(EntityConst.GEO_POINT));
-                tmpGeoBoundary.setLocalDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
+                // create new GeoPoints out of Strings
+                List<GeoPoint> geoPoints = new ArrayList<>();
+                List<String> geoPointsAsString = new ArrayList<>();
+                geoPointsAsString = ((List<String>) result.getProperty(EntityConst.GEO_POINT));
+                GeoPoint tmpGP;
+                for (int i=0; i<geoPointsAsString.size(); i++) {
+                    tmpGP = new GeoPoint(geoPointsAsString.get(i));
+                    geoPoints.add(tmpGP);
+                }
+                tmpGeoBoundary.setGeoPoints(geoPoints);
+                // create LocalDate out of a String
+                String str = (String) result.getProperty(EntityConst.LOCAL_DATE);
+                LocalDate ld = new LocalDate(str);
+                tmpGeoBoundary.setLocalDate(ld);
+
                 // UnsupportedOperationException - if the add operation is not supported by this list
                 // ClassCastException - if the class of the specified element prevents it from being added to this list
                 // NullPointerException - if the specified element is null and this list does not permit null elements
@@ -141,7 +160,7 @@ implements IGeoDataAdapter {
 
             // check List for newest date
             // make sublist to get first element which is the newest
-            int counter = 0;
+            int counter = 1;
             int start = 0;
             int end = 0;
             for (Iterator<GeoBoundary> it = tmpList.iterator(); it.hasNext();) {
@@ -152,10 +171,14 @@ implements IGeoDataAdapter {
                         // next District/Canton found
                         end = counter;
                         List<GeoBoundary> tmpSubList = new ArrayList<>();
-                        tmpSubList = tmpList.subList(start, end);
+                        tmpSubList = tmpList.subList(start, end); // if start == end ->, tmpSubList will be empty
                         subLists.add(tmpSubList);
-                        start = end + 1;
+                        start = end;
                     }
+                } else {
+                    // only one element in list
+                    resultList.add(tmp);
+                    return resultList;
                 }
                 ++counter;
             }
@@ -163,6 +186,7 @@ implements IGeoDataAdapter {
             // get first element, which is the newest, from each subList
             for (Iterator<List<GeoBoundary>> it = subLists.iterator(); it.hasNext();) {
                 List<GeoBoundary> tmpSubList = new ArrayList<>();
+
                 tmpSubList = it.next();
                 resultList.add(tmpSubList.get(0));
             }
@@ -182,13 +206,13 @@ implements IGeoDataAdapter {
     @Override
     public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate) {
         GeoBoundary newestGeoBoundary = new GeoBoundary();
-
+        System.out.println("received date: " + pDate.toString());
         try {
             // IllegalArgumentException - If the provided filter values are not supported.
-            Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate);
+            Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString()); // YYYY-MM-DD
 
             Query geoBoundaryQuery = new Query(EntityConst.GEO_BOUNDARY).setFilter(dateMaxFilter);
-            PreparedQuery pq = geoBoundaryDatastore.prepare(geoBoundaryQuery);
+            PreparedQuery pq = DatastoreFactory.geoBoundaryDatastore.prepare(geoBoundaryQuery);
 
             // tmpMaxDate is newest Change of District pDistrictId
             LocalDate tmpMaxDate = new LocalDate(1848, 1, 1); // year, month, dayOfmonth
@@ -196,12 +220,30 @@ implements IGeoDataAdapter {
             // go over all received results
             for (Entity result : pq.asIterable()) {
                 GeoBoundary tmpGeoBoundary = new GeoBoundary();
-                tmpGeoBoundary.setId((String) result.getProperty(EntityConst.ID));
-                tmpGeoBoundary.setGeoPoints((List<GeoPoint>) result.getProperty(EntityConst.GEO_POINT));
-                tmpGeoBoundary.setLocalDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
-                // tmpMaxDate is not initialised
+
+                // set LocalDate out of a string
+                String str = (String) result.getProperty(EntityConst.LOCAL_DATE);
+                LocalDate ld = new LocalDate(str);
+                tmpGeoBoundary.setLocalDate(ld);
+
+                // check if is older or newer
                 if (tmpMaxDate.isBefore(tmpGeoBoundary.getLocalDate())) {
+                    // possible newest geoboundary found
                     tmpMaxDate = tmpGeoBoundary.getLocalDate();
+
+                    // set membervariables
+                    tmpGeoBoundary.setId((String) result.getProperty(EntityConst.ID));
+                    // create geopoints out of a string
+                    List<GeoPoint> geoPoints = new ArrayList<>();
+                    List<String> geoPointsAsString = new ArrayList<>();
+                    geoPointsAsString = ((List<String>) result.getProperty(EntityConst.GEO_POINT));
+                    GeoPoint tmpGP;
+                    for (int i=0; i<geoPointsAsString.size(); i++) {
+                        tmpGP = new GeoPoint(geoPointsAsString.get(i));
+                        geoPoints.add(tmpGP);
+                    }
+                    tmpGeoBoundary.setGeoPoints(geoPoints);
+
                     newestGeoBoundary = tmpGeoBoundary;
                 }
             }
@@ -214,16 +256,22 @@ implements IGeoDataAdapter {
     @Override
     public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
         Entity geoBoundary = new Entity(EntityConst.GEO_BOUNDARY, pGeoBoundary.getId());
-
+        System.out.println("inserted date: " +pGeoBoundary.getLocalDate().toString());
         geoBoundary.setProperty(EntityConst.ID, pGeoBoundary.getId());
-        geoBoundary.setProperty(EntityConst.LOCAL_DATE, pGeoBoundary.getLocalDate());
-        geoBoundary.setProperty(EntityConst.GEO_POINT, pGeoBoundary.getGeoPoints());
+        geoBoundary.setProperty(EntityConst.LOCAL_DATE, pGeoBoundary.getLocalDate().toString());
+
+        // save GeoPoints in a List<String> and use this list as an entity.
+        List<String> geoPoints = new ArrayList<>();
+        for (int i=0; i<pGeoBoundary.getGeoPoints().size(); i++) {
+            geoPoints.add(pGeoBoundary.getGeoPoints().get(i).toString()); // x/y
+        }
+        geoBoundary.setProperty(EntityConst.GEO_POINT, geoPoints);
 
         try {
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            geoBoundaryDatastore.put(geoBoundary);
+            DatastoreFactory.geoBoundaryDatastore.put(geoBoundary);
         } catch (IllegalArgumentException iae) {
             log.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
