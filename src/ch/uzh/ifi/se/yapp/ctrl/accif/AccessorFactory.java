@@ -28,16 +28,16 @@ public abstract class AccessorFactory {
     private static final IMetadataAccessor      sMetadataAccessor;
     private static final IVisualisationAccessor sVisualisationAccessor;
 
-    static{
+    static {
         sMetadataAccessor = new MetaDataManager();
         sVisualisationAccessor = new VisualisationManager();
     }
 
-    public static IMetadataAccessor getMetaDataAccessor(){
+    public static IMetadataAccessor getMetaDataAccessor() {
         return sMetadataAccessor;
     }
 
-    public static IVisualisationAccessor getVisualisationAccessor(){
+    public static IVisualisationAccessor getVisualisationAccessor() {
         return sVisualisationAccessor;
     }
 }

@@ -19,36 +19,36 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.io.Serializable;
 import java.util.List;
-
-
 
 
 /**
  * @author rko
  */
 public class VisualisationDTO
-        extends BaseDTO {
+        extends BaseDTO
+        implements Serializable {
 
     private String          mId;
     private ElectionDTO     mElection;
     private List<ResultDTO> mCantonResultList;
     private List<ResultDTO> mDistrictResultList;
 
-    public void setId(String pId) {
-        mId = pId;
-    }
-
     public String getId() {
         return mId;
     }
 
-    public void setElectionDTO(ElectionDTO elecDTO) {
-        mElection = elecDTO;
+    public void setId(String pId) {
+        mId = pId;
     }
 
     public ElectionDTO getElectionDTO() {
         return mElection;
+    }
+
+    public void setElectionDTO(ElectionDTO pElecDTO) {
+        mElection = pElecDTO;
     }
 
     public List<ResultDTO> getCantonResultList() {
@@ -66,4 +66,5 @@ public class VisualisationDTO
     public void setDistrictResultList(List<ResultDTO> pDistrictResultList) {
         mDistrictResultList = pDistrictResultList;
     }
+
 }

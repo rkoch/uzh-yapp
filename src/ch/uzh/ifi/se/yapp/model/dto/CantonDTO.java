@@ -19,37 +19,41 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class CantonDTO {
+public class CantonDTO
+        extends BaseDTO
+        implements Serializable {
 
     private String       mId;
     private String       mName;
     private List<String> mDistrictIdList;
 
+
     public String getId() {
         return mId;
     }
 
-    public void setId(String id) {
-        mId = id;
+    public void setId(String pId) {
+        mId = pId;
     }
 
     public String getName() {
         return mName;
     }
 
-    public void setName(String name) {
-        mName = name;
+    public void setName(String pName) {
+        mName = pName;
     }
 
     public List<String> getDistrictIdList() {
         return mDistrictIdList;
     }
 
-    public void setDistrictIdList(List<String> districtIdList) {
-        mDistrictIdList = districtIdList;
+    public void setDistrictIdList(List<String> pDistrictIdList) {
+        mDistrictIdList = pDistrictIdList;
     }
 
 }

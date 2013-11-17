@@ -17,48 +17,17 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.dto;
+package ch.uzh.ifi.se.yapp.testsuites;
 
-import java.io.Serializable;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-
-public class ElectionDTO
-        extends BaseDTO
-        implements Comparable<ElectionDTO>, Serializable {
-
-    private String mId;
-    private String mTitle;
-    private String mDate;
+import ch.uzh.ifi.se.yapp.ctrl.mgr.MetaDataManagerTest;
+import ch.uzh.ifi.se.yapp.ctrl.mgr.VisualisationManagerTest;
 
 
-    public String getId() {
-        return mId;
-    }
-
-    public void setId(String pId) {
-        mId = pId;
-    }
-
-    public String getTitle() {
-        return mTitle;
-    }
-
-    public void setTitle(String pTitle) {
-        mTitle = pTitle;
-    }
-
-    public String getDate() {
-        return mDate;
-    }
-
-    public void setDate(String pDate) {
-        mDate = pDate;
-    }
-
-
-    @Override
-    public int compareTo(ElectionDTO pO) {
-        return mDate.compareTo(pO.getDate());
-    }
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ MetaDataManagerTest.class, VisualisationManagerTest.class })
+public class ManagerTestSuite {
 
 }

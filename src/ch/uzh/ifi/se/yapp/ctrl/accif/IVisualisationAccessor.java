@@ -52,4 +52,5 @@ public interface IVisualisationAccessor
      * @param pVisualisationDTO VisualisationDTO to be saved.
      */
     void insertVisualization(String pId);
+
 }

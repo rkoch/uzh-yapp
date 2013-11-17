@@ -125,7 +125,7 @@ public class VisualizationAdapter
         Entity visualization = new Entity(EntityConst.VISUALIZATION);
         visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
         visualization.setProperty(EntityConst.ELECTION_ID, pVisualization.getElectionId());
-        visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType().toString(pVisualization.getType()));
+        visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType().toString());
 
         try {
             // IllegalArgumentException - If the specified entity was incomplete.

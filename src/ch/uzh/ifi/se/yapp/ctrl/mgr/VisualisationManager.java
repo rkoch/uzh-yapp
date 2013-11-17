@@ -184,7 +184,7 @@ public class VisualisationManager
         elecDTO.setId("ElectionId");
         elecDTO.setTitle("Abstimmungstitel");
 
-        List<ResultDTO> disList = new ArrayList<ResultDTO>();
+        List<ResultDTO> disList = new ArrayList<>();
         ResultDTO resDTO = new ResultDTO();
         resDTO.setId("1");
         resDTO.setName("Bülach");
@@ -209,7 +209,7 @@ public class VisualisationManager
         disList.add(resDTO2);
         disList.add(resDTO);
 
-        List<ResultDTO> canList = new ArrayList<ResultDTO>();
+        List<ResultDTO> canList = new ArrayList<>();
 
         ResultDTO resDTO4 = new ResultDTO();
         resDTO.setId("1");
@@ -264,7 +264,7 @@ public class VisualisationManager
         elecDTO.setId("ElectionId");
         elecDTO.setTitle("Abstimmungstitel");
 
-        List<ResultDTO> disList = new ArrayList<ResultDTO>();
+        List<ResultDTO> disList = new ArrayList<>();
         ResultDTO resDTO = new ResultDTO();
         resDTO.setId("1");
         resDTO.setName("Bülach");
@@ -289,7 +289,7 @@ public class VisualisationManager
         disList.add(resDTO2);
         disList.add(resDTO);
 
-        List<ResultDTO> canList = new ArrayList<ResultDTO>();
+        List<ResultDTO> canList = new ArrayList<>();
 
         ResultDTO resDTO4 = new ResultDTO();
         resDTO.setId("1");
@@ -321,13 +321,10 @@ public class VisualisationManager
         visDTO.setId("first Visualisation");
 
         return visDTO;
-
     }
-
 
     @Override
     public void insertVisualization(String pId) {
-
         // Mock
         IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
@@ -336,7 +333,5 @@ public class VisualisationManager
         visual.setType(VisualizationType.MAP);
         visAdpt.insertVisualization(visual);
     }
-
-
 
 }

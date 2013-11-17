@@ -19,8 +19,12 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.io.Serializable;
 
-public class ResultLabelDTO {
+
+public class ResultLabelDTO
+        extends BaseDTO
+        implements Serializable {
 
     private int    mYesVoteCount;
     private int    mNoVoteCount;
@@ -86,14 +90,14 @@ public class ResultLabelDTO {
         mRatio = pRatio;
     }
 
-    public void addResultLabels(ResultLabelDTO a) {
-        mYesVoteCount += a.getYesVoteCount();
-        mNoVoteCount += a.getNoVoteCount();
-        mInvalidVoteCount += a.getInvalidVoteCount();
-        mEmptyVoteCount += a.getEmptyVoteCount();
-        mTotalEligibleCount += a.getTotalEligibleCount();
-        mDeliveredVoteCount += a.getDeliveredVoteCount();
-        mRatio = mYesVoteCount/mNoVoteCount;
+    public void addResultLabels(ResultLabelDTO pLabel) {
+        mYesVoteCount += pLabel.getYesVoteCount();
+        mNoVoteCount += pLabel.getNoVoteCount();
+        mInvalidVoteCount += pLabel.getInvalidVoteCount();
+        mEmptyVoteCount += pLabel.getEmptyVoteCount();
+        mTotalEligibleCount += pLabel.getTotalEligibleCount();
+        mDeliveredVoteCount += pLabel.getDeliveredVoteCount();
+        mRatio = mYesVoteCount / mNoVoteCount;
     }
 
 }

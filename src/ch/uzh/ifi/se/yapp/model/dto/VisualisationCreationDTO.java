@@ -19,29 +19,33 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.io.Serializable;
+
 import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 
 public class VisualisationCreationDTO
-        extends BaseDTO {
+        extends BaseDTO
+        implements Serializable {
 
     private String            mElectionId;
     private VisualizationType mVisualizationType;
 
-    public void setElectionId(String pElectionId) {
-        mElectionId = pElectionId;
-    }
 
     public String getElectionId() {
         return mElectionId;
     }
 
-    public void setVisualizationType(VisualizationType pVisualizationType) {
-        mVisualizationType = pVisualizationType;
+    public void setElectionId(String pElectionId) {
+        mElectionId = pElectionId;
     }
 
     public VisualizationType getVisualizationType() {
         return mVisualizationType;
+    }
+
+    public void setVisualizationType(VisualizationType pVisualizationType) {
+        mVisualizationType = pVisualizationType;
     }
 
 }

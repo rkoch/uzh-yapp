@@ -19,10 +19,13 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class ResultDTO {
+public class ResultDTO
+        extends BaseDTO
+        implements Serializable {
 
     private String            mId;
     private String            mName;
@@ -30,13 +33,6 @@ public class ResultDTO {
     private List<GeoPointDTO> mDistrictGeoPointList;
     private List<GeoPointDTO> mCantonGeoPointList;
 
-    public List<GeoPointDTO> getGeoPointList() {
-        return mDistrictGeoPointList;
-    }
-
-    public void setDistrictGeoPointList(List<GeoPointDTO> pDistrictGeoPointList) {
-        mDistrictGeoPointList = pDistrictGeoPointList;
-    }
 
     public String getId() {
         return mId;
@@ -62,12 +58,20 @@ public class ResultDTO {
         mResultLabel = pResultLabel;
     }
 
+    public List<GeoPointDTO> getGeoPointList() {
+        return mDistrictGeoPointList;
+    }
+
+    public void setDistrictGeoPointList(List<GeoPointDTO> pDistrictGeoPointList) {
+        mDistrictGeoPointList = pDistrictGeoPointList;
+    }
+
     public List<GeoPointDTO> getCantonGeoPointList() {
         return mCantonGeoPointList;
     }
 
-    public void setCantonGeoPointList(List<GeoPointDTO> cantonGeoPointList) {
-        mCantonGeoPointList = cantonGeoPointList;
+    public void setCantonGeoPointList(List<GeoPointDTO> pCantonGeoPointList) {
+        mCantonGeoPointList = pCantonGeoPointList;
     }
 
 }

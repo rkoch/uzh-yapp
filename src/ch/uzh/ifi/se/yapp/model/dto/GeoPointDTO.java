@@ -19,14 +19,17 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 
 public class GeoPointDTO
-        extends BaseDTO {
+        extends BaseDTO
+        implements Serializable {
 
     private BigDecimal mX;
     private BigDecimal mY;
+
 
     public BigDecimal getX() {
         return mX;

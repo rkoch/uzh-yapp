@@ -44,7 +44,7 @@ public class MetaDataManager
 
         IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
 
-        List<ElectionDTO> list = new ArrayList<ElectionDTO>();
+        List<ElectionDTO> list = new ArrayList<>();
 
         Map<String, Election> map = elecAdpt.listElections();
 
@@ -78,23 +78,24 @@ public class MetaDataManager
             ElectionDTO elecDTO = new ElectionDTO();
             elecDTO.setId(e.getId());
             elecDTO.setTitle(e.getTitle());
-            //elecDTO.setDate(e.getDate().toString());  //not specified in MockElectionAdapter
+            // elecDTO.setDate(e.getDate().toString()); //not specified in MockElectionAdapter
             elecDtoList.add(elecDTO);
         }
 
-        //Collections.sort(elecDtoList);        //consequence of the above
+        // Collections.sort(elecDtoList); //consequence of the above
 
         return elecDtoList;
     }
 
     @Override
-    public ElectionDTO getElectoinById(String pId) {
+    public ElectionDTO getElectionById(String pId) {
         ElectionDTO elecDTO = new ElectionDTO();
         Election elec = BackendAccessorFactory.getElectionDataAdapter().getElectionById(pId);
         elecDTO.setId(pId);
         elecDTO.setTitle(elec.getTitle());
-        //elecDTO.setDate(elec.getDate().toString());   //not specified in MockElectionAdapter
+        // elecDTO.setDate(elec.getDate().toString()); //not specified in MockElectionAdapter
 
         return elecDTO;
     }
+
 }

@@ -52,5 +52,6 @@ public interface IMetadataAccessor
      * @param pId
      * @return ElectionDTO
      */
-    ElectionDTO getElectoinById(String pId);
+    ElectionDTO getElectionById(String pId);
+
 }

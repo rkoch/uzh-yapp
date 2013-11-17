@@ -19,49 +19,44 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.mgr;
 
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 
 import org.junit.Test;
 
 import ch.uzh.ifi.se.yapp.ctrl.accif.AccessorFactory;
-import ch.uzh.ifi.se.yapp.ctrl.accif.IMetadataAccessor;
-import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
+import ch.uzh.ifi.se.yapp.ctrl.accif.IVisualisationAccessor;
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
+import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 
-public class MetaDataManagerTest {
+public class VisualisationManagerTest {
 
     @Test
-    public void testGetElectionList() {
+    public void testGetVisualisationById() {
 
-        IMetadataAccessor metAdpt = AccessorFactory.getMetaDataAccessor();
+        IVisualisationAccessor visAcc = AccessorFactory.getVisualisationAccessor();
 
-        List<ElectionDTO> list = metAdpt.getElectionList();
+        VisualisationDTO visualDTO = visAcc.getVisualisationById("test");
 
-        assertEquals(0,list.size());
+        assertTrue(visualDTO.getId().equals("test"));
+        assertTrue(visualDTO.getElectionDTO().getDate().equals("2003-12-21"));
+        assertEquals(3, visualDTO.getCantonResultList().size());
     }
 
     @Test
-    public void testGetElectionsByDateRange(){
-        IMetadataAccessor metAdpt = AccessorFactory.getMetaDataAccessor();
+    public void testCreateVisualisation() {
 
-        List<ElectionDTO> list = metAdpt.getElectionsByDateRange("1900-01-01","1999-01-01");
+        IVisualisationAccessor visAcc = AccessorFactory.getVisualisationAccessor();
 
-        assertTrue(list.get(0).getId().equals("552.1"));
-        assertTrue(list.get(1).getId().equals("552.2"));
-        assertTrue(list.get(0).getTitle().equals("Volksinitiative «Für die Ausschaffung krimineller Ausländer»"));
-        assertEquals(2, list.size());
+        VisualisationCreationDTO visCreDTO = new VisualisationCreationDTO();
+        visCreDTO.setElectionId("ElectionId");
+        visCreDTO.setVisualizationType(VisualizationType.TABLE);
+        VisualisationDTO visualDTO = visAcc.getVisualisationById("test");
+
+        assertTrue(visualDTO.getId().equals("test"));
+        assertTrue(visualDTO.getElectionDTO().getId().equals("ElectionId"));
+        assertEquals(3, visualDTO.getCantonResultList().size());
     }
-
-    @Test
-    public void testGetElectoinById(){
-        IMetadataAccessor metAdpt = AccessorFactory.getMetaDataAccessor();
-
-        ElectionDTO elec = metAdpt.getElectoinById("id");
-        assertTrue(elec.getId().equals("id"));
-        assertTrue(elec.getTitle().equals("Dummy Election"));
-    }
-
 }
