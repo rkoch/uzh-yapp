@@ -37,34 +37,37 @@ import ch.uzh.ifi.se.yapp.model.landscape.Election;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class Import extends BaseObject {
+public class Import
+        extends BaseObject {
 
     private Logger log = BaseObject.getLogger(Import.class);
 
     /**
      * <b>importElection</b> <br>
      * Description: import a csv file and instance an election and save it on the server
+     *
      * @pre pFile.exist() == true
      * @param pFile in .csv format
      * @throws IOException
      */
-    public void importElection(String pFilePath) throws IOException{
+    public void importElection(String pFilePath)
+            throws IOException {
         try {
             Election pElection = new Election();
-            List<DistrictResult> pList = new ArrayList<DistrictResult>();
+            List<DistrictResult> pList = new ArrayList<>();
 
             BufferedReader br = new BufferedReader(new FileReader(pFilePath));
             String line = null;
             int count = 0;
 
-            //reads .csv until all lines are finished
+            // reads .csv until all lines are finished
             while ((line = br.readLine()) != null) {
                 DistrictResult pDResult = new DistrictResult();
                 District pDistrict = new District();
 
                 String[] cells = line.split(";");
 
-                //writes data in DistrictResult
+                // writes data in DistrictResult
                 if (count == 0) {
                     pElection.setDate(getDate(cells[0]));
                     pElection.setId(cells[2]);
@@ -83,7 +86,7 @@ public class Import extends BaseObject {
                 }
                 count++;
 
-                //adds DistrictResult to the Election
+                // adds DistrictResult to the Election
                 pList.add(pDResult);
             }
 
@@ -99,8 +102,10 @@ public class Import extends BaseObject {
         }
     }
 
-    /** <b>getDate</b>
-     * <br>Description: converts a String to a yoda LocalDate
+    /**
+     * <b>getDate</b> <br>
+     * Description: converts a String to a yoda LocalDate
+     *
      * @param pDate
      * @return LocalDate
      */
@@ -111,7 +116,7 @@ public class Import extends BaseObject {
         int month = 0;
         int year = Integer.parseInt(fragments[4]);
 
-        switch(fragments[3]) {
+        switch (fragments[3]) {
             case "Januar":
                 month = 1;
                 break;
@@ -126,6 +131,7 @@ public class Import extends BaseObject {
                 break;
             case "Mai":
                 month = 5;
+                break;
             case "Juni":
                 month = 6;
                 break;
@@ -149,7 +155,7 @@ public class Import extends BaseObject {
                 break;
         }
 
-        LocalDate date = new LocalDate(year,month,day);
+        LocalDate date = new LocalDate(year, month, day);
 
         return date;
     }

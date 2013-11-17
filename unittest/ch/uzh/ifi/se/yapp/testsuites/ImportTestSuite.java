@@ -17,48 +17,16 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.ctrl.importer;
+package ch.uzh.ifi.se.yapp.testsuites;
 
-import java.io.File;
-import java.io.IOException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
+import ch.uzh.ifi.se.yapp.ctrl.importer.ImportTest;
 
 
-public class ImportTest {
-
-    private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalTaskQueueTestConfig());
-
-    @Before
-    public void setUp() {
-        mHelper.setUp();
-    }
-
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
-    }
-
-
-    @Test
-    public void test()
-            throws IOException {
-        Import test = new Import();
-        File f1 = new File("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
-        System.out.println(f1.exists());
-        test.importElection("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
-
-        // test exception(?)
-        try {
-            test.importElection("notexisting.txt");
-        } catch (IOException e) {
-            System.out.println("Exeption catched.");
-        }
-    }
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ ImportTest.class })
+public class ImportTestSuite {
 
 }
