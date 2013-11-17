@@ -25,13 +25,14 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class DistrictResult
         extends BaseObject {
 
-    private int      mYesVoteCount;
-    private int      mNoVoteCount;
-    private int      mInvalidVoteCount; // This is a computed value
-    private int      mEmptyVoteCount; // This is a computed value
     private int      mTotalEligibleCount;
     private int      mDeliveredVoteCount;
+    private int      mValidVoteCount;
+    private int      mYesVoteCount;
+    private int      mNoVoteCount;
+    private int      mEmptyVoteCount;    // This is a computed value
     private double   mRatio;             // This is a computed value
+    private double   mYesVoteRatio;      // This is a computed value
 
     private District mDistrict;
 
@@ -39,47 +40,26 @@ public class DistrictResult
     public DistrictResult() {
     }
 
-    public int getYesVoteCount() {
-        return mYesVoteCount;
-    }
-
-    public void setYesVoteCount(int pYesVoteCount) {
-        mYesVoteCount = pYesVoteCount;
-    }
-
-    public int getNoVoteCount() {
-        return mNoVoteCount;
-    }
-
-    public void setNoVoteCount(int pNoVoteCount) {
-        mNoVoteCount = pNoVoteCount;
-    }
-
-    public int getInvalidVoteCount() {
-        return mInvalidVoteCount;
-    }
-
     /**
-     * <b>setInvalidVoteCount</b>
-     * <br>Description: Computes invalid vote count
-     * @pre: mDeliveredVoteCount, mYesVoteCount, mNoVotecount and mEmptyVoteCount have to be defined.
-     * @pre: mEmptyVoteCount has to be computed first.
+     *<b>DistrictResult(String)</b>
+     * <br>Description: Creates a new instance of this object using a String as input.
+     * Computes mEmptyVoteCount, mRatio, mYesVoteRatio
+     * @param pString YesVoteCount,NoVoteCount,ValidVoteCount,DeliveredVoteCount,TotalEligibleCount
      */
-    public void computeInvalidVoteCount() {
-        mInvalidVoteCount = mDeliveredVoteCount - mYesVoteCount - mNoVoteCount - mEmptyVoteCount;
-    }
+    public DistrictResult(String pString) {
+        String arr[] = pString.split(";");
 
-    public int getEmptyVoteCount() {
-        return mEmptyVoteCount;
-    }
+        String[] strArr = arr[0].split(",");
+        mYesVoteCount = Integer.parseInt(strArr[0]);
+        mNoVoteCount = Integer.parseInt(strArr[1]);
+        mValidVoteCount = Integer.parseInt(strArr[2]);
+        mDeliveredVoteCount = Integer.parseInt(strArr[3]);
+        mTotalEligibleCount = Integer.parseInt(strArr[4]);
+        mEmptyVoteCount = this.getEmptyVoteCount();
+        mRatio = this.getRatio();
+        mYesVoteRatio = this.getYesVoteRatio();
 
-    /**
-     * <b>setEmptyVoteCount</b>
-     * <br>Description: Computes empty vote count
-     * @pre: mDeliveredVoteCount, mYesVoteCount and mNoVoteCount have to be defined.
-     */
-    public void computeEmptyVoteCount() {
-        mEmptyVoteCount = mDeliveredVoteCount - mYesVoteCount - mNoVoteCount;
+        mDistrict = new District(arr[1]);
     }
 
     public int getTotalEligibleCount() {
@@ -98,17 +78,51 @@ public class DistrictResult
         mDeliveredVoteCount = pDeliveredVoteCount;
     }
 
-    public double getRatio() {
-        return mRatio;
+    public int getValidVoteCount() {
+        return mValidVoteCount;
     }
 
-    /**
-     * <b>computeRatio</b>
-     * <br>Description: Computes mRation between yes and no votes
-     * @pre: mYesVoteCount and mNoVoteCount have to be defined.
+    public void setValidVoteCount(int pValidVoteCount) {
+        mValidVoteCount = pValidVoteCount;
+    }
+
+    public int getYesVoteCount() {
+        return mYesVoteCount;
+    }
+
+    public void setYesVoteCount(int pYesVoteCount) {
+        mYesVoteCount = pYesVoteCount;
+    }
+
+    public int getNoVoteCount() {
+        return mNoVoteCount;
+    }
+
+    public void setNoVoteCount(int pNoVoteCount) {
+        mNoVoteCount = pNoVoteCount;
+    }
+
+
+    public int getEmptyVoteCount() {
+        return mEmptyVoteCount = mValidVoteCount - mYesVoteCount - mNoVoteCount;
+    }
+
+    /** <b>getRatio</b>
+     * <br>Description: computes part of eligible voter who actually voted
+     * @pre     mDelivededVoteCount && mTotalEligible are set
+     * @return  Ratio
      */
-    public void computeRatio() {
-        mRatio = mYesVoteCount / mNoVoteCount;
+    public double getRatio() {
+        return mRatio = mDeliveredVoteCount / (double)mTotalEligibleCount;
+    }
+
+    /** <b>getYesVoteRatio</b>
+     * <br>Description: computes part of valid votes which are yes-votes
+     * @pre     mYesVoteCount && mValidVoteCount are set
+     * @return  YesVoteRatio
+     */
+    public double getYesVoteRatio() {
+        return mYesVoteRatio =  (double)mYesVoteCount / (double)mValidVoteCount;
     }
 
     public District getDistrict() {
@@ -119,4 +133,11 @@ public class DistrictResult
         mDistrict = pDistrict;
     }
 
+    /**
+     * Format: yesVoteCount,NoVoteCount,ValidVoteCount,DeliveredVoteCount,TotalEligiblecount;District.toString
+     */
+    @Override
+    public String toString() {
+        return (mYesVoteCount + "," + mNoVoteCount + "," + mValidVoteCount + "," + mDeliveredVoteCount + "," + mTotalEligibleCount + ";" + mDistrict.toString());
+    }
 }

@@ -32,15 +32,10 @@ public class MockVisualizationAdapter
         extends BaseObject
         implements IVisualizationDataAdapter {
 
-    private VisualizationType vt  = new VisualizationType();
-    private VisualizationType vt2 = new VisualizationType();
+    private VisualizationType vt;
+    private VisualizationType vt2;
 
-    public MockVisualizationAdapter() {
-        vt.setKey("1");
-        vt2.setKey("2");
-    }
-
-    @Override
+        @Override
     public void cleanup() {
         // TODO Auto-generated method stub
     }
@@ -49,7 +44,7 @@ public class MockVisualizationAdapter
     public Visualization getVisualizationById(String pId) {
         Visualization v = new Visualization();
         v.setElectionId("552.1");
-        v.setType(vt);
+        v.setType(VisualizationType.TABLE);
         return v;
     }
 
@@ -59,11 +54,11 @@ public class MockVisualizationAdapter
 
         Visualization v = new Visualization();
         v.setElectionId("552.1");
-        v.setType(vt);
+        v.setType(VisualizationType.TABLE);
 
         Visualization v2 = new Visualization();
         v2.setElectionId("552.1");
-        v2.setType(vt2);
+        v2.setType(VisualizationType.TABLE);
 
         tmpList.add(v);
         tmpList.add(v2);

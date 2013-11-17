@@ -17,20 +17,33 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.visualisation;
+package ch.uzh.ifi.se.yapp.backend.base;
 
-public enum VisualizationType{
 
-   TABLE, MAP;
+/**
+ * Defines Entity Constants used as Key to store properties of an entity
+ * and the entity itself on
+ * the google data store.
+ */
+public interface EntityConst {
 
-   public String toString(VisualizationType pVT) {
-       if (pVT == MAP) {
-           return "MAP";
-       }
-       if (pVT == TABLE) {
-           return "TABLE";
-       }
-       return null;
-   }
+    String LOCAL_DATE = "LocalDate";
+    String GEO_POINT = "GeoPoint";
+    String ID = "Id";
 
+    String GEO_BOUNDARY = "GeoBoundary";
+
+    String ELECTION = "Election";
+    String TITLE = "Title";
+    String DESCRIPTION = "Description";
+    String DISTRICT_RESULT = "DistrictResult";
+
+    String DISTRICT = "District";
+    String NAME = "Name";
+    String CANTON_ID = "CantonId";
+    String CANTON = "Canton";
+
+    String VISUALIZATION = "Visualization";
+    String VISUALIZATION_TYPE = "VisualizationType";
+    String ELECTION_ID = "ElectionId";
 }

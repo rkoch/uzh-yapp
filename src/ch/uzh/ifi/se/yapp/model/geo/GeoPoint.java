@@ -34,6 +34,18 @@ public class GeoPoint
     public GeoPoint() {
     }
 
+    /**
+     * <b>GeoPoint</b>
+     * <br>Description: Creates a new instance with a string.
+     * <br><b>Format:</b> x/y
+     * @param pString
+     */
+    public GeoPoint(String pString) {
+        String[] strArr = pString.split("/");
+        mX = new BigDecimal(strArr[0]);
+        mY = new BigDecimal(strArr[1]);
+    }
+
 
     public BigDecimal getX() {
         return mX;
@@ -49,6 +61,11 @@ public class GeoPoint
 
     public void setY(BigDecimal pY) {
         mY = pY;
+    }
+
+    @Override
+    public String toString() {
+        return (mX + "/" + mY);
     }
 
 }

@@ -17,20 +17,28 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.visualisation;
+package ch.uzh.ifi.se.yapp.backend.persistence;
 
-public enum VisualizationType{
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
-   TABLE, MAP;
 
-   public String toString(VisualizationType pVT) {
-       if (pVT == MAP) {
-           return "MAP";
-       }
-       if (pVT == TABLE) {
-           return "TABLE";
-       }
-       return null;
-   }
+public class DatastoreFactory {
+
+    /**
+     * Datastore for Election class
+     */
+    public static DatastoreService electionDatastore = DatastoreServiceFactory.getDatastoreService();
+
+    public static DatastoreService districtResultDatastore = DatastoreServiceFactory.getDatastoreService();
+
+    public static DatastoreService districtDatastore = DatastoreServiceFactory.getDatastoreService();
+
+    public static DatastoreService geoBoundaryDatastore = DatastoreServiceFactory.getDatastoreService();
+
+    public static DatastoreService geoPointDatastore = DatastoreServiceFactory.getDatastoreService();
+
+    public static DatastoreService visualizationDatastore = DatastoreServiceFactory.getDatastoreService();
+
 
 }
