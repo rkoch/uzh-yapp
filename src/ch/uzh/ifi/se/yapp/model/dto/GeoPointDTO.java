@@ -17,27 +17,31 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.ctrl.accif;
+package ch.uzh.ifi.se.yapp.model.dto;
 
-import ch.uzh.ifi.se.yapp.ctrl.mgr.MetaDataManager;
-import ch.uzh.ifi.se.yapp.ctrl.mgr.VisualisationManager;
+import java.math.BigDecimal;
 
 
-public abstract class AccessorFactory {
+public class GeoPointDTO
+        extends BaseDTO {
 
-    private static final IMetadataAccessor      sMetadataAccessor;
-    private static final IVisualisationAccessor sVisualisationAccessor;
+    private BigDecimal mX;
+    private BigDecimal mY;
 
-    static{
-        sMetadataAccessor = new MetaDataManager();
-        sVisualisationAccessor = new VisualisationManager();
+    public BigDecimal getX() {
+        return mX;
     }
 
-    public static IMetadataAccessor getMetaDataAccessor(){
-        return sMetadataAccessor;
+    public void setX(BigDecimal pX) {
+        mX = pX;
     }
 
-    public static IVisualisationAccessor getVisualisationAccessor(){
-        return sVisualisationAccessor;
+    public BigDecimal getY() {
+        return mY;
     }
+
+    public void setY(BigDecimal pY) {
+        mY = pY;
+    }
+
 }

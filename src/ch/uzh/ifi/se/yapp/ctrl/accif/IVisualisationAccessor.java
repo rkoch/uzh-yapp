@@ -19,8 +19,37 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.accif;
 
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
+
 
 public interface IVisualisationAccessor
         extends IBaseAccessor {
 
+    /**
+     * <b>getVisualisationById</b> <br>
+     * gets a already saved visualization by id
+     *
+     * @param pId
+     * @return VisualisationDTO
+     */
+    VisualisationDTO getVisualisationById(String pId);
+
+
+    /**
+     * <b>createVisualisation</b> <br>
+     * Description: Creates new visualization for election and returns the visualizationDTO
+     *
+     * @param VisualisationCreationDTO
+     * @return VisualisationDTO
+     */
+    VisualisationDTO createVisualisation(VisualisationCreationDTO pVisualisationCreationDTO);
+
+    /**
+     * <b>saveVisualization</b> <br>
+     * Description: saves a List<Visualization> on the server.
+     *
+     * @param pVisualisationDTO VisualisationDTO to be saved.
+     */
+    void insertVisualization(String pId);
 }

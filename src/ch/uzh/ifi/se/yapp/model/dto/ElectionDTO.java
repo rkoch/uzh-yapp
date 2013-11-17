@@ -21,7 +21,8 @@ package ch.uzh.ifi.se.yapp.model.dto;
 
 
 public class ElectionDTO
-        extends BaseDTO {
+        extends BaseDTO
+        implements Comparable<ElectionDTO> {
 
     private String mId;
     private String mTitle;
@@ -50,6 +51,11 @@ public class ElectionDTO
 
     public void setDate(String pDate) {
         mDate = pDate;
+    }
+
+    @Override
+    public int compareTo(ElectionDTO pO) {
+        return this.mDate.compareTo(pO.getDate());
     }
 
 }

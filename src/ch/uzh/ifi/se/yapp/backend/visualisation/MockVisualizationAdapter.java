@@ -32,8 +32,8 @@ public class MockVisualizationAdapter
         extends BaseObject
         implements IVisualizationDataAdapter {
 
-    private VisualizationType vt;
-    private VisualizationType vt2;
+    public MockVisualizationAdapter() {
+    }
 
     @Override
     public void cleanup() {

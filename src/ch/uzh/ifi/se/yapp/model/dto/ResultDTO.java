@@ -22,48 +22,52 @@ package ch.uzh.ifi.se.yapp.model.dto;
 import java.util.List;
 
 
+public class ResultDTO {
 
+    private String            mId;
+    private String            mName;
+    private ResultLabelDTO    mResultLabel;
+    private List<GeoPointDTO> mDistrictGeoPointList;
+    private List<GeoPointDTO> mCantonGeoPointList;
 
-/**
- * @author rko
- */
-public class VisualisationDTO
-        extends BaseDTO {
+    public List<GeoPointDTO> getGeoPointList() {
+        return mDistrictGeoPointList;
+    }
 
-    private String          mId;
-    private ElectionDTO     mElection;
-    private List<ResultDTO> mCantonResultList;
-    private List<ResultDTO> mDistrictResultList;
-
-    public void setId(String pId) {
-        mId = pId;
+    public void setDistrictGeoPointList(List<GeoPointDTO> pDistrictGeoPointList) {
+        mDistrictGeoPointList = pDistrictGeoPointList;
     }
 
     public String getId() {
         return mId;
     }
 
-    public void setElectionDTO(ElectionDTO elecDTO) {
-        mElection = elecDTO;
+    public void setId(String pId) {
+        mId = pId;
     }
 
-    public ElectionDTO getElectionDTO() {
-        return mElection;
+    public String getName() {
+        return mName;
     }
 
-    public List<ResultDTO> getCantonResultList() {
-        return mCantonResultList;
+    public void setName(String pName) {
+        mName = pName;
     }
 
-    public void setCantonResultList(List<ResultDTO> pCantonResultList) {
-        mCantonResultList = pCantonResultList;
+    public ResultLabelDTO getResultLabel() {
+        return mResultLabel;
     }
 
-    public List<ResultDTO> getDistrictResultList() {
-        return mDistrictResultList;
+    public void setResultLabel(ResultLabelDTO pResultLabel) {
+        mResultLabel = pResultLabel;
     }
 
-    public void setDistrictResultList(List<ResultDTO> pDistrictResultList) {
-        mDistrictResultList = pDistrictResultList;
+    public List<GeoPointDTO> getCantonGeoPointList() {
+        return mCantonGeoPointList;
     }
+
+    public void setCantonGeoPointList(List<GeoPointDTO> cantonGeoPointList) {
+        mCantonGeoPointList = cantonGeoPointList;
+    }
+
 }

@@ -17,27 +17,31 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.ctrl.accif;
+package ch.uzh.ifi.se.yapp.model.dto;
 
-import ch.uzh.ifi.se.yapp.ctrl.mgr.MetaDataManager;
-import ch.uzh.ifi.se.yapp.ctrl.mgr.VisualisationManager;
+import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 
-public abstract class AccessorFactory {
+public class VisualisationCreationDTO
+        extends BaseDTO {
 
-    private static final IMetadataAccessor      sMetadataAccessor;
-    private static final IVisualisationAccessor sVisualisationAccessor;
+    private String            mElectionId;
+    private VisualizationType mVisualizationType;
 
-    static{
-        sMetadataAccessor = new MetaDataManager();
-        sVisualisationAccessor = new VisualisationManager();
+    public void setElectionId(String pElectionId) {
+        mElectionId = pElectionId;
     }
 
-    public static IMetadataAccessor getMetaDataAccessor(){
-        return sMetadataAccessor;
+    public String getElectionId() {
+        return mElectionId;
     }
 
-    public static IVisualisationAccessor getVisualisationAccessor(){
-        return sVisualisationAccessor;
+    public void setVisualizationType(VisualizationType pVisualizationType) {
+        mVisualizationType = pVisualizationType;
     }
+
+    public VisualizationType getVisualizationType() {
+        return mVisualizationType;
+    }
+
 }

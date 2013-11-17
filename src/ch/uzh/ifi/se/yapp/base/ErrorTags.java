@@ -17,27 +17,32 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.ctrl.accif;
-
-import ch.uzh.ifi.se.yapp.ctrl.mgr.MetaDataManager;
-import ch.uzh.ifi.se.yapp.ctrl.mgr.VisualisationManager;
+package ch.uzh.ifi.se.yapp.base;
 
 
-public abstract class AccessorFactory {
+public enum ErrorTags {
 
-    private static final IMetadataAccessor      sMetadataAccessor;
-    private static final IVisualisationAccessor sVisualisationAccessor;
+    VISUALIZATION_NOT_FOUND(1000, "Visualization could not be found"),
 
-    static{
-        sMetadataAccessor = new MetaDataManager();
-        sVisualisationAccessor = new VisualisationManager();
+    ;
+
+
+    private final int    mId;
+    private final String mDescription;
+
+
+    private ErrorTags(int pId, String pDescription) {
+        mId = pId;
+        mDescription = pDescription;
     }
 
-    public static IMetadataAccessor getMetaDataAccessor(){
-        return sMetadataAccessor;
+
+    public int id() {
+        return mId;
     }
 
-    public static IVisualisationAccessor getVisualisationAccessor(){
-        return sVisualisationAccessor;
+    public String description() {
+        return mDescription;
     }
+
 }

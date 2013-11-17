@@ -17,27 +17,39 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.ctrl.accif;
+package ch.uzh.ifi.se.yapp.model.dto;
 
-import ch.uzh.ifi.se.yapp.ctrl.mgr.MetaDataManager;
-import ch.uzh.ifi.se.yapp.ctrl.mgr.VisualisationManager;
+import java.util.List;
 
 
-public abstract class AccessorFactory {
+public class CantonDTO {
 
-    private static final IMetadataAccessor      sMetadataAccessor;
-    private static final IVisualisationAccessor sVisualisationAccessor;
+    private String       mId;
+    private String       mName;
+    private List<String> mDistrictIdList;
 
-    static{
-        sMetadataAccessor = new MetaDataManager();
-        sVisualisationAccessor = new VisualisationManager();
+    public String getId() {
+        return mId;
     }
 
-    public static IMetadataAccessor getMetaDataAccessor(){
-        return sMetadataAccessor;
+    public void setId(String id) {
+        mId = id;
     }
 
-    public static IVisualisationAccessor getVisualisationAccessor(){
-        return sVisualisationAccessor;
+    public String getName() {
+        return mName;
     }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public List<String> getDistrictIdList() {
+        return mDistrictIdList;
+    }
+
+    public void setDistrictIdList(List<String> districtIdList) {
+        mDistrictIdList = districtIdList;
+    }
+
 }
