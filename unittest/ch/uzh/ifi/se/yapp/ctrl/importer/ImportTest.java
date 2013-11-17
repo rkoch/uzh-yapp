@@ -20,18 +20,44 @@
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
 
 
 public class ImportTest {
 
+    private final LocalServiceTestHelper helper =
+                                                        new LocalServiceTestHelper(new LocalTaskQueueTestConfig());
+
+    @Before
+    public void setUp() {
+        helper.setUp();
+    }
+
+    @After
+    public void tearDown() {
+        helper.tearDown();
+    }
+
     @Test
-    public void test() {
+    public void test()
+            throws IOException {
         Import test = new Import();
         File f1 = new File("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
         System.out.println(f1.exists());
         test.importElection("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
+
+        try {
+            test.importElection("notexisting.txt");
+        } catch (IOException e) {
+            System.out.println("Exeption catched.");
+        }
     }
 
 }

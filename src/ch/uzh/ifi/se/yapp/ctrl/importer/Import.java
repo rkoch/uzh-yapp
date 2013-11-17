@@ -22,6 +22,8 @@ package ch.uzh.ifi.se.yapp.ctrl.importer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +31,7 @@ import org.joda.time.LocalDate;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
+import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -45,9 +48,10 @@ public class Import extends BaseObject {
      * @param pFile in .csv format
      * @throws IOException
      */
-    public void importElection(String pFilePath) {
+    public void importElection(String pFilePath) throws IOException{
         try {
             Election pElection = new Election();
+            List<DistrictResult> pList = new ArrayList<DistrictResult>();
 
             BufferedReader br = new BufferedReader(new FileReader(pFilePath));
             String line = null;
@@ -56,6 +60,7 @@ public class Import extends BaseObject {
             //reads .csv until all lines are finished
             while ((line = br.readLine()) != null) {
                 DistrictResult pDResult = new DistrictResult();
+                District pDistrict = new District();
 
                 String[] cells = line.split(";");
 
@@ -66,8 +71,10 @@ public class Import extends BaseObject {
                 } else if (count == 1) {
                     pElection.setTitle(cells[0]);
                 } else {
-                    pDResult.getDistrict().setId(cells[0]);
-                    pDResult.getDistrict().setName(cells[1]);
+                    pDistrict.setId(cells[0]);
+                    pDistrict.setName(cells[1]);
+                    pDResult.setDistrict(pDistrict);
+
                     pDResult.setTotalEligibleCount(Integer.parseInt(cells[2]));
                     pDResult.setDeliveredVoteCount(Integer.parseInt(cells[3]));
                     pDResult.setValidVoteCount(Integer.parseInt(cells[5]));
@@ -77,10 +84,12 @@ public class Import extends BaseObject {
                 count++;
 
                 //adds DistrictResult to the Election
-                pElection.getResults().add(pDResult);
+                pList.add(pDResult);
             }
 
             br.close();
+
+            pElection.setResults(pList);
 
             // saves Election on server (Google App Engine)
             IElectionDataAdapter adpt = BackendAccessorFactory.getElectionDataAdapter();
@@ -96,13 +105,13 @@ public class Import extends BaseObject {
      * @return LocalDate
      */
     public LocalDate getDate(String pDate) {
-        String[] fragments = pDate.replace(".", "").split(" ");
+        String[] fragments = pDate.split(" ");
 
-        int day = Integer.parseInt(fragments[3]);
+        int day = Integer.parseInt(fragments[2]);
         int month = 0;
-        int year = Integer.parseInt(fragments[5]);
+        int year = Integer.parseInt(fragments[4]);
 
-        switch(fragments[4]) {
+        switch(fragments[3]) {
             case "Januar":
                 month = 1;
                 break;
