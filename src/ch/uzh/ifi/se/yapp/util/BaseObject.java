@@ -43,11 +43,11 @@ public abstract class BaseObject
 
 
     // Logging Delegator
-    protected static Logger getLogger(Class<?> pClazz) {
+    public static Logger getLogger(Class<?> pClazz) {
         return Logger.getLogger(pClazz.toString());
     }
 
-    protected static Logger getLogger(String pName) {
+    public static Logger getLogger(String pName) {
         return Logger.getLogger(pName);
     }
 
