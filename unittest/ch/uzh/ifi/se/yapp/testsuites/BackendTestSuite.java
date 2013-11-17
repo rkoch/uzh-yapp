@@ -1,4 +1,4 @@
-package ch.uzh.ifi.se.yapp.backend.base;
+package ch.uzh.ifi.se.yapp.testsuites;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
