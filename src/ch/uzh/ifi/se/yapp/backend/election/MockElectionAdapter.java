@@ -35,8 +35,8 @@ public class MockElectionAdapter
         extends BaseObject
         implements IElectionDataAdapter {
 
-    private Election e = new Election();
-    private Election b = new Election();
+    private Election mElectionA = new Election();
+    private Election mElectionB = new Election();
 
 
 
@@ -48,10 +48,10 @@ public class MockElectionAdapter
 
     @Override
     public Election getElectionById(String pId) {
-        e.setId(pId);
-        e.setTitle("Dummy Election");
-        e.setDescription("leere Beschreibung");
-        return e;
+        mElectionA.setId(pId);
+        mElectionA.setTitle("Dummy Election");
+        mElectionA.setDescription("leere Beschreibung");
+        return mElectionA;
     }
 
     @Override
@@ -61,21 +61,22 @@ public class MockElectionAdapter
         e.setTitle("Volksinitiative «Für die Ausschaffung krimineller Ausländer»");
         e.setDescription("leere Beschreibung");
 
-        b.setId("552.2");
-        b.setTitle("Bundesbeschluss über die Aus- und Wegweisung krimineller Ausländerinnen und Ausländer im Rahmen der Bundesverfassung (Gegenentwurf zur Ausschaffungsinitiative)");
-        b.setDescription("leere Beschreibung");
+        mElectionB.setId("552.2");
+        mElectionB
+                .setTitle("Bundesbeschluss über die Aus- und Wegweisung krimineller Ausländerinnen und Ausländer im Rahmen der Bundesverfassung (Gegenentwurf zur Ausschaffungsinitiative)");
+        mElectionB.setDescription("leere Beschreibung");
 
-        List<Election> list = new ArrayList<Election>();
+        List<Election> list = new ArrayList<>();
         list.add(e);
-        list.add(b);
+        list.add(mElectionB);
         return list;
     }
 
     @Override
     public Map<String, Election> listElections() {
         Map<String, Election> tmpMap = new HashMap<>();
-        tmpMap.put("552.1", e);
-        tmpMap.put("552.2", b);
+        tmpMap.put("552.1", mElectionA);
+        tmpMap.put("552.2", mElectionB);
         return tmpMap;
     }
 
@@ -83,11 +84,11 @@ public class MockElectionAdapter
     @Override
     public void insertElection(Election pElection) {
         // DateTime is in object pElection
-
-        b.setId(pElection.getId());
-        b.setDescription(pElection.getDescription());
-        b.setDate(pElection.getDate());
-        b.setTitle(pElection.getTitle());
-        b.setResults(pElection.getResults());
+        mElectionB.setId(pElection.getId());
+        mElectionB.setDescription(pElection.getDescription());
+        mElectionB.setDate(pElection.getDate());
+        mElectionB.setTitle(pElection.getTitle());
+        mElectionB.setResults(pElection.getResults());
     }
+
 }

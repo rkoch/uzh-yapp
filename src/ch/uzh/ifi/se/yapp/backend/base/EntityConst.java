@@ -27,23 +27,24 @@ package ch.uzh.ifi.se.yapp.backend.base;
  */
 public interface EntityConst {
 
-    String LOCAL_DATE = "LocalDate";
-    String GEO_POINT = "GeoPoint";
-    String ID = "Id";
+    String LOCAL_DATE         = "LocalDate";
+    String GEO_POINT          = "GeoPoint";
+    String ID                 = "Id";
 
-    String GEO_BOUNDARY = "GeoBoundary";
+    String GEO_BOUNDARY       = "GeoBoundary";
 
-    String ELECTION = "Election";
-    String TITLE = "Title";
-    String DESCRIPTION = "Description";
-    String DISTRICT_RESULT = "DistrictResult";
+    String ELECTION           = "Election";
+    String TITLE              = "Title";
+    String DESCRIPTION        = "Description";
+    String DISTRICT_RESULT    = "DistrictResult";
 
-    String DISTRICT = "District";
-    String NAME = "Name";
-    String CANTON_ID = "CantonId";
-    String CANTON = "Canton";
+    String DISTRICT           = "District";
+    String NAME               = "Name";
+    String CANTON_ID          = "CantonId";
+    String CANTON             = "Canton";
 
-    String VISUALIZATION = "Visualization";
+    String VISUALIZATION      = "Visualization";
     String VISUALIZATION_TYPE = "VisualizationType";
-    String ELECTION_ID = "ElectionId";
+    String ELECTION_ID        = "ElectionId";
+
 }

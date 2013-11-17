@@ -30,24 +30,27 @@ public interface IGeoDataAdapter
         extends IBaseAdapter {
 
     /**
-     * <b>getAllGeoBoundary</b>
-     * <br>Description: returns a List with all GeoBoundaries in it
+     * <b>getAllGeoBoundary</b> <br>
+     * Description: returns a List with all GeoBoundaries in it
+     *
      * @return List<GeoBoundary>
      */
     List<GeoBoundary> getAllGeoBoundary();
 
     /**
-     * <b>getAllGeoBoundaryByDate</b>
-     * <br>Description: returns a List with all GeoBoundaries in it which are
+     * <b>getAllGeoBoundaryByDate</b> <br>
+     * Description: returns a List with all GeoBoundaries in it which are
      * up-to-date at the given Date
+     *
      * @param pDate
      * @return List<GeoBoundary>
      */
     List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate);
 
     /**
-     * <b>getGeoBoundaryByDistrict</b>
-     * <br>Description: returns the GeoBoundary from a certain District at a certain Date
+     * <b>getGeoBoundaryByDistrict</b> <br>
+     * Description: returns the GeoBoundary from a certain District at a certain Date
+     *
      * @param pDistrictId DistrictId of desired District ("BezirksNr")
      * @param pDate Date of GeoBoundary
      * @return GeoBoundary
@@ -55,10 +58,12 @@ public interface IGeoDataAdapter
     GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate);
 
     /**
-     * <b>insertGeoBoundary</b>
-     * <br>Description: stores a GeoBoundary object on the server
+     * <b>insertGeoBoundary</b> <br>
+     * Description: stores a GeoBoundary object on the server
+     *
      * @param pGeoBoundary GeoBoundary to be saved
      * @param pDate Date of GeoBoundary
      */
     void insertGeoBoundary(GeoBoundary pGeoBoundary);
+
 }

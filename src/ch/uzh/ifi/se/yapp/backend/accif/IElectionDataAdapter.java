@@ -31,16 +31,18 @@ public interface IElectionDataAdapter
         extends IBaseAdapter {
 
     /**
-     * <b>getElectionById</b>
-     * <br>Description: get an election by its id (SubmissionNr, e.g. 552.1).
+     * <b>getElectionById</b> <br>
+     * Description: get an election by its id (SubmissionNr, e.g. 552.1).
+     *
      * @param pId
      * @return Election
      */
     Election getElectionById(String pId);
 
     /**
-     * <b>getElectionsByDateRange</b>
-     * <br>Description: Returns a List with election objects, between a range date1 and date2
+     * <b>getElectionsByDateRange</b> <br>
+     * Description: Returns a List with election objects, between a range date1 and date2
+     *
      * @param pDate1 upper bound
      * @param pDate2 lower bound
      * @return List of Elections
@@ -48,17 +50,19 @@ public interface IElectionDataAdapter
     List<Election> getElectionsByDateRange(LocalDate pDate1, LocalDate pDate2);
 
     /**
-     * <b>listElections</b>
-     * <br>Description: returns a Map<String, String> with all Elections in it.
-     * <br>Key: ElectionId (SubmissionNr)
-     * <br>Values: Title of election.
+     * <b>listElections</b> <br>
+     * Description: returns a Map<String, String> with all Elections in it. <br>
+     * Key: ElectionId (SubmissionNr) <br>
+     * Values: Title of election.
+     *
      * @return This method returns the elections without any results (so only metadata for now)
      */
     Map<String, Election> listElections();
 
     /**
-     * <b>insertElection</b>
-     * <br>Description: Stores an election object on the server
+     * <b>insertElection</b> <br>
+     * Description: Stores an election object on the server
+     *
      * @param pElection Election object to be saved.
      * @param pDate Date of Election
      */

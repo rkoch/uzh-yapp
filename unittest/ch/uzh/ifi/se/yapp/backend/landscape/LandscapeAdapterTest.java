@@ -36,44 +36,45 @@ import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 public class LandscapeAdapterTest {
 
-    private final LocalServiceTestHelper helper =
-            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+    private final LocalServiceTestHelper mHelper        = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    private District district = new District();
-    private LandscapeAdapter la = new LandscapeAdapter();
+    private District                     mDistrict      = new District();
+    private LandscapeAdapter             mLandscapeAdpt = new LandscapeAdapter();
+
 
     @Before
     public void setUp() {
-        helper.setUp();
+        mHelper.setUp();
     }
 
     @After
     public void tearDown() {
-        helper.tearDown();
+        mHelper.tearDown();
     }
+
 
     @Test
     public void insertDistrict() {
-        district.setCanton("1");
-        district.setCanton("Graubünden");
-        district.setId("2603");
-        district.setLocalDate(new LocalDate(2013,02, 24));
-        district.setName("Test-Bezirk");
+        mDistrict.setCanton("1");
+        mDistrict.setCanton("Graubünden");
+        mDistrict.setId("2603");
+        mDistrict.setLocalDate(new LocalDate(2013, 02, 24));
+        mDistrict.setName("Test-Bezirk");
 
-        la.insertDistrict(district);
+        mLandscapeAdpt.insertDistrict(mDistrict);
     }
 
     @Test
     public void getAllDistricts() {
         insertDistrict();
-        district.setCanton("2");
-        district.setCanton("Zürich");
-        district.setId("120");
-        district.setLocalDate(new LocalDate(2013,01, 24));
-        district.setName("Test-Bezirk2");
-        la.insertDistrict(district);
+        mDistrict.setCanton("2");
+        mDistrict.setCanton("Zürich");
+        mDistrict.setId("120");
+        mDistrict.setLocalDate(new LocalDate(2013, 01, 24));
+        mDistrict.setName("Test-Bezirk2");
+        mLandscapeAdpt.insertDistrict(mDistrict);
 
-        List<District> districtList = la.getAllDistricts();
+        List<District> districtList = mLandscapeAdpt.getAllDistricts();
 
         assertEquals("120", districtList.get(0).getId());
         assertEquals("Test-Bezirk2", districtList.get(0).getName());
@@ -85,14 +86,14 @@ public class LandscapeAdapterTest {
     public void getDistrictByIdAndDate() {
         insertDistrict();
         insertDistrict();
-        district.setCanton("1");
-        district.setCanton("Graubünden");
-        district.setId("2603");
-        district.setLocalDate(new LocalDate(2013,01, 24));
-        district.setName("Test-Bezirk");
-        la.insertDistrict(district);
+        mDistrict.setCanton("1");
+        mDistrict.setCanton("Graubünden");
+        mDistrict.setId("2603");
+        mDistrict.setLocalDate(new LocalDate(2013, 01, 24));
+        mDistrict.setName("Test-Bezirk");
+        mLandscapeAdpt.insertDistrict(mDistrict);
 
-        District result = la.getDistrictByIdAndDate("2603", new LocalDate(2013, 02, 24));
+        District result = mLandscapeAdpt.getDistrictByIdAndDate("2603", new LocalDate(2013, 02, 24));
         assertEquals("2603", result.getId());
         assertEquals("Test-Bezirk", result.getName());
     }
@@ -100,16 +101,15 @@ public class LandscapeAdapterTest {
     @Test
     public void getDistrictById() {
         insertDistrict();
-        district.setCanton("1");
-        district.setCanton("Graubünden");
-        district.setId("2603");
-        district.setLocalDate(new LocalDate(2013,01, 24));
-        district.setName("Test-Bezirk");
-        la.insertDistrict(district);
-        District result = la.getDistrictByIdAndDate("2603", new LocalDate(2013, 02, 24));
+        mDistrict.setCanton("1");
+        mDistrict.setCanton("Graubünden");
+        mDistrict.setId("2603");
+        mDistrict.setLocalDate(new LocalDate(2013, 01, 24));
+        mDistrict.setName("Test-Bezirk");
+        mLandscapeAdpt.insertDistrict(mDistrict);
+        District result = mLandscapeAdpt.getDistrictByIdAndDate("2603", new LocalDate(2013, 02, 24));
         assertEquals("2603", result.getId());
         assertEquals("Test-Bezirk", result.getName());
     }
-
 
 }

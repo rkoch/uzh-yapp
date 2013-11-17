@@ -57,7 +57,7 @@ public class ElectionAdapter
     /**
      * Logger to list exceptions and errors for this class.
      */
-    private Logger           log               = BaseObject.getLogger(ElectionAdapter.class);
+    private Logger log = BaseObject.getLogger(ElectionAdapter.class);
 
 
 
@@ -84,7 +84,7 @@ public class ElectionAdapter
             // create districtResults out of a string
             List<String> districtResultsId = (List<String>) result.getProperty(EntityConst.DISTRICT_RESULT);
             List<DistrictResult> districtResults = new ArrayList<>();
-            for (int i=0; i<districtResultsId.size(); i++) {
+            for (int i = 0; i < districtResultsId.size(); i++) {
                 districtResults.add(new DistrictResult(districtResultsId.get(i)));
             }
 
@@ -128,7 +128,7 @@ public class ElectionAdapter
                 // create districtResults out of a string
                 List<String> districtResultsId = (List<String>) result.getProperty(EntityConst.DISTRICT_RESULT);
                 List<DistrictResult> districtResults = new ArrayList<>();
-                for (int i=0; i<districtResultsId.size(); i++) {
+                for (int i = 0; i < districtResultsId.size(); i++) {
                     districtResults.add(new DistrictResult(districtResultsId.get(i)));
                 }
 
@@ -186,7 +186,7 @@ public class ElectionAdapter
             // create districtResults out of a string
             List<String> districtResultsId = (List<String>) result.getProperty(EntityConst.DISTRICT_RESULT);
             List<DistrictResult> districtResults = new ArrayList<>();
-            for (int i=0; i<districtResultsId.size(); i++) {
+            for (int i = 0; i < districtResultsId.size(); i++) {
                 districtResults.add(new DistrictResult(districtResultsId.get(i)));
             }
 
@@ -221,7 +221,7 @@ public class ElectionAdapter
         // insert districtResults as a String list
         List<DistrictResult> dr = pElection.getResults();
         List<String> districtResults = new ArrayList<>();
-        for (int i=0; i< dr.size(); i++) {
+        for (int i = 0; i < dr.size(); i++) {
             districtResults.add(dr.get(i).toString());
         }
         election.setProperty(EntityConst.DISTRICT_RESULT, districtResults);
@@ -240,4 +240,5 @@ public class ElectionAdapter
             log.log(Level.WARNING, dfe.toString(), dfe);
         }
     }
+
 }

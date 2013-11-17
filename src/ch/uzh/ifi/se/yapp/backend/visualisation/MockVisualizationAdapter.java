@@ -35,7 +35,7 @@ public class MockVisualizationAdapter
     private VisualizationType vt;
     private VisualizationType vt2;
 
-        @Override
+    @Override
     public void cleanup() {
         // TODO Auto-generated method stub
     }
@@ -50,7 +50,7 @@ public class MockVisualizationAdapter
 
     @Override
     public List<Visualization> getAllVisualizations() {
-        List<Visualization> tmpList = new ArrayList<Visualization>();
+        List<Visualization> tmpList = new ArrayList<>();
 
         Visualization v = new Visualization();
         v.setElectionId("552.1");

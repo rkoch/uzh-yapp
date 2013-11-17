@@ -36,30 +36,28 @@ import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 public class VisualizationAdapterTest {
 
-    private final LocalServiceTestHelper helper =
-            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+    private final LocalServiceTestHelper mHelper            = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    private VisualizationAdapter va = new VisualizationAdapter();
-    private         Visualization v = new Visualization();
+    private VisualizationAdapter         mVisualizationAdpt = new VisualizationAdapter();
+    private Visualization                mVisualization     = new Visualization();
 
 
     @Before
     public void setUp() {
-        helper.setUp();
+        mHelper.setUp();
     }
 
     @After
     public void tearDown() {
-        helper.tearDown();
+        mHelper.tearDown();
     }
-
 
 
     @Test
     public void insertVisualization() {
-        v.setElectionId("552.1");
-        v.setType(VisualizationType.MAP);
-        va.insertVisualization(v);
+        mVisualization.setElectionId("552.1");
+        mVisualization.setType(VisualizationType.MAP);
+        mVisualizationAdpt.insertVisualization(mVisualization);
     }
 
     @Test
@@ -68,9 +66,9 @@ public class VisualizationAdapterTest {
         Visualization v2 = new Visualization();
         v2.setElectionId("552.2");
         v2.setType(VisualizationType.MAP);
-        va.insertVisualization(v2);
+        mVisualizationAdpt.insertVisualization(v2);
 
-        List<Visualization> tmpList = va.getAllVisualizations();
+        List<Visualization> tmpList = mVisualizationAdpt.getAllVisualizations();
         // check size
         assertEquals(tmpList.size(), 2);
         // check member variables
@@ -83,7 +81,7 @@ public class VisualizationAdapterTest {
     @Test
     public void getVisualizationById() {
         insertVisualization();
-        Visualization l = va.getVisualizationById(v.getId().toString());
+        Visualization l = mVisualizationAdpt.getVisualizationById(mVisualization.getId().toString());
         // check member variable
         assertEquals("552.1", l.getElectionId());
         assertEquals(VisualizationType.MAP, l.getType());

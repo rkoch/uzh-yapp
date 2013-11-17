@@ -49,7 +49,7 @@ public class VisualizationAdapter
     /**
      * Logger to list exceptions and errors for this class.
      */
-    private Logger           log                   = BaseObject.getLogger(VisualizationAdapter.class);
+    private Logger log = BaseObject.getLogger(VisualizationAdapter.class);
 
     @Override
     public void cleanup() {
@@ -71,7 +71,7 @@ public class VisualizationAdapter
             // set electionid
             resVis.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
             // set type
-            VisualizationType vt = VisualizationType.valueOf(((String) result.getProperty(EntityConst.VISUALIZATION_TYPE)));
+            VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
             resVis.setType(vt);
         }
         return resVis;
@@ -99,7 +99,7 @@ public class VisualizationAdapter
             // setElection Id
             tmp.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
             // set type
-            VisualizationType vt = VisualizationType.valueOf(((String) result.getProperty(EntityConst.VISUALIZATION_TYPE)));
+            VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
             tmp.setType(vt);
             try {
                 // UnsupportedOperationException - if the add operation is not supported by this list

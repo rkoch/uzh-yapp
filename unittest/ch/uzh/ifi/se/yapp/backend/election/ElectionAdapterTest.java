@@ -40,29 +40,28 @@ import ch.uzh.ifi.se.yapp.model.landscape.Election;
 
 public class ElectionAdapterTest {
 
-    private final LocalServiceTestHelper helper =
-            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+    private final LocalServiceTestHelper mHelper       = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    private Election e = new Election();
-    private ElectionAdapter ea= new ElectionAdapter();
-    private List<DistrictResult> drl = new ArrayList<>();
+    private Election                     mElection     = new Election();
+    private ElectionAdapter              mElectionAdpt = new ElectionAdapter();
+    private List<DistrictResult>         mResults      = new ArrayList<>();
 
 
     @Before
     public void setUp() {
-        helper.setUp();
+        mHelper.setUp();
     }
 
     @After
     public void tearDown() {
-        helper.tearDown();
+        mHelper.tearDown();
     }
 
     @Test
     public void insert() {
-        e.setDate(new LocalDate(2013, 03, 02));
-        e.setDescription("Test-Beschreibung");
-        e.setId("550");
+        mElection.setDate(new LocalDate(2013, 03, 02));
+        mElection.setDescription("Test-Beschreibung");
+        mElection.setId("550");
 
         DistrictResult dr = new DistrictResult();
         dr.setDeliveredVoteCount(1);
@@ -80,16 +79,16 @@ public class ElectionAdapterTest {
 
         dr.setDistrict(d);
 
-        drl.add(dr);
-        e.setResults(drl);
-        ea.insertElection(e);
+        mResults.add(dr);
+        mElection.setResults(mResults);
+        mElectionAdpt.insertElection(mElection);
     }
 
     @Test
     public void insert2() {
-        e.setDate(new LocalDate(2013, 01, 02));
-        e.setDescription("Test-Beschreibung2");
-        e.setId("551");
+        mElection.setDate(new LocalDate(2013, 01, 02));
+        mElection.setDescription("Test-Beschreibung2");
+        mElection.setId("551");
 
         DistrictResult dr = new DistrictResult();
         dr.setDeliveredVoteCount(1);
@@ -107,16 +106,16 @@ public class ElectionAdapterTest {
 
         dr.setDistrict(d);
 
-        drl.add(dr);
-        e.setResults(drl);
-        ea.insertElection(e);
+        mResults.add(dr);
+        mElection.setResults(mResults);
+        mElectionAdpt.insertElection(mElection);
     }
 
 
     @Test
     public void list() {
         insert();
-        Map<String, Election> res = ea.listElections();
+        Map<String, Election> res = mElectionAdpt.listElections();
         assertEquals(true, res.containsKey("550"));
     }
 
@@ -125,7 +124,7 @@ public class ElectionAdapterTest {
         insert();
         insert2();
 
-        List<Election> result = ea.getElectionsByDateRange(new LocalDate(2013, 03, 02), new LocalDate(2013, 01, 02));
+        List<Election> result = mElectionAdpt.getElectionsByDateRange(new LocalDate(2013, 03, 02), new LocalDate(2013, 01, 02));
         assertEquals("551", result.get(0).getId());
         assertEquals("550", result.get(1).getId());
     }
@@ -135,7 +134,7 @@ public class ElectionAdapterTest {
         insert();
         insert2();
 
-        Election result = ea.getElectionById("551");
+        Election result = mElectionAdpt.getElectionById("551");
         assertEquals("551", result.getId());
     }
 

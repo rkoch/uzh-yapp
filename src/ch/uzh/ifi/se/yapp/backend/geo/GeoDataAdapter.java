@@ -46,13 +46,13 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class GeoDataAdapter
-extends BaseObject
-implements IGeoDataAdapter {
+        extends BaseObject
+        implements IGeoDataAdapter {
 
     /**
      * Logger to list exceptions and errors for this class.
      */
-    private Logger           log                  = BaseObject.getLogger(GeoDataAdapter.class);
+    private Logger log = BaseObject.getLogger(GeoDataAdapter.class);
 
 
     @Override
@@ -83,9 +83,9 @@ implements IGeoDataAdapter {
             // create geopoints out of a string
             List<GeoPoint> geoPoints = new ArrayList<>();
             List<String> geoPointsAsString = new ArrayList<>();
-            geoPointsAsString = ((List<String>) result.getProperty(EntityConst.GEO_POINT));
+            geoPointsAsString = (List<String>) result.getProperty(EntityConst.GEO_POINT);
             GeoPoint tmpGP;
-            for (int i=0; i<geoPointsAsString.size(); i++) {
+            for (int i = 0; i < geoPointsAsString.size(); i++) {
                 tmpGP = new GeoPoint(geoPointsAsString.get(i));
                 geoPoints.add(tmpGP);
             }
@@ -114,7 +114,7 @@ implements IGeoDataAdapter {
     public List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate) {
         List<GeoBoundary> tmpList = new ArrayList<>(); // receives all stored GeoBoundaries from the datastore
         List<GeoBoundary> resultList = new ArrayList<>(); // store results to return
-        List<List<GeoBoundary>> subLists = new ArrayList<List<GeoBoundary>>(); // list for each GeoBoundary (by Id), newest at 0
+        List<List<GeoBoundary>> subLists = new ArrayList<>(); // list for each GeoBoundary (by Id), newest at 0
 
         try {
             // get newest and older GeoBoundary
@@ -138,9 +138,9 @@ implements IGeoDataAdapter {
                 // create new GeoPoints out of Strings
                 List<GeoPoint> geoPoints = new ArrayList<>();
                 List<String> geoPointsAsString = new ArrayList<>();
-                geoPointsAsString = ((List<String>) result.getProperty(EntityConst.GEO_POINT));
+                geoPointsAsString = (List<String>) result.getProperty(EntityConst.GEO_POINT);
                 GeoPoint tmpGP;
-                for (int i=0; i<geoPointsAsString.size(); i++) {
+                for (int i = 0; i < geoPointsAsString.size(); i++) {
                     tmpGP = new GeoPoint(geoPointsAsString.get(i));
                     geoPoints.add(tmpGP);
                 }
@@ -236,9 +236,9 @@ implements IGeoDataAdapter {
                     // create geopoints out of a string
                     List<GeoPoint> geoPoints = new ArrayList<>();
                     List<String> geoPointsAsString = new ArrayList<>();
-                    geoPointsAsString = ((List<String>) result.getProperty(EntityConst.GEO_POINT));
+                    geoPointsAsString = (List<String>) result.getProperty(EntityConst.GEO_POINT);
                     GeoPoint tmpGP;
-                    for (int i=0; i<geoPointsAsString.size(); i++) {
+                    for (int i = 0; i < geoPointsAsString.size(); i++) {
                         tmpGP = new GeoPoint(geoPointsAsString.get(i));
                         geoPoints.add(tmpGP);
                     }
@@ -256,13 +256,13 @@ implements IGeoDataAdapter {
     @Override
     public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
         Entity geoBoundary = new Entity(EntityConst.GEO_BOUNDARY, pGeoBoundary.getId());
-        System.out.println("inserted date: " +pGeoBoundary.getLocalDate().toString());
+        System.out.println("inserted date: " + pGeoBoundary.getLocalDate().toString());
         geoBoundary.setProperty(EntityConst.ID, pGeoBoundary.getId());
         geoBoundary.setProperty(EntityConst.LOCAL_DATE, pGeoBoundary.getLocalDate().toString());
 
         // save GeoPoints in a List<String> and use this list as an entity.
         List<String> geoPoints = new ArrayList<>();
-        for (int i=0; i<pGeoBoundary.getGeoPoints().size(); i++) {
+        for (int i = 0; i < pGeoBoundary.getGeoPoints().size(); i++) {
             geoPoints.add(pGeoBoundary.getGeoPoints().get(i).toString()); // x/y
         }
         geoBoundary.setProperty(EntityConst.GEO_POINT, geoPoints);
@@ -280,4 +280,5 @@ implements IGeoDataAdapter {
             log.log(Level.WARNING, dfe.toString(), dfe);
         }
     }
+
 }

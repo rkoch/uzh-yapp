@@ -36,7 +36,7 @@ public class MockLandscapeAdapter
         extends BaseObject
         implements ILandscapeDataAdapter {
 
-    private DatastoreService landscapeDatastore = DatastoreServiceFactory.getDatastoreService();
+    private DatastoreService mLandscapeDatastore = DatastoreServiceFactory.getDatastoreService();
 
     @Override
     public void cleanup() {
@@ -62,7 +62,7 @@ public class MockLandscapeAdapter
 
     @Override
     public List<District> getAllDistricts() {
-        List<District> tmpList = new ArrayList<District>();
+        List<District> tmpList = new ArrayList<>();
 
         District d1 = new District();
         d1.setId("Imboden");
@@ -84,9 +84,9 @@ public class MockLandscapeAdapter
 
     @Override
     public void insertDistrict(District pDistrict) {
-        // DateTime is  stored in District.mDateTime
+        // DateTime is stored in District.mDateTime
         // using java data object (jdo)
-        //google data store
+        // google data store
     }
 
 }

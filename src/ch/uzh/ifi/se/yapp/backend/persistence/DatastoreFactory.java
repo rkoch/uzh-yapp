@@ -23,22 +23,22 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
 
-public class DatastoreFactory {
+public abstract class DatastoreFactory {
 
     /**
      * Datastore for Election class
      */
-    public static DatastoreService electionDatastore = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService electionDatastore       = DatastoreServiceFactory.getDatastoreService();
 
     public static DatastoreService districtResultDatastore = DatastoreServiceFactory.getDatastoreService();
 
-    public static DatastoreService districtDatastore = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService districtDatastore       = DatastoreServiceFactory.getDatastoreService();
 
-    public static DatastoreService geoBoundaryDatastore = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService geoBoundaryDatastore    = DatastoreServiceFactory.getDatastoreService();
 
-    public static DatastoreService geoPointDatastore = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService geoPointDatastore       = DatastoreServiceFactory.getDatastoreService();
 
-    public static DatastoreService visualizationDatastore = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService visualizationDatastore  = DatastoreServiceFactory.getDatastoreService();
 
 
 }

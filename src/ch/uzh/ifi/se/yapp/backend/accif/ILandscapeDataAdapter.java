@@ -51,6 +51,7 @@ public interface ILandscapeDataAdapter
     /**
      * <b>getAllDistricts</b> <br>
      * Description: returns a List with all districts
+     *
      * @return List<District>
      */
     List<District> getAllDistricts();
@@ -62,4 +63,5 @@ public interface ILandscapeDataAdapter
      * @param pDistrict District object to be saved.
      */
     void insertDistrict(District pDistrict);
+
 }

@@ -39,13 +39,13 @@ public class MockGeoDataAdapter
         extends BaseObject
         implements IGeoDataAdapter {
 
-    private DatastoreService geoDatastore = DatastoreServiceFactory.getDatastoreService();
+    private DatastoreService  mGeoDatastore = DatastoreServiceFactory.getDatastoreService();
 
-    private List<GeoBoundary> tmpList = new ArrayList<GeoBoundary>();
-    private List<GeoPoint> tmpGpList = new ArrayList<GeoPoint>();
-    private List<GeoPoint> tmpGpList2 = new ArrayList<GeoPoint>();
-    private  GeoBoundary gb = new GeoBoundary();
-    private  GeoBoundary gb2 = new GeoBoundary();
+    private List<GeoBoundary> mTmpList      = new ArrayList<>();
+    private List<GeoPoint>    mTmpGpList    = new ArrayList<>();
+    private List<GeoPoint>    mTmpGpList2   = new ArrayList<>();
+    private GeoBoundary       mGb           = new GeoBoundary();
+    private GeoBoundary       mGb2          = new GeoBoundary();
 
 
     public MockGeoDataAdapter() {
@@ -58,8 +58,8 @@ public class MockGeoDataAdapter
         gp2.setX(new BigDecimal(5.0));
         gp2.setY(new BigDecimal(6.0));
 
-        tmpGpList.add(gp1);
-        tmpGpList.add(gp2);
+        mTmpGpList.add(gp1);
+        mTmpGpList.add(gp2);
 
         GeoPoint gp3 = new GeoPoint();
         gp3.setX(new BigDecimal(1.4));
@@ -69,16 +69,16 @@ public class MockGeoDataAdapter
         gp4.setX(new BigDecimal(5.9));
         gp4.setY(new BigDecimal(6.6));
 
-        tmpGpList2.add(gp3);
-        tmpGpList2.add(gp4);
+        mTmpGpList2.add(gp3);
+        mTmpGpList2.add(gp4);
 
         // set new GeoBoundary
-        gb.setGeoPoints(tmpGpList);
+        mGb.setGeoPoints(mTmpGpList);
 
-        gb.setGeoPoints(tmpGpList2);
+        mGb.setGeoPoints(mTmpGpList2);
 
-        tmpList.add(gb);
-        tmpList.add(gb2);
+        mTmpList.add(mGb);
+        mTmpList.add(mGb2);
     }
 
     @Override
@@ -88,27 +88,28 @@ public class MockGeoDataAdapter
 
     @Override
     public List<GeoBoundary> getAllGeoBoundary() {
-        return tmpList;
+        return mTmpList;
     }
 
     @Override
     public List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate) {
-        return tmpList;
+        return mTmpList;
     }
 
     @Override
     public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate) {
-        return gb;
+        return mGb;
     }
 
     @Override
     public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
         // DateTime is stored in object pGeoBoundary
-       Entity gb = new Entity("GeoBoundary", pGeoBoundary.getId());
+        Entity gb = new Entity("GeoBoundary", pGeoBoundary.getId());
 
-       gb.setProperty("id", pGeoBoundary.getId());
-       gb.setProperty("geopoints", pGeoBoundary.getGeoPoints());
+        gb.setProperty("id", pGeoBoundary.getId());
+        gb.setProperty("geopoints", pGeoBoundary.getGeoPoints());
 
-       geoDatastore.put(gb);
+        mGeoDatastore.put(gb);
     }
+
 }
