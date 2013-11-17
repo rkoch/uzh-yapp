@@ -35,6 +35,10 @@ public class MockElectionAdapter
         extends BaseObject
         implements IElectionDataAdapter {
 
+    private Election e = new Election();
+
+    private         Election b = new Election();
+
 
     @Override
     public void cleanup() {
@@ -44,7 +48,6 @@ public class MockElectionAdapter
 
     @Override
     public Election getElectionById(String pId) {
-        Election e = new Election();
         e.setId(pId);
         e.setTitle("Dummy Election");
         e.setDescription("leere Beschreibung");
@@ -58,7 +61,6 @@ public class MockElectionAdapter
         e.setTitle("Volksinitiative «Für die Ausschaffung krimineller Ausländer»");
         e.setDescription("leere Beschreibung");
 
-        Election b = new Election();
         b.setId("552.2");
         b.setTitle("Bundesbeschluss über die Aus- und Wegweisung krimineller Ausländerinnen und Ausländer im Rahmen der Bundesverfassung (Gegenentwurf zur Ausschaffungsinitiative)");
         b.setDescription("leere Beschreibung");
