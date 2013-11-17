@@ -25,13 +25,13 @@ import java.util.List;
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
 import ch.uzh.ifi.se.yapp.ctrl.accif.IVisualisationAccessor;
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultLabelDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
-import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 
 public class VisualisationManager

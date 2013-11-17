@@ -21,7 +21,7 @@ package ch.uzh.ifi.se.yapp.model.dto;
 
 import java.io.Serializable;
 
-import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 
 
 public class VisualisationCreationDTO

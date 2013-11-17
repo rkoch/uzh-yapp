@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
-import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 

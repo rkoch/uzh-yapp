@@ -30,8 +30,8 @@ import org.junit.Test;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
-import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 
 public class VisualizationAdapterTest {
