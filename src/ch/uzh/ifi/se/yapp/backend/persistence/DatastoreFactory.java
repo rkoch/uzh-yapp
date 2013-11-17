@@ -26,19 +26,45 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 public abstract class DatastoreFactory {
 
     /**
-     * Datastore for Election class
+     * <b>getElectionDatastore</b> <br>
+     * Description: returns a datastore only for Election instances.
+     *
+     * @return DatastoreService
      */
-    public static DatastoreService electionDatastore       = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService getElectionDatastore() {
+        return DatastoreServiceFactory.getDatastoreService();
+    }
 
-    public static DatastoreService districtResultDatastore = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService getDistrictResultDatastore() {
+        return DatastoreServiceFactory.getDatastoreService();
+    }
 
-    public static DatastoreService districtDatastore       = DatastoreServiceFactory.getDatastoreService();
+    /**
+     * <b>getDistrictDatastore</b> <br>
+     * Description: returns a datastore only for District instances.
+     *
+     * @return
+     */
+    public static DatastoreService getDistrictDatastore() {
+        return DatastoreServiceFactory.getDatastoreService();
+    }
 
-    public static DatastoreService geoBoundaryDatastore    = DatastoreServiceFactory.getDatastoreService();
+    /**
+     * <b>getGeoBoundaryDatastore</b> <br>
+     * Description: returns a datastore only for GeoBoundary instances.
+     *
+     * @return DatastoreService
+     */
+    public static DatastoreService getGeoBoundaryDatastore() {
+        return DatastoreServiceFactory.getDatastoreService();
+    }
 
-    public static DatastoreService geoPointDatastore       = DatastoreServiceFactory.getDatastoreService();
+    public static DatastoreService getGeoPointDatastore() {
+        return DatastoreServiceFactory.getDatastoreService();
+    }
 
-    public static DatastoreService visualizationDatastore  = DatastoreServiceFactory.getDatastoreService();
-
+    public static DatastoreService getVisualizationDatastore() {
+        return DatastoreServiceFactory.getDatastoreService();
+    }
 
 }

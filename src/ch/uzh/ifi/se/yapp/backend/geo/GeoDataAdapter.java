@@ -72,7 +72,7 @@ public class GeoDataAdapter
             log.log(Level.WARNING, npe.toString(), npe);
         }
 
-        PreparedQuery pq = DatastoreFactory.geoBoundaryDatastore.prepare(geoBoundaryQuery);
+        PreparedQuery pq = DatastoreFactory.getGeoBoundaryDatastore().prepare(geoBoundaryQuery);
         for (Entity result : pq.asIterable()) {
             GeoBoundary tmpGeoBoundary = new GeoBoundary();
             tmpGeoBoundary.setId((String) result.getProperty("Id"));
@@ -129,7 +129,7 @@ public class GeoDataAdapter
             // NullPointerException - If any argument is null.
             geoBoundaryQuery.addSort(EntityConst.ID, SortDirection.ASCENDING);
 
-            PreparedQuery pq = DatastoreFactory.geoBoundaryDatastore.prepare(geoBoundaryQuery);
+            PreparedQuery pq = DatastoreFactory.getGeoBoundaryDatastore().prepare(geoBoundaryQuery);
 
             // create all geoboundaries out of elements stored in the datastore
             for (Entity result : pq.asIterable()) {
@@ -212,7 +212,7 @@ public class GeoDataAdapter
             Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString()); // YYYY-MM-DD
 
             Query geoBoundaryQuery = new Query(EntityConst.GEO_BOUNDARY).setFilter(dateMaxFilter);
-            PreparedQuery pq = DatastoreFactory.geoBoundaryDatastore.prepare(geoBoundaryQuery);
+            PreparedQuery pq = DatastoreFactory.getGeoBoundaryDatastore().prepare(geoBoundaryQuery);
 
             // tmpMaxDate is newest Change of District pDistrictId
             LocalDate tmpMaxDate = new LocalDate(1848, 1, 1); // year, month, dayOfmonth
@@ -271,7 +271,7 @@ public class GeoDataAdapter
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.geoBoundaryDatastore.put(geoBoundary);
+            DatastoreFactory.getGeoBoundaryDatastore().put(geoBoundary);
         } catch (IllegalArgumentException iae) {
             log.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {

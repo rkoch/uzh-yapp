@@ -61,7 +61,7 @@ public class VisualizationAdapter
 
         Query visQuery = new Query(EntityConst.VISUALIZATION);
         visQuery.setFilter(idFilter);
-        PreparedQuery pq = DatastoreFactory.visualizationDatastore.prepare(visQuery);
+        PreparedQuery pq = DatastoreFactory.getVisualizationDatastore().prepare(visQuery);
 
         Visualization resVis = new Visualization();
         for (Entity result : pq.asIterable()) {
@@ -89,7 +89,7 @@ public class VisualizationAdapter
             log.log(Level.WARNING, npe.toString(), npe);
         }
 
-        PreparedQuery pq = DatastoreFactory.visualizationDatastore.prepare(visQuery);
+        PreparedQuery pq = DatastoreFactory.getVisualizationDatastore().prepare(visQuery);
 
         for (Entity result : pq.asIterable()) {
             Visualization tmp = new Visualization();
@@ -131,7 +131,7 @@ public class VisualizationAdapter
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.visualizationDatastore.put(visualization);
+            DatastoreFactory.getVisualizationDatastore().put(visualization);
         } catch (IllegalArgumentException iae) {
             log.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {

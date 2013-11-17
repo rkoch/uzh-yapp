@@ -74,7 +74,7 @@ public class ElectionAdapter
         Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
 
         Query electionQuery = new Query(EntityConst.ELECTION).setFilter(idFilter);
-        PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
+        PreparedQuery pq = DatastoreFactory.getElectionDatastore().prepare(electionQuery);
 
         for (Entity result : pq.asIterable()) {
             tmpElection.setId((String) result.getProperty(EntityConst.ID));
@@ -116,7 +116,7 @@ public class ElectionAdapter
             } catch (NullPointerException npe) {
                 log.log(Level.WARNING, npe.toString(), npe);
             }
-            PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
+            PreparedQuery pq = DatastoreFactory.getElectionDatastore().prepare(electionQuery);
 
             // go over all received results
             for (Entity result : pq.asIterable()) {
@@ -170,7 +170,7 @@ public class ElectionAdapter
             log.log(Level.WARNING, npe.toString(), npe);
         }
         // retrieve results
-        PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
+        PreparedQuery pq = DatastoreFactory.getElectionDatastore().prepare(electionQuery);
 
         // go over all received results
         for (Entity result : pq.asIterable()) {
@@ -231,7 +231,7 @@ public class ElectionAdapter
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.electionDatastore.put(election);
+            DatastoreFactory.getElectionDatastore().put(election);
         } catch (IllegalArgumentException iae) {
             log.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
