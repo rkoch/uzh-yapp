@@ -25,20 +25,21 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Visualization
-extends BaseObject {
+        extends BaseObject {
 
-    private UUID              mId = null;
-    private String            mElectionId = null;
-    private VisualizationType mType = null;
+    private UUID              mId;
+    private String            mElectionId;
+    private VisualizationType mType;
 
     public Visualization() {
         generateId();
     }
 
     /**
-     * <b>setId</b>
-     * <br>Description: Only needed to <i>modify</i> the id of a Visualizationobject.
-     * <br><b>Note: The id is set in the constructor during the instantiation of the object.</b>
+     * <b>setId</b> <br>
+     * Description: Only needed to <i>modify</i> the id of a Visualizationobject. <br>
+     * <b>Note: The id is set in the constructor during the instantiation of the object.</b>
+     *
      * @param pId modified id
      */
     public void setId(UUID pId) {
@@ -46,8 +47,9 @@ extends BaseObject {
     }
 
     /**
-     * <b>setId</b>
-     * <br>Description: modify visualizationobject
+     * <b>setId</b> <br>
+     * Description: modify visualizationobject
+     *
      * @param pId
      */
     public void setId(String pId) {
@@ -59,8 +61,8 @@ extends BaseObject {
     }
 
     /**
-     * <b>generateId</b>
-     * <br>Description: sets an Id for a Visualization.
+     * <b>generateId</b> <br>
+     * Description: sets an Id for a Visualization.
      * UUID is used as a random generated Id.
      */
     private void generateId() {
