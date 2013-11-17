@@ -83,6 +83,7 @@ public class MockElectionAdapter
     @Override
     public void insertElection(Election pElection) {
         // DateTime is in object pElection
+
         b.setId(pElection.getId());
         b.setDescription(pElection.getDescription());
         b.setDate(pElection.getDate());
