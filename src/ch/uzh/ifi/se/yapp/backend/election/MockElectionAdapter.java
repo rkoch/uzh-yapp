@@ -26,10 +26,6 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -38,8 +34,6 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class MockElectionAdapter
         extends BaseObject
         implements IElectionDataAdapter {
-
-    private DatastoreService electionDatastore = DatastoreServiceFactory.getDatastoreService();
 
 
     @Override
@@ -87,14 +81,12 @@ public class MockElectionAdapter
     @Override
     public void insertElection(Election pElection) {
         // DateTime is in object pElection
+     // DateTime is in object pElection
 
-        Entity election = new Entity("Election", pElection.getId());
-
-        election.setProperty("id", pElection.getId());
-        election.setProperty("title", pElection.getTitle());
-        election.setProperty("description", pElection.getDescription());
-        election.setProperty("results", pElection.getResults());
-
-        electionDatastore.put(election);
+        b.setId(pElection.getId());
+        b.setDescription(pElection.getDescription());
+        b.setDate(pElection.getDate());
+        b.setTitle(pElection.getTitle());
+        b.setResults(pElection.getResults());
     }
 }
