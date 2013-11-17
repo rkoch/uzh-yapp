@@ -34,6 +34,7 @@ import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -44,7 +45,11 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
+import ch.uzh.ifi.se.yapp.model.dto.ResultDTO;
+import ch.uzh.ifi.se.yapp.model.dto.ResultLabelDTO;
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 
 
@@ -55,32 +60,29 @@ public class ApplicationBootstrap
         implements EntryPoint {
 
     private final VerticalPanel     mMainPanel;
-    private final IYappServiceAsync mService;
+    private final IYappServiceAsync mRemoteService;
 
     private TextBox                 mTitleInput;
     private TextBox                 mAuthorInput;
     private ListBox                 mYearInput;
     private ListBox                 mElectionInput;
     private TextArea                mCommentInput;
+    private Button                  mSaveButton;
 
 
     public ApplicationBootstrap() {
         mMainPanel = new VerticalPanel();
-        mService = GWT.create(IYappService.class);
+        mRemoteService = GWT.create(IYappService.class);
     }
 
 
     @Override
     public void onModuleLoad() {
-        // Get basic data
-
-        // TODO Create main layout
-
         // Get display type (display or create)
         String id = Window.Location.getParameter("id");
         if (id == null) {
             // We are in creation state
-            mService.getElections(new AsyncCallback<ElectionDTO[]>() {
+            mRemoteService.getElections(new AsyncCallback<ElectionDTO[]>() {
 
                 @Override
                 public void onSuccess(ElectionDTO[] pResult) {
@@ -90,20 +92,26 @@ public class ApplicationBootstrap
                 @Override
                 public void onFailure(Throwable pCaught) {
                     // TODO Display error message
+                    Window.alert("There was an error on the server: " + pCaught.getMessage());
                 }
             });
         } else {
             // We are in visualisation state
-            mService.getVisualisation(id, new AsyncCallback<VisualisationDTO>() {
+            mRemoteService.getVisualisation(id, new AsyncCallback<VisualisationDTO>() {
 
                 @Override
                 public void onSuccess(VisualisationDTO pResult) {
-                    buildVisualizeMask(pResult);
+                    if (pResult != null) {
+                        buildVisualizeMask(pResult);
+                    } else {
+                        build404Mask();
+                    }
                 }
 
                 @Override
                 public void onFailure(Throwable pCaught) {
                     // TODO Display error message
+                    Window.alert("There was an error on the server: " + pCaught.getMessage());
                 }
 
             });
@@ -204,9 +212,9 @@ public class ApplicationBootstrap
         HorizontalPanel panelSave = new HorizontalPanel();
         mMainPanel.add(panelSave);
 
-        Button saveBtn = new Button("Speichern");
-        panelSave.add(saveBtn);
-        saveBtn.addClickHandler(new ClickHandler() {
+        mSaveButton = new Button("Speichern");
+        panelSave.add(mSaveButton);
+        mSaveButton.addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent pEvent) {
@@ -223,53 +231,126 @@ public class ApplicationBootstrap
         mMainPanel.clear();
 
         // heading
-//        HorizontalPanel panelHeading = new HorizontalPanel();
-//        panelHeading.add(new HTML("<h1>Visualisierung erzeugen</h1>"));
-//        mMainPanel.add(panelHeading);
+        HorizontalPanel panelHeading = new HorizontalPanel();
+        mMainPanel.add(panelHeading);
 
-        // title
-//        HorizontalPanel panelTitle = new HorizontalPanel();
-//        mMainPanel.add(panelTitle);
+        panelHeading.add(new HTML("<h1>" + pData.getTitle() + "</h1>"));
+        panelHeading.add(new HTML("<small>von " + pData.getAuthor() + "</small>"));
 
+        // info
+        HorizontalPanel panelInfo = new HorizontalPanel();
+        mMainPanel.add(panelInfo);
+
+        panelInfo.add(new HTML("<p>Abstimmung: " + pData.getElection().getTitle() + "</p>"));
+
+        // show table
+        FlexTable table = new FlexTable();
+        table.setText(0, 0, "Bezirk");
+        table.setText(0, 1, "Ja-Stimmen");
+        table.setText(0, 2, "Nein-Stimmen");
+        table.setText(0, 3, "Ungültige Stimmen");
+        table.setText(0, 4, "Leere Stimmen");
+        table.setText(0, 5, "Anzahl eingegangene Stimmen");
+        table.setText(0, 6, "Anzahl Stimmbürger");
+        table.setText(0, 7, "Stimmbeteiligung");
+
+        int rowIdx = 1;
+
+        for (ResultDTO res : pData.getDistrictResultList()) {
+            ResultLabelDTO label = res.getResultLabel();
+            table.setText(rowIdx, 0, res.getName());
+            table.setText(rowIdx, 1, Integer.toString(label.getYesVoteCount()));
+            table.setText(rowIdx, 2, Integer.toString(label.getNoVoteCount()));
+            table.setText(rowIdx, 3, Integer.toString(label.getInvalidVoteCount()));
+            table.setText(rowIdx, 4, Integer.toString(label.getEmptyVoteCount()));
+            table.setText(rowIdx, 5, Integer.toString(label.getDeliveredVoteCount()));
+            table.setText(rowIdx, 6, Integer.toString(label.getTotalEligibleCount()));
+            table.setText(rowIdx, 7, Double.toString(label.getRatio()) + "%");
+        }
+        mMainPanel.add(table);
     }
 
 
     private void validateAndSubmitForm() {
-        // validate
-        if (mTitleInput.getValue().isEmpty()) {
-            mTitleInput.setFocus(true);
-            mTitleInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-            return;
-        } else {
-            mTitleInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        mSaveButton.setEnabled(false);
+
+        try {
+            String title = mTitleInput.getValue();
+            String author = mAuthorInput.getValue();
+            String year = mYearInput.getValue(mYearInput.getSelectedIndex());
+            String electionId = mElectionInput.getValue(mElectionInput.getSelectedIndex());
+            String comment = mCommentInput.getValue();
+
+            // validate
+            if (title.isEmpty()) {
+                mTitleInput.setFocus(true);
+                mTitleInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+                return;
+            } else {
+                mTitleInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+            }
+
+            if (author.isEmpty()) {
+                mAuthorInput.setFocus(true);
+                mAuthorInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+                return;
+            } else {
+                mAuthorInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+            }
+
+            if ((year == null) || year.isEmpty()) {
+                mYearInput.setFocus(true);
+                mYearInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+                return;
+            } else {
+                mYearInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+            }
+
+            if ((electionId == null) || electionId.isEmpty()) {
+                mElectionInput.setFocus(true);
+                mElectionInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+                return;
+            } else {
+                mElectionInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+            }
+
+            // Submit
+
+            VisualisationCreationDTO dto = new VisualisationCreationDTO();
+            dto.setTitle(title);
+            dto.setAuthor(author);
+            dto.setElectionId(electionId);
+            dto.setComment(comment);
+            dto.setVisualizationType(VisualizationType.TABLE); // Only supporting table layout for now
+
+            mRemoteService.createVisualisation(dto, new AsyncCallback<VisualisationDTO>() {
+
+                @Override
+                public void onSuccess(VisualisationDTO pResult) {
+                    // Display visualization on successful result
+                    if (pResult != null) {
+                        buildVisualizeMask(pResult);
+                    } else {
+                        build404Mask();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable pCaught) {
+                    // TODO Display error message
+                    Window.alert("There was an error on the server: " + pCaught.getMessage());
+                }
+
+            });
+        } finally {
+            // Ensure that the button is enabled again on leaving
+            mSaveButton.setEnabled(true);
         }
+    }
 
-        if (mAuthorInput.getValue().isEmpty()) {
-            mAuthorInput.setFocus(true);
-            mAuthorInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-            return;
-        } else {
-            mAuthorInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
-        }
-
-        if (mYearInput.getValue(mYearInput.getSelectedIndex()).isEmpty()) {
-            mYearInput.setFocus(true);
-            mYearInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-            return;
-        } else {
-            mYearInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
-        }
-
-        if (mElectionInput.getValue(mElectionInput.getSelectedIndex()).isEmpty()) {
-            mElectionInput.setFocus(true);
-            mElectionInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-            return;
-        } else {
-            mElectionInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
-        }
-
-        // Submit
-
+    private void build404Mask() {
+        mMainPanel.clear();
+        Window.alert("Visualization not found or any other error occured.");
     }
 
 
