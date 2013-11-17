@@ -19,25 +19,10 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.Serializable;
 
 
-public abstract class BaseDTO {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-
-
-    /**
-     * This method converts any java.util.Date object into the default dateformat
-     * for this application.
-     * In the case of this application the format is yyyy-MM-dd (e.g. 2013-11-07)
-     *
-     * @param pDate to convert
-     * @return Converted date as String
-     */
-    public static String stringifyDate(Date pDate) {
-        return new SimpleDateFormat(DATE_FORMAT).format(pDate);
-    }
+public abstract class BaseDTO
+        implements Serializable {
 
 }

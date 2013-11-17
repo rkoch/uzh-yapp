@@ -28,9 +28,28 @@ public class VisualisationCreationDTO
         extends BaseDTO
         implements Serializable {
 
+    private String            mTitle;
+    private String            mAuthor;
     private String            mElectionId;
     private VisualizationType mVisualizationType;
+    private String            mComment;
 
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String pTitle) {
+        mTitle = pTitle;
+    }
+
+    public String getAuthor() {
+        return mAuthor;
+    }
+
+    public void setAuthor(String pAuthor) {
+        mAuthor = pAuthor;
+    }
 
     public String getElectionId() {
         return mElectionId;
@@ -46,6 +65,14 @@ public class VisualisationCreationDTO
 
     public void setVisualizationType(VisualizationType pVisualizationType) {
         mVisualizationType = pVisualizationType;
+    }
+
+    public String getComment() {
+        return mComment;
+    }
+
+    public void setComment(String pComment) {
+        mComment = pComment;
     }
 
 }
