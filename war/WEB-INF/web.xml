@@ -8,10 +8,20 @@
    <param-value>ch.uzh.ifi.se.yapp.facade.endpoints.v1.BaseEndpoint,ch.uzh.ifi.se.yapp.facade.endpoints.v1.MetaEndpoint,ch.uzh.ifi.se.yapp.facade.endpoints.v1.VisualisationEndpoint</param-value>
   </init-param>
  </servlet>
+ <servlet>
+  <servlet-name>YappGwtApiServlet</servlet-name>
+  <servlet-class>ch.uzh.ifi.se.yapp.facade.gwt.server.YappServiceImpl</servlet-class>
+ </servlet>
  <servlet-mapping>
   <servlet-name>SystemServiceServlet</servlet-name>
   <url-pattern>/_ah/spi/*</url-pattern>
  </servlet-mapping>
+
+ <servlet-mapping>
+  <servlet-name>YappGwtApiServlet</servlet-name>
+  <url-pattern>/yapp/api</url-pattern>
+ </servlet-mapping>
+ 
  
  <!-- Default page to serve -->
  <welcome-file-list>

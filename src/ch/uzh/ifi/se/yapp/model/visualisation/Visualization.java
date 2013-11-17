@@ -21,6 +21,7 @@ package ch.uzh.ifi.se.yapp.model.visualisation;
 
 import java.util.UUID;
 
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 

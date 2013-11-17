@@ -22,6 +22,8 @@ package ch.uzh.ifi.se.yapp.model.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
+
 
 /**
  * @author rko
@@ -30,10 +32,15 @@ public class VisualisationDTO
         extends BaseDTO
         implements Serializable {
 
-    private String          mId;
-    private ElectionDTO     mElection;
-    private List<ResultDTO> mCantonResultList;
-    private List<ResultDTO> mDistrictResultList;
+    private String            mId;
+    private String            mTitle;
+    private String            mAuthor;
+    private String            mComment;
+    private VisualizationType mType;
+    private ElectionDTO       mElection;
+    private List<ResultDTO>   mCantonResultList;
+    private List<ResultDTO>   mDistrictResultList;
+
 
     public String getId() {
         return mId;
@@ -43,12 +50,44 @@ public class VisualisationDTO
         mId = pId;
     }
 
-    public ElectionDTO getElectionDTO() {
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String pTitle) {
+        mTitle = pTitle;
+    }
+
+    public String getAuthor() {
+        return mAuthor;
+    }
+
+    public void setAuthor(String pAuthor) {
+        mAuthor = pAuthor;
+    }
+
+    public String getComment() {
+        return mComment;
+    }
+
+    public void setComment(String pComment) {
+        mComment = pComment;
+    }
+
+    public VisualizationType getType() {
+        return mType;
+    }
+
+    public void setType(VisualizationType pType) {
+        mType = pType;
+    }
+
+    public ElectionDTO getElection() {
         return mElection;
     }
 
-    public void setElectionDTO(ElectionDTO pElecDTO) {
-        mElection = pElecDTO;
+    public void setElection(ElectionDTO pElection) {
+        mElection = pElection;
     }
 
     public List<ResultDTO> getCantonResultList() {

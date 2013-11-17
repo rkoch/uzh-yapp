@@ -17,12 +17,11 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.dto;
+package ch.uzh.ifi.se.yapp.model.base;
 
-import java.io.Serializable;
+public enum VisualizationType {
 
-
-public abstract class BaseDTO
-        implements Serializable {
+    TABLE,
+    MAP;
 
 }

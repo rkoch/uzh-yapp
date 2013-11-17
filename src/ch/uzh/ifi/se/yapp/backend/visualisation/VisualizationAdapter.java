@@ -37,8 +37,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityConst;
 import ch.uzh.ifi.se.yapp.backend.persistence.DatastoreFactory;
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
-import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 

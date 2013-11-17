@@ -26,9 +26,9 @@ import org.junit.Test;
 
 import ch.uzh.ifi.se.yapp.ctrl.accif.AccessorFactory;
 import ch.uzh.ifi.se.yapp.ctrl.accif.IVisualisationAccessor;
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
-import ch.uzh.ifi.se.yapp.model.visualisation.VisualizationType;
 
 
 public class VisualisationManagerTest {

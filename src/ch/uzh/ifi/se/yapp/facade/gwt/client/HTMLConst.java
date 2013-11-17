@@ -17,12 +17,14 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.dto;
-
-import java.io.Serializable;
+package ch.uzh.ifi.se.yapp.facade.gwt.client;
 
 
-public abstract class BaseDTO
-        implements Serializable {
+public interface HTMLConst {
 
+    String CSS_FORM_LABEL    = "yapp-form-label";
+    String CSS_FORM_INPUT    = "yapp-form-input";
+    String CSS_FORM_TEXTAREA = "yapp-form-textarea";
+
+    String CSS_FORM_ERROR    = "yapp-form-error";
 }

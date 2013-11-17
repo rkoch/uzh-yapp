@@ -17,11 +17,37 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.visualisation;
+package ch.uzh.ifi.se.yapp.facade.gwt.client;
 
-public enum VisualizationType{
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-   TABLE, MAP
+import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
+import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 
+
+/**
+ * @author rko
+ */
+@RemoteServiceRelativePath("api")
+public interface IYappService
+        extends RemoteService {
+
+    /**
+     * @return array of {@link ElectionDTO} Metadata of all elections
+     */
+    ElectionDTO[] getElections();
+
+    /**
+     * @param pData The dto which holds any data to create a visualisation
+     * @return {@link VisualisationDTO} The created visualisation
+     */
+    VisualisationDTO createVisualisation(VisualisationCreationDTO pData);
+
+    /**
+     * @return {@link VisualisationDTO} saved visualisation
+     */
+    VisualisationDTO getVisualisation(String pId);
 
 }
