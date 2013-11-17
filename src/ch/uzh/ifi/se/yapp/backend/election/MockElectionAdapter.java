@@ -74,8 +74,8 @@ public class MockElectionAdapter
     @Override
     public Map<String, Election> listElections() {
         Map<String, Election> tmpMap = new HashMap<>();
-//        tmpMap.put("552.1", "Volksinitiative «Für die Ausschaffung krimineller Ausländer»");
-//        tmpMap.put("552.2", "Bundeschbeschluss über die Aus- und Wegweisung krimineller Ausländerinnen und Ausländer im Rahmen der Bundesverfassung (Gegenentwurf zur Ausschaffungsinitiative)");
+        tmpMap.put("552.1", e);
+        tmpMap.put("552.2", b);
         return tmpMap;
     }
 
