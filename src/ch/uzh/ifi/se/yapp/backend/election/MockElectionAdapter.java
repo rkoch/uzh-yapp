@@ -26,10 +26,6 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -39,7 +35,9 @@ public class MockElectionAdapter
         extends BaseObject
         implements IElectionDataAdapter {
 
-    private DatastoreService electionDatastore = DatastoreServiceFactory.getDatastoreService();
+    private Election e = new Election();
+    private Election b = new Election();
+
 
 
     @Override
@@ -50,7 +48,6 @@ public class MockElectionAdapter
 
     @Override
     public Election getElectionById(String pId) {
-        Election e = new Election();
         e.setId(pId);
         e.setTitle("Dummy Election");
         e.setDescription("leere Beschreibung");
@@ -64,7 +61,6 @@ public class MockElectionAdapter
         e.setTitle("Volksinitiative «Für die Ausschaffung krimineller Ausländer»");
         e.setDescription("leere Beschreibung");
 
-        Election b = new Election();
         b.setId("552.2");
         b.setTitle("Bundesbeschluss über die Aus- und Wegweisung krimineller Ausländerinnen und Ausländer im Rahmen der Bundesverfassung (Gegenentwurf zur Ausschaffungsinitiative)");
         b.setDescription("leere Beschreibung");
@@ -78,8 +74,8 @@ public class MockElectionAdapter
     @Override
     public Map<String, Election> listElections() {
         Map<String, Election> tmpMap = new HashMap<>();
-//        tmpMap.put("552.1", "Volksinitiative «Für die Ausschaffung krimineller Ausländer»");
-//        tmpMap.put("552.2", "Bundeschbeschluss über die Aus- und Wegweisung krimineller Ausländerinnen und Ausländer im Rahmen der Bundesverfassung (Gegenentwurf zur Ausschaffungsinitiative)");
+        tmpMap.put("552.1", e);
+        tmpMap.put("552.2", b);
         return tmpMap;
     }
 
@@ -87,14 +83,10 @@ public class MockElectionAdapter
     @Override
     public void insertElection(Election pElection) {
         // DateTime is in object pElection
-
-        Entity election = new Entity("Election", pElection.getId());
-
-        election.setProperty("id", pElection.getId());
-        election.setProperty("title", pElection.getTitle());
-        election.setProperty("description", pElection.getDescription());
-        election.setProperty("results", pElection.getResults());
-
-        electionDatastore.put(election);
+        b.setId(pElection.getId());
+        b.setDescription(pElection.getDescription());
+        b.setDate(pElection.getDate());
+        b.setTitle(pElection.getTitle());
+        b.setResults(pElection.getResults());
     }
 }
