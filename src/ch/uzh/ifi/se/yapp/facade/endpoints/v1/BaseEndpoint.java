@@ -26,7 +26,7 @@ import com.google.api.server.spi.config.Api;
 /**
  * Root YAPP API v1 Endpoint
  */
-@Api(name = "yapp", title = "YAPP Client API", version = "v1")
+@Api(name = "yapp", title = "YAPP Client API", version = "v1", description = "This is the client API for YAPP")
 public class BaseEndpoint {
 
 }
