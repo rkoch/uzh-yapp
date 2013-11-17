@@ -49,7 +49,7 @@ public class VisualizationAdapter
     /**
      * Logger to list exceptions and errors for this class.
      */
-    private Logger log = BaseObject.getLogger(VisualizationAdapter.class);
+    private Logger LOGGER = BaseObject.getLogger(VisualizationAdapter.class);
 
     @Override
     public void cleanup() {
@@ -86,7 +86,7 @@ public class VisualizationAdapter
             // NullPointerException - If any argument is null.
             visQuery.addSort(EntityConst.ID, SortDirection.ASCENDING);
         } catch (NullPointerException npe) {
-            log.log(Level.WARNING, npe.toString(), npe);
+            LOGGER.log(Level.WARNING, npe.toString(), npe);
         }
 
         PreparedQuery pq = DatastoreFactory.getVisualizationDatastore().prepare(visQuery);
@@ -108,13 +108,13 @@ public class VisualizationAdapter
                 // IllegalArgumentException - if some property of this element prevents it from being added to this list
                 tmpList.add(tmp);
             } catch (UnsupportedOperationException uoe) {
-                log.log(Level.WARNING, uoe.toString(), uoe);
+                LOGGER.log(Level.WARNING, uoe.toString(), uoe);
             } catch (ClassCastException cce) {
-                log.log(Level.WARNING, cce.toString(), cce);
+                LOGGER.log(Level.WARNING, cce.toString(), cce);
             } catch (NullPointerException npe) {
-                log.log(Level.WARNING, npe.toString(), npe);
+                LOGGER.log(Level.WARNING, npe.toString(), npe);
             } catch (IllegalArgumentException iae) {
-                log.log(Level.WARNING, iae.toString(), iae);
+                LOGGER.log(Level.WARNING, iae.toString(), iae);
             }
         }
         return tmpList;
@@ -133,11 +133,11 @@ public class VisualizationAdapter
             // DatastoreFailureException - If any other datastore error occurs.
             DatastoreFactory.getVisualizationDatastore().put(visualization);
         } catch (IllegalArgumentException iae) {
-            log.log(Level.WARNING, iae.toString(), iae);
+            LOGGER.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
-            log.log(Level.WARNING, cme.toString(), cme);
+            LOGGER.log(Level.WARNING, cme.toString(), cme);
         } catch (DatastoreFailureException dfe) {
-            log.log(Level.WARNING, dfe.toString(), dfe);
+            LOGGER.log(Level.WARNING, dfe.toString(), dfe);
         }
     }
 
