@@ -53,6 +53,7 @@ public class ImportTest {
         System.out.println(f1.exists());
         test.importElection("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
 
+        //test exception(?)
         try {
             test.importElection("notexisting.txt");
         } catch (IOException e) {
