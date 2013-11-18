@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
   
  <servlet>
   <servlet-name>SystemServiceServlet</servlet-name>
@@ -8,10 +9,12 @@
    <param-value>ch.uzh.ifi.se.yapp.facade.endpoints.v1.BaseEndpoint,ch.uzh.ifi.se.yapp.facade.endpoints.v1.MetaEndpoint,ch.uzh.ifi.se.yapp.facade.endpoints.v1.VisualisationEndpoint</param-value>
   </init-param>
  </servlet>
+
  <servlet>
   <servlet-name>YappGwtApiServlet</servlet-name>
   <servlet-class>ch.uzh.ifi.se.yapp.facade.gwt.server.YappServiceImpl</servlet-class>
  </servlet>
+
  <servlet-mapping>
   <servlet-name>SystemServiceServlet</servlet-name>
   <url-pattern>/_ah/spi/*</url-pattern>
@@ -21,8 +24,11 @@
   <servlet-name>YappGwtApiServlet</servlet-name>
   <url-pattern>/yapp/api</url-pattern>
  </servlet-mapping>
- 
- 
+
+ <listener>
+  <listener-class>ch.uzh.ifi.se.yapp.facade.servlet.ElectionImportServlet</listener-class>
+ </listener>
+
  <!-- Default page to serve -->
  <welcome-file-list>
   <welcome-file>index.html</welcome-file>
