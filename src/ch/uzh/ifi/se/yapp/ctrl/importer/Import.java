@@ -40,7 +40,7 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class Import
         extends BaseObject {
 
-    private Logger log = BaseObject.getLogger(Import.class);
+    private static final Logger LOGGER = BaseObject.getLogger(Import.class);
 
     /**
      * <b>importElection</b> <br>
@@ -98,7 +98,7 @@ public class Import
             IElectionDataAdapter adpt = BackendAccessorFactory.getElectionDataAdapter();
             adpt.insertElection(pElection);
         } catch (IOException e) {
-            log.log(Level.WARNING, e.toString(), e);
+            LOGGER.log(Level.WARNING, e.toString(), e);
         }
     }
 
