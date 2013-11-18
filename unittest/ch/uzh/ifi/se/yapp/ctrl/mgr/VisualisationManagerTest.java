@@ -41,7 +41,7 @@ public class VisualisationManagerTest {
         VisualisationDTO visualDTO = visAcc.getVisualisationById("test");
 
         assertTrue(visualDTO.getId().equals("test"));
-        assertTrue(visualDTO.getElectionDTO().getDate().equals("2003-12-21"));
+        assertTrue(visualDTO.getElection().getDate().equals("2003-12-21"));
         assertEquals(3, visualDTO.getCantonResultList().size());
     }
 
@@ -56,7 +56,7 @@ public class VisualisationManagerTest {
         VisualisationDTO visualDTO = visAcc.getVisualisationById("test");
 
         assertTrue(visualDTO.getId().equals("test"));
-        assertTrue(visualDTO.getElectionDTO().getId().equals("ElectionId"));
+        assertTrue(visualDTO.getElection().getId().equals("ElectionId"));
         assertEquals(3, visualDTO.getCantonResultList().size());
     }
 }
