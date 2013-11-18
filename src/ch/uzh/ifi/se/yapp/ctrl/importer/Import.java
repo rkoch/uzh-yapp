@@ -20,8 +20,9 @@
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,13 +51,13 @@ public class Import
      * @param pFile in .csv format
      * @throws IOException
      */
-    public void importElection(String pFilePath)
+    public void importElection(InputStream pFilePath)
             throws IOException {
         try {
             Election pElection = new Election();
             List<DistrictResult> pList = new ArrayList<>();
 
-            BufferedReader br = new BufferedReader(new FileReader(pFilePath));
+            BufferedReader br = new BufferedReader(new InputStreamReader(pFilePath, "ISO-8859-1"));
             String line = null;
             int count = 0;
 
