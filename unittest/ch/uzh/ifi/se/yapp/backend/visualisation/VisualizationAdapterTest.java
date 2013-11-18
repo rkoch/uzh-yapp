@@ -50,6 +50,8 @@ public class VisualizationAdapterTest {
     @After
     public void tearDown() {
         mHelper.tearDown();
+        mVisualizationAdpt = null;
+        mVisualization = null;
     }
 
 
