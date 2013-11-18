@@ -75,7 +75,7 @@ public class VisualizationAdapterTest {
         assertEquals(tmpList.get(0).getElectionId(), "552.1");
         assertEquals(tmpList.get(0).getType(), VisualizationType.MAP);
         assertEquals(tmpList.get(1).getElectionId(), "552.2");
-        assertEquals(tmpList.get(0).getType(), VisualizationType.MAP);
+        assertEquals(tmpList.get(1).getType(), VisualizationType.MAP);
     }
 
     @Test
