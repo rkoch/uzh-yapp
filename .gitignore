@@ -16,7 +16,7 @@
 /classes/
 /deploy/
 /dist/
-/lib/
+#/lib/
 /log/
 /reports/
 /test/
