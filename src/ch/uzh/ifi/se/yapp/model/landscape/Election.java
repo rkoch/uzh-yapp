@@ -123,7 +123,26 @@ extends BaseObject {
      */
     @Override
     public String toString() {
-        return (mId + "," + mTitle + "," + mDescription + "," + mDate.toString());
+        String res = "";
+        if (mId != null) {
+            res += mId + ",";
+        } else {
+            res += ",";
+        }
+        if (mTitle != null) {
+            res += mTitle + ",";
+        } else {
+            res += ",";
+        }
+        if (mDescription != null) {
+            res += mDescription + ",";
+        } else {
+            res += ",";
+        }
+        if (mDate != null) {
+            res += mDate.toString();
+        }
+        return res;
     }
 
 
