@@ -89,12 +89,12 @@ public class Import
                     pDResult.setRatio();
                     pDResult.setYesVoteRatio();
 
-                    pElection.setResults(pList);
+                    pList.add(pDResult);
                 }
                 count++;
-
-
             }
+
+            pElection.setResults(pList);
 
             br.close();
 
