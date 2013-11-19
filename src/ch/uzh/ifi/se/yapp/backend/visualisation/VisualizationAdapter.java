@@ -84,7 +84,7 @@ public class VisualizationAdapter
         Query visQuery = new Query(EntityConst.VISUALIZATION);
         try {
             // NullPointerException - If any argument is null.
-            visQuery.addSort(EntityConst.ID, SortDirection.ASCENDING);
+            visQuery.addSort(EntityConst.ELECTION_ID, SortDirection.ASCENDING);
         } catch (NullPointerException npe) {
             log.log(Level.WARNING, npe.toString(), npe);
         }

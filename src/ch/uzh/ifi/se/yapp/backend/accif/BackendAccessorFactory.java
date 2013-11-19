@@ -19,10 +19,10 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
-import ch.uzh.ifi.se.yapp.backend.election.MockElectionAdapter;
-import ch.uzh.ifi.se.yapp.backend.geo.MockGeoDataAdapter;
-import ch.uzh.ifi.se.yapp.backend.landscape.MockLandscapeAdapter;
-import ch.uzh.ifi.se.yapp.backend.visualisation.MockVisualizationAdapter;
+import ch.uzh.ifi.se.yapp.backend.election.ElectionAdapter;
+import ch.uzh.ifi.se.yapp.backend.geo.GeoDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.landscape.LandscapeAdapter;
+import ch.uzh.ifi.se.yapp.backend.visualisation.VisualizationAdapter;
 
 
 public abstract class BackendAccessorFactory {
@@ -34,10 +34,10 @@ public abstract class BackendAccessorFactory {
 
 
     static {
-        sElectionAdpt = new MockElectionAdapter();
-        sGeoAdpt = new MockGeoDataAdapter();
-        sLandAdpt = new MockLandscapeAdapter();
-        sVisAdpt = new MockVisualizationAdapter();
+        sElectionAdpt = new ElectionAdapter();
+        sGeoAdpt = new GeoDataAdapter();
+        sLandAdpt = new LandscapeAdapter();
+        sVisAdpt = new VisualizationAdapter();
     }
 
 
