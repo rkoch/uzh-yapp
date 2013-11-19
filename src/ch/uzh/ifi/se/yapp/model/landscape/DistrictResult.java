@@ -107,6 +107,12 @@ public class DistrictResult
         return mEmptyVoteCount = mValidVoteCount - mYesVoteCount - mNoVoteCount;
     }
 
+
+    public void setEmptyVoteCount() {
+        mEmptyVoteCount = mValidVoteCount - mYesVoteCount - mNoVoteCount;
+    }
+
+
     /** <b>getRatio</b>
      * <br>Description: computes part of eligible voter who actually voted
      * @pre     mDelivededVoteCount && mTotalEligible are set
@@ -116,6 +122,11 @@ public class DistrictResult
         return mRatio = mDeliveredVoteCount / (double)mTotalEligibleCount;
     }
 
+    public void setRatio() {
+        mRatio = (double) mDeliveredVoteCount / (double) mTotalEligibleCount;
+    }
+
+
     /** <b>getYesVoteRatio</b>
      * <br>Description: computes part of valid votes which are yes-votes
      * @pre     mYesVoteCount && mValidVoteCount are set
@@ -123,6 +134,10 @@ public class DistrictResult
      */
     public double getYesVoteRatio() {
         return mYesVoteRatio =  (double)mYesVoteCount / (double)mValidVoteCount;
+    }
+
+    public void setYesVoteRatio() {
+        mYesVoteRatio = (double)mYesVoteCount / (double)mValidVoteCount;
     }
 
     public District getDistrict() {
