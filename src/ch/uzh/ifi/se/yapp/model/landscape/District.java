@@ -28,17 +28,18 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class District
         extends BaseObject {
 
-    private String mId; // Id ("BezirksNr")
-    private String mName; // Name of District
-    private String mCantonId; // Id of Canton ("KantonsNr")
-    private String mCanton; // Name of Canton
+    private String    mId;       // Id ("BezirksNr")
+    private String    mName;     // Name of District
+    private String    mCantonId; // Id of Canton ("KantonsNr")
+    private String    mCanton;   // Name of Canton
     private LocalDate mLocalDate; // Date in which above properties existed
 
 
 
     /**
-     * <b>District</b>
-     * <br>Description: Creates a new instance of this object using a string. Its format must be: id,name,cantonId,canton,localdate
+     * <b>District</b> <br>
+     * Description: Creates a new instance of this object using a string. Its format must be: id,name,cantonId,canton,localdate
+     *
      * @param pString
      */
     public District(String pString) {
@@ -76,6 +77,7 @@ public class District
     public void setCantonId(String pCantonId) {
         mCantonId = pCantonId;
     }
+
     public String getCanton() {
         return mCanton;
     }
@@ -97,7 +99,32 @@ public class District
      */
     @Override
     public String toString() {
-        return (mId + "," + mName + "," + mCantonId + "," + mCanton + "," + mLocalDate.toString());
+        String res = "";
+        if (mId != null) {
+            res += mId + ",";
+        } else {
+            res += ",";
+        }
+        if (mName != null) {
+            res += mName + ",";
+        } else {
+            res += ",";
+        }
+        if (mCantonId != null) {
+            res += mCantonId + ",";
+        } else {
+            res += ",";
+        }
+        if (mCanton != null) {
+            res += mCanton + ",";
+        } else {
+            res += ",";
+        }
+        if (mLocalDate != null) {
+            res += mLocalDate.toString();
+        }
+        return res;
     }
+
 
 }
