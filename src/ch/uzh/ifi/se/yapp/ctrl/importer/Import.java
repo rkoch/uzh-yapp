@@ -85,6 +85,9 @@ public class Import
                     pDResult.setValidVoteCount(Integer.parseInt(cells[5]));
                     pDResult.setYesVoteCount(Integer.parseInt(cells[6]));
                     pDResult.setNoVoteCount(Integer.parseInt(cells[7]));
+                    pDResult.setEmptyVoteCount();
+                    pDResult.setRatio();
+                    pDResult.setYesVoteRatio();
 
                     pElection.setResults(pList);
                 }
