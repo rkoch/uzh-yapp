@@ -21,6 +21,7 @@ package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -111,53 +112,61 @@ public class Import
      * @return LocalDate
      */
     public LocalDate getDate(String pDate) {
-        String[] fragments = pDate.split(" ");
+        try {
+            String[] fragments = pDate.split(" ");
 
-        int day = Integer.parseInt(fragments[2]);
-        int month = 0;
-        int year = Integer.parseInt(fragments[4]);
+            int day = Integer.parseInt(fragments[2]);
+            int month = 0;
+            int year = Integer.parseInt(fragments[4]);
 
-        switch (fragments[3]) {
-            case "Januar":
-                month = 1;
-                break;
-            case "Februar":
-                month = 2;
-                break;
-            case "März":
-                month = 3;
-                break;
-            case "April":
-                month = 4;
-                break;
-            case "Mai":
-                month = 5;
-                break;
-            case "Juni":
-                month = 6;
-                break;
-            case "Juli":
-                month = 7;
-                break;
-            case "August":
-                month = 8;
-                break;
-            case "September":
-                month = 9;
-                break;
-            case "Oktober":
-                month = 10;
-                break;
-            case "November":
-                month = 11;
-                break;
-            case "Dezember":
-                month = 12;
-                break;
+            switch (fragments[3]) {
+                case "Januar":
+                    month = 1;
+                    break;
+                case "Februar":
+                    month = 2;
+                    break;
+                case "März":
+                    month = 3;
+                    break;
+                case "April":
+                    month = 4;
+                    break;
+                case "Mai":
+                    month = 5;
+                    break;
+                case "Juni":
+                    month = 6;
+                    break;
+                case "Juli":
+                    month = 7;
+                    break;
+                case "August":
+                    month = 8;
+                    break;
+                case "September":
+                    month = 9;
+                    break;
+                case "Oktober":
+                    month = 10;
+                    break;
+                case "November":
+                    month = 11;
+                    break;
+                case "Dezember":
+                    month = 12;
+                    break;
+                default:
+                    throw new InvalidParameterException();
+            }
+
+            LocalDate date = new LocalDate(year, month, day);
+
+            return date;
+        } catch (InvalidParameterException e) {
+            log.log(Level.WARNING, e.toString(), e);
         }
 
-        LocalDate date = new LocalDate(year, month, day);
-
-        return date;
+        return null;
     }
 }
