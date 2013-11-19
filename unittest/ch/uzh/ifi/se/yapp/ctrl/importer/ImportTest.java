@@ -51,11 +51,11 @@ public class ImportTest {
         Import test = new Import();
         File f1 = new File("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
         System.out.println(f1.exists());
-        test.importElection("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
+        test.importElection(getClass().getResourceAsStream("/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv"));
 
         // test exception(?)
         try {
-            test.importElection("notexisting.txt");
+            test.importElection(getClass().getResourceAsStream("notexisting.txt"));
         } catch (IOException e) {
             System.out.println("Exeption catched.");
         }

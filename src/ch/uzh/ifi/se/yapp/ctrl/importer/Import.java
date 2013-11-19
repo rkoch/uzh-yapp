@@ -21,9 +21,9 @@ package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -164,7 +164,7 @@ public class Import
 
             return date;
         } catch (InvalidParameterException e) {
-            log.log(Level.WARNING, e.toString(), e);
+            LOGGER.log(Level.WARNING, e.toString(), e);
         }
 
         return null;
