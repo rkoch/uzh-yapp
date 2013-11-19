@@ -64,9 +64,6 @@ public class Import
 
             // reads .csv until all lines are finished
             while ((line = br.readLine()) != null) {
-                DistrictResult pDResult = new DistrictResult();
-                District pDistrict = new District();
-
                 String[] cells = line.split(";");
 
                 // writes data in DistrictResult
@@ -76,6 +73,9 @@ public class Import
                 } else if (count == 1) {
                     pElection.setTitle(cells[0]);
                 } else {
+                    DistrictResult pDResult = new DistrictResult();
+                    District pDistrict = new District();
+
                     pDistrict.setId(cells[0]);
                     pDistrict.setName(cells[1]);
                     pDResult.setDistrict(pDistrict);
@@ -85,16 +85,15 @@ public class Import
                     pDResult.setValidVoteCount(Integer.parseInt(cells[5]));
                     pDResult.setYesVoteCount(Integer.parseInt(cells[6]));
                     pDResult.setNoVoteCount(Integer.parseInt(cells[7]));
+
+                    pElection.setResults(pList);
                 }
                 count++;
 
-                // adds DistrictResult to the Election
-                pList.add(pDResult);
+
             }
 
             br.close();
-
-            pElection.setResults(pList);
 
             // saves Election on server (Google App Engine)
             IElectionDataAdapter adpt = BackendAccessorFactory.getElectionDataAdapter();

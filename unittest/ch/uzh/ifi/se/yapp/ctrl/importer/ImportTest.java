@@ -44,20 +44,24 @@ public class ImportTest {
         mHelper.tearDown();
     }
 
-
     @Test
     public void test()
             throws IOException {
         Import test = new Import();
         File f1 = new File("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
         System.out.println(f1.exists());
-        test.importElection(getClass().getResourceAsStream("/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv"));
+
+       try {
+           test.importElection(getClass().getResourceAsStream("test.csv"));
+       } catch (NullPointerException e) {
+           System.out.println(e.toString());
+       }
 
         // test exception(?)
         try {
             test.importElection(getClass().getResourceAsStream("notexisting.txt"));
-        } catch (IOException e) {
-            System.out.println("Exeption catched.");
+        } catch (NullPointerException e) {
+            System.out.println(e.toString());
         }
     }
 
