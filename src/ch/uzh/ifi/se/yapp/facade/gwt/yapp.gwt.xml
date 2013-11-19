@@ -28,4 +28,6 @@
   
   <inherits name='ch.uzh.ifi.se.yapp.model.dto'/>
 
+  <!-- RPC Interfaces -->
+  <servlet path='/foo' class='com.example.foo.server.FooServiceImpl'/>
 </module>
