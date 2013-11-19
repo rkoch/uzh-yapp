@@ -57,7 +57,7 @@ public class ElectionAdapter
     /**
      * Logger to list exceptions and errors for this class.
      */
-    private Logger log = BaseObject.getLogger(ElectionAdapter.class);
+    private static final Logger LOGGER = BaseObject.getLogger(ElectionAdapter.class);
 
 
 
@@ -74,7 +74,7 @@ public class ElectionAdapter
         Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
 
         Query electionQuery = new Query(EntityConst.ELECTION).setFilter(idFilter);
-        PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
+        PreparedQuery pq = DatastoreFactory.getElectionDatastore().prepare(electionQuery);
 
         for (Entity result : pq.asIterable()) {
             tmpElection.setId((String) result.getProperty(EntityConst.ID));
@@ -114,9 +114,9 @@ public class ElectionAdapter
                 // NullPointerException - If any argument is null.
                 electionQuery.addSort(EntityConst.LOCAL_DATE, SortDirection.ASCENDING);
             } catch (NullPointerException npe) {
-                log.log(Level.WARNING, npe.toString(), npe);
+                LOGGER.log(Level.WARNING, npe.toString(), npe);
             }
-            PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
+            PreparedQuery pq = DatastoreFactory.getElectionDatastore().prepare(electionQuery);
 
             // go over all received results
             for (Entity result : pq.asIterable()) {
@@ -144,13 +144,13 @@ public class ElectionAdapter
             }
 
         } catch (IllegalArgumentException iae) {
-            log.log(Level.WARNING, iae.toString(), iae);
+            LOGGER.log(Level.WARNING, iae.toString(), iae);
         } catch (UnsupportedOperationException uoe) {
-            log.log(Level.WARNING, uoe.toString(), uoe);
+            LOGGER.log(Level.WARNING, uoe.toString(), uoe);
         } catch (ClassCastException cce) {
-            log.log(Level.WARNING, cce.toString(), cce);
+            LOGGER.log(Level.WARNING, cce.toString(), cce);
         } catch (NullPointerException npe) {
-            log.log(Level.WARNING, npe.toString(), npe);
+            LOGGER.log(Level.WARNING, npe.toString(), npe);
         }
         return tmpList;
     }
@@ -167,10 +167,10 @@ public class ElectionAdapter
             // NullPointerException - If any argument is null.
             electionQuery.addSort(EntityConst.ID, SortDirection.ASCENDING);
         } catch (NullPointerException npe) {
-            log.log(Level.WARNING, npe.toString(), npe);
+            LOGGER.log(Level.WARNING, npe.toString(), npe);
         }
         // retrieve results
-        PreparedQuery pq = DatastoreFactory.electionDatastore.prepare(electionQuery);
+        PreparedQuery pq = DatastoreFactory.getElectionDatastore().prepare(electionQuery);
 
         // go over all received results
         for (Entity result : pq.asIterable()) {
@@ -198,13 +198,13 @@ public class ElectionAdapter
                 // IllegalArgumentException - if some property of the specified key or value prevents it from being stored in this map
                 tmpMap.put(tmpElection.getId(), tmpElection);
             } catch (UnsupportedOperationException uoe) {
-                log.log(Level.WARNING, uoe.toString(), uoe);
+                LOGGER.log(Level.WARNING, uoe.toString(), uoe);
             } catch (ClassCastException cce) {
-                log.log(Level.WARNING, cce.toString(), cce);
+                LOGGER.log(Level.WARNING, cce.toString(), cce);
             } catch (NullPointerException npe) {
-                log.log(Level.WARNING, npe.toString(), npe);
+                LOGGER.log(Level.WARNING, npe.toString(), npe);
             } catch (IllegalArgumentException iae) {
-                log.log(Level.WARNING, iae.toString(), iae);
+                LOGGER.log(Level.WARNING, iae.toString(), iae);
             }
         }
         return tmpMap;
@@ -231,13 +231,13 @@ public class ElectionAdapter
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.electionDatastore.put(election);
+            DatastoreFactory.getElectionDatastore().put(election);
         } catch (IllegalArgumentException iae) {
-            log.log(Level.WARNING, iae.toString(), iae);
+            LOGGER.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
-            log.log(Level.WARNING, cme.toString(), cme);
+            LOGGER.log(Level.WARNING, cme.toString(), cme);
         } catch (DatastoreFailureException dfe) {
-            log.log(Level.WARNING, dfe.toString(), dfe);
+            LOGGER.log(Level.WARNING, dfe.toString(), dfe);
         }
     }
 

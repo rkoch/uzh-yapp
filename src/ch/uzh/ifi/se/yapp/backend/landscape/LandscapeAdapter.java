@@ -60,7 +60,7 @@ public class LandscapeAdapter
     public District getDistrictById(String pId) {
         Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
         Query districtQuery = new Query(EntityConst.DISTRICT).setFilter(idFilter);
-        PreparedQuery pq = DatastoreFactory.districtDatastore.prepare(districtQuery);
+        PreparedQuery pq = DatastoreFactory.getDistrictDatastore().prepare(districtQuery);
         District tmp = new District();
 
         for (Entity result : pq.asIterable()) {
@@ -84,7 +84,7 @@ public class LandscapeAdapter
             Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString());
 
             Query districtQuery = new Query(EntityConst.DISTRICT).setFilter(dateMaxFilter);
-            PreparedQuery pq = DatastoreFactory.districtDatastore.prepare(districtQuery);
+            PreparedQuery pq = DatastoreFactory.getDistrictDatastore().prepare(districtQuery);
 
             // tmpMaxDate is newest Change of District pDistrictId
             LocalDate tmpMaxDate = new LocalDate(1848, 1, 1); // year, month, dayOfmonth
@@ -124,7 +124,7 @@ public class LandscapeAdapter
             LOGGER.log(Level.WARNING, npe.toString(), npe);
         }
 
-        PreparedQuery pq = DatastoreFactory.districtDatastore.prepare(districtQuery);
+        PreparedQuery pq = DatastoreFactory.getDistrictDatastore().prepare(districtQuery);
 
         for (Entity result : pq.asIterable()) {
             District tmp = new District();
@@ -170,7 +170,7 @@ public class LandscapeAdapter
             // IllegalArgumentException - If the specified entity was incomplete.
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.districtDatastore.put(district);
+            DatastoreFactory.getDistrictDatastore().put(district);
         } catch (IllegalArgumentException iae) {
             LOGGER.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
