@@ -127,23 +127,23 @@ extends BaseObject {
         if (mId != null) {
             res += mId + ",";
         } else {
-            res += ",";
+            res += " ,";
         }
         if (mTitle != null) {
             res += mTitle + ",";
         } else {
-            res += ",";
+            res += " ,";
         }
         if (mDescription != null) {
             res += mDescription + ",";
         } else {
-            res += ",";
+            res += " ,";
         }
         if (mDate != null) {
-            res += mDate.toString();
+            res += mDate.toString() + ",";
+        } else {
+            res += " ,";
         }
         return res;
     }
-
-
 }

@@ -44,11 +44,14 @@ public class District
      */
     public District(String pString) {
         String[] arr = pString.split(",");
+        //System.out.println("District: " + arr[0] + ", " + arr[1] + "," + arr[2] + ", " + arr[3] + ", " + arr[4] + ":::");
+
         mId = arr[0];
         mName = arr[1];
         mCantonId = arr[2];
         mCanton = arr[3];
         mLocalDate = new LocalDate(arr[4]);
+
     }
 
     public District() {
@@ -103,25 +106,27 @@ public class District
         if (mId != null) {
             res += mId + ",";
         } else {
-            res += ",";
+            res += " ,";
         }
         if (mName != null) {
             res += mName + ",";
         } else {
-            res += ",";
+            res += " ,";
         }
         if (mCantonId != null) {
             res += mCantonId + ",";
         } else {
-            res += ",";
+            res += " ,";
         }
         if (mCanton != null) {
             res += mCanton + ",";
         } else {
-            res += ",";
+            res += " ,";
         }
         if (mLocalDate != null) {
-            res += mLocalDate.toString();
+            res += mLocalDate.toString() + ",";
+        } else {
+            res += "1848-01-01" + ",";
         }
         return res;
     }

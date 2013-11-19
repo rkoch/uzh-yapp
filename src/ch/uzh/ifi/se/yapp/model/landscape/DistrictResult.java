@@ -58,7 +58,6 @@ public class DistrictResult
         mEmptyVoteCount = this.getEmptyVoteCount();
         mRatio = this.getRatio();
         mYesVoteRatio = this.getYesVoteRatio();
-
         mDistrict = new District(arr[1]);
     }
 
