@@ -121,7 +121,6 @@ public class Visualization
         return author;
     }
 
-
     /**
      * @param pAuthor the author to set
      */

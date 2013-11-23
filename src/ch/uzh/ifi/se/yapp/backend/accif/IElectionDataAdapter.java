@@ -41,7 +41,8 @@ public interface IElectionDataAdapter
 
     /**
      * <b>getElectionsByDateRange</b> <br>
-     * Description: Returns a List with election objects, between a range date1 and date2
+     * Description: Returns a List with election objects, between a range date1 and date2.
+     * Sorted in ascending order by date.
      *
      * @param pDate1 upper bound
      * @param pDate2 lower bound
@@ -52,8 +53,9 @@ public interface IElectionDataAdapter
     /**
      * <b>listElections</b> <br>
      * Description: returns a Map<String, String> with all Elections in it. <br>
-     * Key: ElectionId (SubmissionNr) <br>
+     * Key: ElectionId (SubmissionNr, e.g. 552.2) <br>
      * Values: Title of election.
+     * Sorted in ascending order by election id.
      *
      * @return This method returns the elections without any results (so only metadata for now)
      */

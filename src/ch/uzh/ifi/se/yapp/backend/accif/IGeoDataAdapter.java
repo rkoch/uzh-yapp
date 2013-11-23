@@ -32,6 +32,7 @@ public interface IGeoDataAdapter
     /**
      * <b>getAllGeoBoundary</b> <br>
      * Description: returns a List with all GeoBoundaries in it
+     * Sorted in ascending order by geo boundary id.
      *
      * @return List<GeoBoundary>
      */
