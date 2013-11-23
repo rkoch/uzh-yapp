@@ -73,6 +73,10 @@ public class VisualizationAdapter
             // set type
             VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
             resVis.setType(vt);
+            // set title, comment, author
+            resVis.setTitle((String) result.getProperty(EntityConst.TITLE));
+            resVis.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
+            resVis.setComment((String) result.getProperty(EntityConst.COMMENT));
         }
         return resVis;
     }
@@ -101,6 +105,11 @@ public class VisualizationAdapter
             // set type
             VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
             tmp.setType(vt);
+            // set title, author, comment
+            tmp.setTitle((String) result.getProperty(EntityConst.TITLE));
+            tmp.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
+            tmp.setComment((String) result.getProperty(EntityConst.COMMENT));
+
             try {
                 // UnsupportedOperationException - if the add operation is not supported by this list
                 // ClassCastException - if the class of the specified element prevents it from being added to this list
@@ -126,6 +135,9 @@ public class VisualizationAdapter
         visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
         visualization.setProperty(EntityConst.ELECTION_ID, pVisualization.getElectionId());
         visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType().toString());
+        visualization.setProperty(EntityConst.TITLE, pVisualization.getTitle());
+        visualization.setProperty(EntityConst.AUTHOR, pVisualization.getAuthor());
+        visualization.setProperty(EntityConst.COMMENT, pVisualization.getComment());
 
         try {
             // IllegalArgumentException - If the specified entity was incomplete.

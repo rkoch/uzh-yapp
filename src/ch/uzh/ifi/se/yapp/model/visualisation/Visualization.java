@@ -30,6 +30,9 @@ public class Visualization
 
     private UUID              mId;
     private String            mElectionId;
+    private String            title;
+    private String            comment;
+    private String            author;
     private VisualizationType mType;
 
     public Visualization() {
@@ -76,6 +79,54 @@ public class Visualization
 
     public void setElectionId(String pElectionId) {
         mElectionId = pElectionId;
+    }
+
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+
+    /**
+     * @param pTitle the title to set
+     */
+    public void setTitle(String pTitle) {
+        title = pTitle;
+    }
+
+
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
+
+
+    /**
+     * @param pComment the comment to set
+     */
+    public void setComment(String pComment) {
+        comment = pComment;
+    }
+
+
+    /**
+     * @return the author
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+
+    /**
+     * @param pAuthor the author to set
+     */
+    public void setAuthor(String pAuthor) {
+        author = pAuthor;
     }
 
     public VisualizationType getType() {
