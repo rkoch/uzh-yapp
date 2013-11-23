@@ -131,11 +131,36 @@ public class ElectionAdapterTest {
 
     @Test
     public void getElectionById() {
-        insert();
+        //insert();
         insert2();
 
         Election result = mElectionAdpt.getElectionById("551");
-        assertEquals("551", result.getId());
+        //assertEquals("551", result.getId());
+
+        // check result
+        DistrictResult dr1 = mResults.get(0);
+        DistrictResult dr2 = result.getResults().get(0);
+
+        assertEquals(dr1.getDeliveredVoteCount(), dr2.getDeliveredVoteCount());
+        //assertEquals(dr1.getDistrict(), dr2.getDistrict());
+        assertEquals(dr1.getEmptyVoteCount(), dr2.getEmptyVoteCount());
+        assertEquals(dr1.getNoVoteCount(), dr2.getNoVoteCount());
+        //assertEquals(dr1.getRatio(), dr2.getRatio());
+        assertEquals(dr1.getTotalEligibleCount(), dr2.getTotalEligibleCount());
+        assertEquals(dr1.getValidVoteCount(), dr2.getValidVoteCount());
+        assertEquals(dr1.getYesVoteCount(), dr2.getYesVoteCount());
+        //assertEquals(dr1.getYesVoteRatio(), dr2.getYesVoteRatio());
+
+        District d1 = dr1.getDistrict();
+        District d2 = dr2.getDistrict();
+
+        assertEquals(d1.getCanton(), d2.getCanton());
+        assertEquals(d1.getCantonId(), d2.getCantonId());
+        assertEquals(d1.getId(), d2.getId());
+        assertEquals(d1.getLocalDate(), d2.getLocalDate());
+        assertEquals(d1.getName(), d2.getName());
+
+
     }
 
 }
