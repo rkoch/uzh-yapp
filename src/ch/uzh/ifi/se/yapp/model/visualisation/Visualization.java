@@ -28,6 +28,9 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class Visualization
         extends BaseObject {
 
+    private String            mTitle;
+    private String            mAuthor;
+    private String            mComment;
     private UUID              mId;
     private String            mElectionId;
     private VisualizationType mType;
@@ -84,6 +87,48 @@ public class Visualization
 
     public void setType(VisualizationType pType) {
         mType = pType;
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return mTitle;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    /**
+     * @return the author
+     */
+    public String getAuthor() {
+        return mAuthor;
+    }
+
+    /**
+     * @param author the author to set
+     */
+    public void setAuthor(String author) {
+        mAuthor = author;
+    }
+
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return mComment;
+    }
+
+    /**
+     * @param comment the comment to set
+     */
+    public void setComment(String comment) {
+        mComment = comment;
     }
 
 }
