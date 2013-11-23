@@ -22,46 +22,151 @@ package ch.uzh.ifi.se.yapp.ctrl.mgr;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
-import ch.uzh.ifi.se.yapp.ctrl.accif.AccessorFactory;
-import ch.uzh.ifi.se.yapp.ctrl.accif.IMetadataAccessor;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+
+import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
+import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
+import ch.uzh.ifi.se.yapp.model.landscape.District;
+import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
+import ch.uzh.ifi.se.yapp.model.landscape.Election;
 
 
 public class MetaDataManagerTest {
 
+    private final LocalServiceTestHelper mHelper       = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
+    private Election                     mElection     = new Election();
+    private MetaDataManager              mMetaDataManager = new MetaDataManager();
+    private List<DistrictResult>         mResults      = new ArrayList<>();
+
+    @Before
+    public void setUp() {
+        mHelper.setUp();
+
+        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
+
+        mElection.setDate(new LocalDate(2013, 01, 01));
+        mElection.setDescription("Description");
+        mElection.setId("id");
+
+        DistrictResult dr = new DistrictResult();
+        dr.setDeliveredVoteCount(1);
+        dr.setNoVoteCount(1);
+        dr.setTotalEligibleCount(0);
+        dr.setValidVoteCount(1);
+        dr.setYesVoteCount(0);
+
+        District d = new District();
+        d.setCanton("Zürich");
+        d.setCantonId("1");
+        d.setId("2603");
+        d.setName("Test-Bezirk");
+        d.setLocalDate(new LocalDate(2013, 01, 01));
+
+        dr.setDistrict(d);
+        mResults.add(dr);
+
+        mElection.setResults(mResults);
+        mElection.setTitle("title");
+
+        elecAdpt.insertElection(mElection);
+    }
+
+    @After
+    public void tearDown() {
+        mHelper.tearDown();
+    }
+
     @Test
     public void testGetElectionList() {
+/*
+        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
 
-        IMetadataAccessor metAdpt = AccessorFactory.getMetaDataAccessor();
+        mElection.setDate(new LocalDate(2013, 01, 01));
+        mElection.setDescription("Description");
+        mElection.setId("id");
 
-        List<ElectionDTO> list = metAdpt.getElectionList();
+        DistrictResult dr = new DistrictResult();
+        dr.setDeliveredVoteCount(1);
+        dr.setNoVoteCount(1);
+        dr.setTotalEligibleCount(0);
+        dr.setValidVoteCount(1);
+        dr.setYesVoteCount(0);
 
-        assertEquals(0, list.size());
+        District d = new District();
+        d.setCanton("Zürich");
+        d.setCantonId("1");
+        d.setId("2603");
+        d.setName("Test-Bezirk");
+        d.setLocalDate(new LocalDate(2013, 01, 01));
+
+        dr.setDistrict(d);
+        mResults.add(dr);
+
+        mElection.setResults(mResults);
+        mElection.setTitle("title");
+
+        elecAdpt.insertElection(mElection);
+*/
+        List<ElectionDTO> list = mMetaDataManager.getElectionList();
+
+        assertEquals(1, list.size());
     }
 
     @Test
     public void testGetElectionsByDateRange() {
-        IMetadataAccessor metAdpt = AccessorFactory.getMetaDataAccessor();
+/*
+        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
 
-        List<ElectionDTO> list = metAdpt.getElectionsByDateRange("1900-01-01", "1999-01-01");
+        mElection.setDate(new LocalDate(2013, 01, 01));
+        mElection.setDescription("Description");
+        mElection.setId("id");
 
-        assertTrue(list.get(0).getId().equals("552.1"));
-        assertTrue(list.get(1).getId().equals("552.2"));
-        assertTrue(list.get(0).getTitle().equals("Volksinitiative «Für die Ausschaffung krimineller Ausländer»"));
-        assertEquals(2, list.size());
+        DistrictResult dr = new DistrictResult();
+        dr.setDeliveredVoteCount(1);
+        dr.setNoVoteCount(1);
+        dr.setTotalEligibleCount(0);
+        dr.setValidVoteCount(1);
+        dr.setYesVoteCount(0);
+
+        District d = new District();
+        d.setCanton("Zürich");
+        d.setCantonId("1");
+        d.setId("2603");
+        d.setName("Test-Bezirk");
+        d.setLocalDate(new LocalDate(2013, 01, 01));
+
+        dr.setDistrict(d);
+        mResults.add(dr);
+
+        mElection.setResults(mResults);
+        mElection.setTitle("title");
+
+        elecAdpt.insertElection(mElection);
+*/
+        List<ElectionDTO> list = mMetaDataManager.getElectionsByDateRange("2013-02-02","1900-01-01");
+
+        assertTrue(list.get(0).getId().equals("id"));
+        assertTrue(list.get(0).getTitle().equals("title"));
+        assertEquals(1, list.size());
     }
 
     @Test
     public void testGetElectoinById() {
-        IMetadataAccessor metAdpt = AccessorFactory.getMetaDataAccessor();
 
-        ElectionDTO elec = metAdpt.getElectionById("id");
+        ElectionDTO elec = mMetaDataManager.getElectionById("id");
         assertTrue(elec.getId().equals("id"));
-        assertTrue(elec.getTitle().equals("Dummy Election"));
+        assertTrue(elec.getTitle().equals("title"));
     }
 
 }
