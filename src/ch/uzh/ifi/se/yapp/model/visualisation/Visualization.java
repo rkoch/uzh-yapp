@@ -28,6 +28,7 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class Visualization
         extends BaseObject {
 
+
     private UUID              mId;
     private String            mElectionId;
     private String            title;
@@ -135,6 +136,4 @@ public class Visualization
     public void setType(VisualizationType pType) {
         mType = pType;
     }
-
-
 }

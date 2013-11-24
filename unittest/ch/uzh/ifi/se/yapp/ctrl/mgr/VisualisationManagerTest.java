@@ -136,6 +136,7 @@ public class VisualisationManagerTest {
 
         assertTrue(visualDTO.getElection().getId().equals("elecId"));
         assertTrue(visualDTO.getId().equals(id));
+
         assertEquals(1, visualDTO.getDistrictResultList().get(0).getResultLabel().getDeliveredVoteCount());
         assertEquals(3, visualDTO.getCantonResultList().get(0).getResultLabel().getDeliveredVoteCount());
         assertEquals(2, visualDTO.getDistrictResultList().size());
@@ -154,6 +155,7 @@ public class VisualisationManagerTest {
         visCre.setVisualizationType(VisualizationType.TABLE);
 
         VisualisationDTO visual = mVisualisationManager.createVisualisation(visCre);
+
 
         assertTrue(visual.getAuthor().equals("Author"));
         assertTrue(visual.getComment().equals("Comment"));

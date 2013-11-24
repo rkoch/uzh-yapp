@@ -79,6 +79,7 @@ public class VisualisationManager
         // get district boundaries
         List<ResultDTO> districtResultList = new ArrayList<ResultDTO>();
         List<DistrictResult> drRes = elec.getResults();
+
         for (DistrictResult dr : drRes) {
             ResultDTO res = new ResultDTO();
             res.setId(dr.getDistrict().getId());
