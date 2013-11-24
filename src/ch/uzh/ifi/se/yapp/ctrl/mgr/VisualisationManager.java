@@ -79,7 +79,6 @@ public class VisualisationManager
         // get district boundaries
         List<ResultDTO> districtResultList = new ArrayList<ResultDTO>();
         List<DistrictResult> drRes = elec.getResults();
-        if(drRes != null){
         for (DistrictResult dr : drRes) {
             ResultDTO res = new ResultDTO();
             res.setId(dr.getDistrict().getId());
@@ -133,7 +132,8 @@ public class VisualisationManager
                 canton.setDistrictIdList(disList);
                 cantons.add(canton);
             }
-        }}
+            res.setCantonGeoPointList(null);
+        }
 
         // create canton result list
         List<ResultDTO> cantonResultList = new ArrayList<ResultDTO>();
@@ -175,6 +175,7 @@ public class VisualisationManager
                 canRes.setCantonGeoPointList(cantonGeoPointList);
             }
             cantonResultList.add(canRes);
+            canRes.setDistrictGeoPointList(null);
         }
 
         visualDTO.setId(visual.getId().toString());

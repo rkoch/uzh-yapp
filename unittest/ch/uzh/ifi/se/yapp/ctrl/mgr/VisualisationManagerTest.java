@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.ctrl.mgr;
 
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,29 @@ public class VisualisationManagerTest {
         d.setLocalDate(new LocalDate(2013, 01, 01));
 
         dr.setDistrict(d);
+
+        DistrictResult dr2 = new DistrictResult();
+        dr2.setDeliveredVoteCount(2);
+        dr2.setNoVoteCount(2);
+        dr2.setTotalEligibleCount(2);
+        dr2.setValidVoteCount(2);
+        dr2.setYesVoteCount(0);
+        dr2.setRatio();
+        dr2.setEmptyVoteCount();
+        dr2.setYesVoteRatio();
+
+
+        District d2 = new District();
+        d2.setCanton("Zürich");
+        d2.setCantonId("1");
+        d2.setId("2604");
+        d2.setName("Test-Bezirk2");
+        d2.setLocalDate(new LocalDate(2013, 01, 01));
+
+        dr2.setDistrict(d2);
+
         mResults.add(dr);
+        mResults.add(dr2);
 
 
         mElection.setResults(mResults);
@@ -102,15 +125,6 @@ public class VisualisationManagerTest {
     public void tearDown() {
         mHelper.tearDown();
     }
-/*
-    @Test
-    public void test(){
-        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
-
-        Election elec = elecAdpt.getElectionById("elecId");
-        assertEquals(mResults,elec.getResults());
-    }
-*/
 
     @Test
     public void testGetVisualisationById() {
@@ -122,9 +136,11 @@ public class VisualisationManagerTest {
 
         assertTrue(visualDTO.getElection().getId().equals("elecId"));
         assertTrue(visualDTO.getId().equals(id));
-        //IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
-        //assertEquals(mResults, elecAdpt.getElectionById(visualDTO.getElection().getId()).getResults());
+        assertEquals(1, visualDTO.getDistrictResultList().get(0).getResultLabel().getDeliveredVoteCount());
+        assertEquals(3, visualDTO.getCantonResultList().get(0).getResultLabel().getDeliveredVoteCount());
+        assertEquals(2, visualDTO.getDistrictResultList().size());
         assertTrue(visualDTO.getElection().getDate().equals("2013-01-01"));
+
     }
 
     @Test
@@ -139,8 +155,8 @@ public class VisualisationManagerTest {
 
         VisualisationDTO visual = mVisualisationManager.createVisualisation(visCre);
 
-        //assertTrue(visual.getAuthor().equals("Author"));
-        //assertTrue(visual.getComment().equals("Comment"));
+        assertTrue(visual.getAuthor().equals("Author"));
+        assertTrue(visual.getComment().equals("Comment"));
         assertTrue(visual.getElection().getId().equals("elecId"));
 
 
