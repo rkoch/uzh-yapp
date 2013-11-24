@@ -47,4 +47,7 @@ public interface EntityConst {
     String VISUALIZATION_TYPE = "VisualizationType";
     String ELECTION_ID        = "ElectionId";
 
+    String AUTHOR             = "Author";
+    String COMMENT            = "Comment";
+
 }
