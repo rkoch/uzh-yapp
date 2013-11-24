@@ -1,4 +1,5 @@
-﻿101	1	Affoltern
+﻿
+101	1	Affoltern
 102	1	Andelfingen
 103	1	Bülach
 104	1	Dielsdorf
