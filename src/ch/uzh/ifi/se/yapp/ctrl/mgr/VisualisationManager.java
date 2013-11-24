@@ -95,7 +95,6 @@ public class VisualisationManager
             resLabel.setYesVoteRatio(dr.getYesVoteRatio());
             res.setResultLabel(resLabel);
 
-
             if (visualType == VisualizationType.TABLE) {
                 res.setDistrictGeoPointList(null);
             } else {
@@ -151,7 +150,6 @@ public class VisualisationManager
             resLabel.setTotalEligibleCount(0);
             resLabel.setYesVoteCount(0);
 
-
             for (ResultDTO disResLabel : districtResultList) {
                 if (can.getDistrictIdList().contains(disResLabel.getId())) {
                     resLabel.addResultLabels(disResLabel.getResultLabel());
@@ -177,6 +175,7 @@ public class VisualisationManager
             }
             cantonResultList.add(canRes);
             canRes.setDistrictGeoPointList(null);
+
         }
 
         visualDTO.setId(visual.getId().toString());

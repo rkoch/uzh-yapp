@@ -126,6 +126,7 @@ public class VisualisationManagerTest {
         mHelper.tearDown();
     }
 
+
     @Test
     public void testGetVisualisationById() {
 
@@ -155,7 +156,6 @@ public class VisualisationManagerTest {
         visCre.setVisualizationType(VisualizationType.TABLE);
 
         VisualisationDTO visual = mVisualisationManager.createVisualisation(visCre);
-
 
         assertTrue(visual.getAuthor().equals("Author"));
         assertTrue(visual.getComment().equals("Comment"));
