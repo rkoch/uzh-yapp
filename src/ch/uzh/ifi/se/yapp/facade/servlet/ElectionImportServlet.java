@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import ch.uzh.ifi.se.yapp.ctrl.importer.Import;
+import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImport;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -48,7 +48,7 @@ public class ElectionImportServlet
 
     @Override
     public void contextInitialized(ServletContextEvent pContextEvent) {
-        Import imp = new Import(); // TODO rko: Move this into AccessorFactory
+        ElectionImport imp = new ElectionImport(); // TODO rko: Move this into AccessorFactory
         // TODO rko: Make this general
         String[] elections = { "/elections/election-554-20110213.csv", "/elections/election-556-20121125.csv" };
 

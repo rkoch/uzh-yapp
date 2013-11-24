@@ -39,10 +39,12 @@ import ch.uzh.ifi.se.yapp.model.landscape.Election;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class Import
+public class ElectionImport
         extends BaseObject {
 
-    private static final Logger LOGGER = BaseObject.getLogger(Import.class);
+    private static final Logger LOGGER    = BaseObject.getLogger(ElectionImport.class);
+
+    private static IdImport     pIdImport = new IdImport();
 
     /**
      * <b>importElection</b> <br>
@@ -76,8 +78,9 @@ public class Import
                     DistrictResult pDResult = new DistrictResult();
                     District pDistrict = new District();
 
-                    pDistrict.setId(cells[0]);
-                    pDistrict.setName(cells[1]);
+                    if (pIdImport.getDistricts().containsKey(cells[0])) {
+                        pDistrict = pIdImport.getDistricts().get(cells[0]);
+                    }
                     pDResult.setDistrict(pDistrict);
 
                     pDResult.setTotalEligibleCount(Integer.parseInt(cells[2]));

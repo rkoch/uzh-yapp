@@ -17,16 +17,43 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.testsuites;
+package ch.uzh.ifi.se.yapp.ctrl.importer;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import java.io.IOException;
+import java.util.Map;
 
-import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImportTest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
+
+import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({ ElectionImportTest.class })
-public class ImportTestSuite {
+public class IdImportTest {
 
+    private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalTaskQueueTestConfig());
+
+    @Before
+    public void setUp() {
+        mHelper.setUp();
+    }
+
+    @After
+    public void tearDown() {
+        mHelper.tearDown();
+    }
+
+    @Test
+    public void test()
+            throws IOException {
+        IdImport test = new IdImport();
+
+        Map<String, District> districts = test.getDistricts();
+
+        District pDistrict = districts.get("101");
+        System.out.println(pDistrict.toString());
+    }
 }
