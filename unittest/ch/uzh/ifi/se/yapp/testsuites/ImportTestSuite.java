@@ -22,11 +22,11 @@ package ch.uzh.ifi.se.yapp.testsuites;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import ch.uzh.ifi.se.yapp.ctrl.importer.ImportTest;
+import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImportTest;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ ImportTest.class })
+@Suite.SuiteClasses({ ElectionImportTest.class })
 public class ImportTestSuite {
 
 }

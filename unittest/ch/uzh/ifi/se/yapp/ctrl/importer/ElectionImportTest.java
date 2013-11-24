@@ -30,7 +30,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
 
 
-public class ImportTest {
+public class ElectionImportTest {
 
     private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalTaskQueueTestConfig());
 
@@ -47,7 +47,7 @@ public class ImportTest {
     @Test
     public void test()
             throws IOException {
-        Import test = new Import();
+        ElectionImport test = new ElectionImport();
         File f1 = new File("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
         System.out.println(f1.exists());
 
