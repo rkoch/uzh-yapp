@@ -87,7 +87,7 @@ public class ElectionAdapter
             for (int i = 0; i < districtResultsId.size(); i++) {
                 districtResults.add(new DistrictResult(districtResultsId.get(i)));
             }
-
+            tmpElection.setResults(districtResults);
             // create localdate out of a string
             String tmp = (String) result.getProperty(EntityConst.LOCAL_DATE);
             tmpElection.setDate(new LocalDate(tmp));
