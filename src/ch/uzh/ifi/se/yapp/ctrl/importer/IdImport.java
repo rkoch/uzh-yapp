@@ -35,30 +35,19 @@ import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class IdImport {
+public class IdImport
+        extends BaseObject {
 
-    private static final Logger          LOGGER           = BaseObject.getLogger(ElectionImport.class);
+    private static final Logger   LOGGER            = getLogger(ElectionImport.class);
 
-    private static final String          districtFilePath = "BZ_13.txt";
-    private static final String          cantonFilePath   = "KT_09.txt";
+    private static final String   districtFilePath  = "BZ_13.txt";
+    private static final String   cantonFilePath    = "KT_09.txt";
 
-    private  Map<String, District> districts        = new HashMap<String, District>();
-    private  Map<String, String>   cantons          = new HashMap<String, String>();
+    private Map<String, District> districts         = new HashMap<String, District>();
+    private Map<String, String>   invertedDistricts = new HashMap<String, String>();
+    private Map<String, String>   cantons           = new HashMap<String, String>();
 
 
-
-    public Map<String, District> getDistricts() throws IOException {
-        try {
-
-            importDistrictsId();
-            return districts;
-
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.toString(), e);
-        }
-
-        return null;
-    }
 
     /**
      * <b>importDistrictsId</b> <br>
@@ -110,6 +99,7 @@ public class IdImport {
                 pDistrict.setLocalDate(new LocalDate("2013-01-01"));
 
                 districts.put(pId, pDistrict);
+                invertedDistricts.put(pName, pId);
             }
 
             br.close();
@@ -118,6 +108,7 @@ public class IdImport {
             LOGGER.log(Level.WARNING, e.toString(), e);
         }
     }
+
 
     /**
      * <b>importCantonId</b> <br>
@@ -157,6 +148,35 @@ public class IdImport {
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.toString(), e);
         }
+    }
+
+    public Map<String, District> getDistricts()
+            throws IOException {
+        try {
+
+            importDistrictsId();
+            return districts;
+
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e.toString(), e);
+        }
+
+        return null;
+    }
+
+
+    public Map<String, String> getInvertedDistricts()
+            throws IOException {
+        try {
+
+            importDistrictsId();
+            return invertedDistricts;
+
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e.toString(), e);
+        }
+
+        return null;
     }
 
 }
