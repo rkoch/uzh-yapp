@@ -48,9 +48,8 @@ public class GeoImport
 
     private static IdImport pIdImport = new IdImport();
 
-    public void parseKml(String filePath) {
-        InputStream is = getClass().getResourceAsStream(filePath);
-        Kml kml = Kml.unmarshal(is);
+    public void parseKml(InputStream pFilePath) {
+        Kml kml = Kml.unmarshal(pFilePath);
         Feature feature = kml.getFeature();
         parseFeature(feature);
     }
@@ -63,22 +62,24 @@ public class GeoImport
                 for (Feature documentFeature : featureList) {
                     if (documentFeature instanceof Placemark) {
                         Placemark placemark = (Placemark) documentFeature;
-                        Geometry geometry = placemark.getGeometry();
+                        if (placemark.getGeometry() instanceof Polygon) {
+                            Geometry geometry = placemark.getGeometry();
+                            GeoBoundary pGeoBoundary = new GeoBoundary();
 
-                        GeoBoundary pGeoBoundary = new GeoBoundary();
+                            pGeoBoundary.setId(placemark.getName());
+                            pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
 
-                        pGeoBoundary.setId(placemark.getName());
-                        pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
+                            pGeoBoundary.setGeoPoints(parseGeometry(geometry));
 
-                        pGeoBoundary.setGeoPoints(parseGeometry(geometry));
-
-                        IGeoDataAdapter adpt = BackendAccessorFactory.getGeoDataAdapter();
-                        adpt.insertGeoBoundary(pGeoBoundary);
+                            IGeoDataAdapter adpt = BackendAccessorFactory.getGeoDataAdapter();
+                            adpt.insertGeoBoundary(pGeoBoundary);
+                        }
                     }
                 }
             }
         }
     }
+
 
     private List<GeoPoint> parseGeometry(Geometry geometry) {
         if (geometry != null) {
@@ -92,7 +93,9 @@ public class GeoImport
                         if (coordinates != null) {
                             List<GeoPoint> pGeoPoints = new ArrayList<GeoPoint>();
                             for (Coordinate coordinate : coordinates) {
-                                pGeoPoints.add(parseCoordinate(coordinate));
+                                GeoPoint pGeoPoint = new GeoPoint();
+                                pGeoPoint = parseCoordinate(coordinate);
+                                pGeoPoints.add(pGeoPoint);
                             }
                             return pGeoPoints;
                         }
@@ -112,6 +115,9 @@ public class GeoImport
 
             pGeoPoint.setX(pX);
             pGeoPoint.setY(pY);
+
+//            System.out.println(coordinate.getLongitude());
+//            System.out.println(coordinate.getLatitude());
 
             return pGeoPoint;
         }

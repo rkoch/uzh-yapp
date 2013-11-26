@@ -19,24 +19,34 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 
 public class GeoImportTest {
 
-    public void setUp()
-            throws Exception {
+    private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
+
+    @Before
+    public void setUp() {
+        mHelper.setUp();
     }
 
-    public void tearDown()
-            throws Exception {
+    @After
+    public void tearDown() {
+        mHelper.tearDown();
     }
 
     @Test
     public void test() {
         GeoImport test = new GeoImport();
 
-        test.parseKml("geo_bound_district.kml");
+        test.parseKml(getClass().getResourceAsStream("geo_bound_district.kml"));
     }
 
 }
