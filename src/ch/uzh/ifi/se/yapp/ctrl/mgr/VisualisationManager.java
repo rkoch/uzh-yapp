@@ -212,15 +212,13 @@ public class VisualisationManager
 
     }
 
-    @Override
-    public void insertVisualization(String pId) {
-        // Mock
-        IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
-        Visualization visual = new Visualization();
-        visual.setElectionId("ElectionId");
-        visual.setType(VisualizationType.MAP);
-        visAdpt.insertVisualization(visual);
+    @Override
+    public void deletVisualization(String pId) {
+
+        IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
+        //visAdpt.deleteVisualion(pId);
     }
+
 
 }
