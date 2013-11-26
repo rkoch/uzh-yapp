@@ -52,8 +52,14 @@ public class IdImportTest {
         IdImport test = new IdImport();
 
         Map<String, District> districts = test.getDistricts();
+        Map<String, String> invertedDistricts = test.getInvertedDistricts();
 
         District pDistrict = districts.get("101");
         System.out.println(pDistrict.toString());
+        pDistrict = districts.get("1824");
+        System.out.println(pDistrict.toString());
+
+        String pId = invertedDistricts.get("Imboden");
+        System.out.println(pId);
     }
 }
