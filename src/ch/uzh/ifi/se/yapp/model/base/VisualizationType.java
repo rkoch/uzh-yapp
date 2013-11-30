@@ -22,6 +22,7 @@ package ch.uzh.ifi.se.yapp.model.base;
 public enum VisualizationType {
 
     TABLE,
-    MAP;
+    MAP,
+    TRASH; // for "deleted" visualizations
 
 }

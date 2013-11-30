@@ -28,11 +28,18 @@ public interface IVisualizationDataAdapter
         extends IBaseAdapter {
 
     /**
+     * <b>deleteVisualizationById</b>
+     * <br>Description: deletes a certain visualization by its id.
+     * @param pId String which represents the UUID.
+     */
+    void deleteVisualizationById(String pId);
+
+    /**
      * <b>getVisualizationById</b> <br>
      * Description: returns a Visualization by a certain Id. <br>
      * <b>Note: Id must be a String generated through the UUID.toString() method.</b>
      *
-     * @param pId String wich represents the UUID.
+     * @param pId String which represents the UUID.
      * @return Visualization
      */
     Visualization getVisualizationById(String pId);

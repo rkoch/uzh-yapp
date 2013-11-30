@@ -78,6 +78,7 @@ public class VisualizationAdapterTest {
         assertEquals(tmpList.get(0).getType(), VisualizationType.MAP);
         assertEquals(tmpList.get(1).getElectionId(), "552.2");
         assertEquals(tmpList.get(1).getType(), VisualizationType.MAP);
+
     }
 
     @Test
@@ -87,6 +88,20 @@ public class VisualizationAdapterTest {
         // check member variable
         assertEquals("552.1", l.getElectionId());
         assertEquals(VisualizationType.MAP, l.getType());
+    }
+
+    @Test
+    public void deleteVisualizationById() {
+        mVisualizationAdpt.deleteVisualizationById(mVisualization.getId().toString());
+        Visualization l = mVisualizationAdpt.getVisualizationById(mVisualization.getId().toString());
+        assertEquals(null, l);
+    }
+
+    @Test
+    public void deleteVisualizations() {
+        mVisualizationAdpt.deleteVisualizationById(mVisualization.getId().toString());
+        List<Visualization> list = mVisualizationAdpt.getAllVisualizations();
+        assertEquals(0, list.size());
     }
 
 }

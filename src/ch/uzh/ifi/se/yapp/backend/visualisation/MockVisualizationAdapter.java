@@ -41,6 +41,11 @@ public class MockVisualizationAdapter
     }
 
     @Override
+    public void deleteVisualizationById(String pId) {
+        System.out.println("deleted " + pId);
+    }
+
+    @Override
     public Visualization getVisualizationById(String pId) {
         Visualization v = new Visualization();
         v.setElectionId("552.1");
