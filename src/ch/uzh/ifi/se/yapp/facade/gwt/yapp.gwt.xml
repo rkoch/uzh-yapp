@@ -30,4 +30,7 @@
 
   <!-- RPC Interfaces -->
   <servlet path='/foo' class='com.example.foo.server.FooServiceImpl'/>
+  
+  <!-- Google Plus Button -->
+  <script src="http://apis.google.com/js/plusone.js" />
 </module>
