@@ -21,6 +21,7 @@ package ch.uzh.ifi.se.yapp.ctrl.mgr;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +134,12 @@ public class VisualisationManagerTest {
         String id = mVisualization.getId().toString();
 
 
-        VisualisationDTO visualDTO = mVisualisationManager.getVisualisationById(id);
+        VisualisationDTO visualDTO = null;
+        try {
+            visualDTO = mVisualisationManager.getVisualisationById(id);
+        } catch (Exception pEx) {
+            fail();
+        }
 
         assertTrue(visualDTO.getElection().getId().equals("elecId"));
         assertTrue(visualDTO.getId().equals(id));
@@ -155,7 +161,12 @@ public class VisualisationManagerTest {
         visCre.setTitle("title");
         visCre.setVisualizationType(VisualizationType.TABLE);
 
-        VisualisationDTO visual = mVisualisationManager.createVisualisation(visCre);
+        VisualisationDTO visual = null;
+        try {
+            visual = mVisualisationManager.createVisualisation(visCre);
+        } catch (Exception pEx) {
+            fail();
+        }
 
         assertTrue(visual.getAuthor().equals("Author"));
         assertTrue(visual.getComment().equals("Comment"));

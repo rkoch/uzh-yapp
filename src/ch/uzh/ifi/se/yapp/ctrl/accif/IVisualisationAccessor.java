@@ -33,7 +33,8 @@ public interface IVisualisationAccessor
      * @param pId
      * @return VisualisationDTO
      */
-    VisualisationDTO getVisualisationById(String pId);
+    VisualisationDTO getVisualisationById(String pId)
+            throws Exception;
 
 
     /**
@@ -43,7 +44,8 @@ public interface IVisualisationAccessor
      * @param VisualisationCreationDTO
      * @return VisualisationDTO
      */
-    VisualisationDTO createVisualisation(VisualisationCreationDTO pVisualisationCreationDTO);
+    VisualisationDTO createVisualisation(VisualisationCreationDTO pVisualisationCreationDTO)
+            throws Exception;
 
     /**
      * <b>deleteVisualization</b> <br>
@@ -51,6 +53,7 @@ public interface IVisualisationAccessor
      *
      * @param pId
      */
-    void deleteVisualization(String pId);
+    void deleteVisualization(String pId)
+            throws Exception;
 
 }

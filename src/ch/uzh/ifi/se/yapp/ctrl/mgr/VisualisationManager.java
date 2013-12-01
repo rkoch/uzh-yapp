@@ -22,6 +22,8 @@ package ch.uzh.ifi.se.yapp.ctrl.mgr;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.api.server.spi.response.NotFoundException;
+
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
@@ -47,7 +49,8 @@ public class VisualisationManager
         implements IVisualisationAccessor {
 
     @Override
-    public VisualisationDTO getVisualisationById(String pId) {
+    public VisualisationDTO getVisualisationById(String pId)
+            throws Exception {
 
 
         // define adapters
@@ -58,6 +61,9 @@ public class VisualisationManager
         // create new VisualisationDTO
         VisualisationDTO visualDTO = new VisualisationDTO();
         Visualization visual = visAdpt.getVisualizationById(pId);
+        if (visual == null) {
+            throw new NotFoundException("Visualisation " + pId + " was not found");
+        }
         VisualizationType visualType = visual.getType();
 
 
@@ -66,6 +72,9 @@ public class VisualisationManager
 
         // create new ElectionDTO
         Election elec = elecAdpt.getElectionById(elecId);
+        if (elec == null) {
+            throw new NotFoundException("Election " + elecId + " was not found");
+        }
         ElectionDTO elecDTO = new ElectionDTO();
         elecDTO.setId(elecId);
         elecDTO.setTitle(elec.getTitle());
@@ -192,7 +201,8 @@ public class VisualisationManager
 
 
     @Override
-    public VisualisationDTO createVisualisation(VisualisationCreationDTO pVisualisationCreationDTO) {
+    public VisualisationDTO createVisualisation(VisualisationCreationDTO pVisualisationCreationDTO)
+            throws Exception {
 
         IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
@@ -215,7 +225,8 @@ public class VisualisationManager
 
 
     @Override
-    public void deleteVisualization(String pId) {
+    public void deleteVisualization(String pId)
+            throws Exception {
         IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
         visAdpt.deleteVisualizationById(pId);
     }
