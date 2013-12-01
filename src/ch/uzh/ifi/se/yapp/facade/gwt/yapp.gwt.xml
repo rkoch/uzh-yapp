@@ -30,4 +30,7 @@
 
   <!-- RPC Interfaces -->
   <servlet path='/yapp/api' class='ch.uzh.ifi.se.yapp.facade.gwt.server.YappServiceImpl'/>
+  
+  <!-- Google Plus Button -->
+  <script src="http://apis.google.com/js/plusone.js" />
 </module>
