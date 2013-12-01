@@ -30,7 +30,7 @@
 501	5	Einsiedeln
 502	5	Gersau
 503	5	Höfe
-504	5	Küssnacht (SZ)
+504	5	Küssnacht
 505	5	March
 506	5	Schwyz
 600	6	Obwalden

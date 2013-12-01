@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import org.junit.After;
@@ -49,7 +50,11 @@ public class IdImportTest {
     @Test
     public void test()
             throws IOException {
-        IdImport test = new IdImport();
+        String[] ids = { "BZ_13.txt", "KT_09.txt" };
+        InputStream district = getClass().getResourceAsStream(ids[0]);
+        InputStream cantons = getClass().getResourceAsStream(ids[1]);
+
+        IdImport test = new IdImport(district, cantons);
 
         Map<String, District> districts = test.getDistricts();
         Map<String, String> invertedDistricts = test.getInvertedDistricts();

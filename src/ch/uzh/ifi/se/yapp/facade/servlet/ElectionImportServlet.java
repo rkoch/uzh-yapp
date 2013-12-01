@@ -28,6 +28,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImport;
+import ch.uzh.ifi.se.yapp.ctrl.importer.GeoImport;
+import ch.uzh.ifi.se.yapp.ctrl.importer.IdImport;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -48,18 +50,43 @@ public class ElectionImportServlet
 
     @Override
     public void contextInitialized(ServletContextEvent pContextEvent) {
-        ElectionImport imp = new ElectionImport(); // TODO rko: Move this into AccessorFactory
+        String[] ids = { "/id/BZ_13.txt", "/id/KT_09.txt" };
+        InputStream districts = getClass().getResourceAsStream(ids[0]);
+        InputStream cantons = getClass().getResourceAsStream(ids[1]);
+
+        IdImport imp = null;
+
+        try {
+            imp = new IdImport(districts, cantons);
+        } catch (IOException pEx1) {
+            LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during import of %s (ex=%s)", districts, pEx1.getMessage()), pEx1);
+        }
+
+
+        ElectionImport imp2 = new ElectionImport(imp); // TODO rko: Move this into AccessorFactory
         // TODO rko: Make this general
         String[] elections = { "/elections/election-554-20110213.csv", "/elections/election-556-20121125.csv" };
 
         for (String election : elections) {
             InputStream fin = getClass().getResourceAsStream(election);
             try {
-                imp.importElection(fin);
+                imp2.importElection(fin);
             } catch (IOException pEx) {
                 LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during import of %s (ex=%s)", election, pEx.getMessage()), pEx);
             }
         }
+
+
+        GeoImport imp3 = new GeoImport(imp);
+        String geoData = "/geodata/geo_bound_district.kml";
+
+        InputStream fin2 = getClass().getResourceAsStream(geoData);
+        try {
+            imp3.parseKml(fin2);
+        } catch (IOException pEx) {
+            LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during import of %s (ex=%s)", geoData, pEx.getMessage()), pEx);
+        }
+
     }
 
 }
