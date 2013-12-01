@@ -64,6 +64,7 @@ public class ApplicationBootstrap
 
     private TextBox                 mTitleInput;
     private TextBox                 mAuthorInput;
+    private ListBox                 mVisTypeInput;
     private ListBox                 mYearInput;
     private ListBox                 mElectionInput;
     private TextArea                mCommentInput;
@@ -158,6 +159,17 @@ public class ApplicationBootstrap
         panelAuthor.add(mAuthorInput);
         mAuthorInput.addKeyDownHandler(enterHandler);
 
+        // type
+        HorizontalPanel panelType = new HorizontalPanel();
+        mMainPanel.add(panelType);
+
+        addFormLabel(panelType, "Visualisierungstyp");
+        mVisTypeInput = new ListBox();
+        panelType.add(mVisTypeInput);
+        mVisTypeInput.addKeyDownHandler(enterHandler);
+        mVisTypeInput.addItem("Graphische Darstellung", VisualizationType.MAP.name());
+        mVisTypeInput.addItem("Tabellarische Darstellung", VisualizationType.TABLE.name());
+
         // year
         HorizontalPanel panelYear = new HorizontalPanel();
         mMainPanel.add(panelYear);
@@ -227,7 +239,6 @@ public class ApplicationBootstrap
         mTitleInput.setFocus(true);
     }
 
-
     private void buildVisualizeMask(final VisualisationDTO pData) {
         mMainPanel.clear();
 
@@ -245,32 +256,35 @@ public class ApplicationBootstrap
         panelInfo.add(new HTML("<p>Abstimmung: " + pData.getElection().getTitle() + "</p>"));
 
         // show table
-        FlexTable table = new FlexTable();
-        table.setText(0, 0, "Bezirk");
-        table.setText(0, 1, "Ja-Stimmen");
-        table.setText(0, 2, "Nein-Stimmen");
-        table.setText(0, 3, "Ungültige Stimmen");
-        table.setText(0, 4, "Leere Stimmen");
-        table.setText(0, 5, "Anzahl eingegangene Stimmen");
-        table.setText(0, 6, "Anzahl Stimmbürger");
-        table.setText(0, 7, "Stimmbeteiligung");
+        if (pData.getType() == VisualizationType.TABLE) {
+            FlexTable table = new FlexTable();
+            table.setText(0, 0, "Bezirk");
+            table.setText(0, 1, "Ja-Stimmen");
+            table.setText(0, 2, "Nein-Stimmen");
+            table.setText(0, 3, "Ungültige Stimmen");
+            table.setText(0, 4, "Leere Stimmen");
+            table.setText(0, 5, "Anzahl eingegangene Stimmen");
+            table.setText(0, 6, "Anzahl Stimmbürger");
+            table.setText(0, 7, "Stimmbeteiligung");
 
-        int rowIdx = 1;
+            int rowIdx = 1;
 
-        for (ResultDTO res : pData.getResults()) {
-            ResultLabelDTO label = res.getLabel();
-            table.setText(rowIdx, 0, res.getName());
-            table.setText(rowIdx, 1, Integer.toString(label.getYesVoteCount()));
-            table.setText(rowIdx, 2, Integer.toString(label.getNoVoteCount()));
-            table.setText(rowIdx, 3, Integer.toString(label.getInvalidVoteCount()));
-            table.setText(rowIdx, 4, Integer.toString(label.getEmptyVoteCount()));
-            table.setText(rowIdx, 5, Integer.toString(label.getDeliveredVoteCount()));
-            table.setText(rowIdx, 6, Integer.toString(label.getTotalEligibleCount()));
-            table.setText(rowIdx, 7, Double.toString(label.getRatio()) + "%");
-            rowIdx++;
+            for (ResultDTO res : pData.getResults()) {
+                ResultLabelDTO label = res.getLabel();
+                table.setText(rowIdx, 0, res.getName());
+                table.setText(rowIdx, 1, Integer.toString(label.getYesVoteCount()));
+                table.setText(rowIdx, 2, Integer.toString(label.getNoVoteCount()));
+                table.setText(rowIdx, 3, Integer.toString(label.getInvalidVoteCount()));
+                table.setText(rowIdx, 4, Integer.toString(label.getEmptyVoteCount()));
+                table.setText(rowIdx, 5, Integer.toString(label.getDeliveredVoteCount()));
+                table.setText(rowIdx, 6, Integer.toString(label.getTotalEligibleCount()));
+                table.setText(rowIdx, 7, Double.toString(label.getRatio()) + "%");
+                rowIdx++;
+            }
+            mMainPanel.add(table);
+        } else { // Graphical
+            // TODO rko
         }
-        mMainPanel.add(table);
-
         // Delete button
         HorizontalPanel panelActions = new HorizontalPanel();
         mMainPanel.add(panelActions);
@@ -299,12 +313,14 @@ public class ApplicationBootstrap
         String author = mAuthorInput.getValue();
         String year = mYearInput.getValue(mYearInput.getSelectedIndex());
         String electionId = mElectionInput.getValue(mElectionInput.getSelectedIndex());
+        VisualizationType visType = VisualizationType.valueOf(mVisTypeInput.getValue(mVisTypeInput.getSelectedIndex()));
         String comment = mCommentInput.getValue();
 
         // validate
         if (title.isEmpty()) {
             mTitleInput.setFocus(true);
             mTitleInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            mSaveButton.setEnabled(true);
             return;
         } else {
             mTitleInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
@@ -313,14 +329,25 @@ public class ApplicationBootstrap
         if (author.isEmpty()) {
             mAuthorInput.setFocus(true);
             mAuthorInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            mSaveButton.setEnabled(true);
             return;
         } else {
             mAuthorInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
 
+        if (visType == null) {
+            mVisTypeInput.setFocus(true);
+            mVisTypeInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            mSaveButton.setEnabled(true);
+            return;
+        } else {
+            mVisTypeInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
         if ((year == null) || year.isEmpty()) {
             mYearInput.setFocus(true);
             mYearInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            mSaveButton.setEnabled(true);
             return;
         } else {
             mYearInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
@@ -329,6 +356,7 @@ public class ApplicationBootstrap
         if ((electionId == null) || electionId.isEmpty()) {
             mElectionInput.setFocus(true);
             mElectionInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            mSaveButton.setEnabled(true);
             return;
         } else {
             mElectionInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
@@ -341,7 +369,7 @@ public class ApplicationBootstrap
         dto.setAuthor(author);
         dto.setElectionId(electionId);
         dto.setComment(comment);
-        dto.setVisualizationType(VisualizationType.TABLE); // Only supporting table layout for now
+        dto.setVisualizationType(visType);
 
         mRemoteService.createVisualisation(dto, new AsyncCallback<VisualisationDTO>() {
 
