@@ -21,6 +21,7 @@ package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -47,15 +48,24 @@ public class ElectionImportTest {
     @Test
     public void test()
             throws IOException {
-        ElectionImport test = new ElectionImport();
+
         File f1 = new File("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
         System.out.println(f1.exists());
 
-       try {
-           test.importElection(getClass().getResourceAsStream("test.csv"));
-       } catch (NullPointerException e) {
-           System.out.println(e.toString());
-       }
+        ElectionImport test = null;
+
+        try {
+            String[] ids = { "BZ_13.txt", "KT_09.txt" };
+            InputStream districts = getClass().getResourceAsStream(ids[0]);
+            InputStream cantons = getClass().getResourceAsStream(ids[1]);
+
+            IdImport imp = new IdImport(districts, cantons);
+
+            test = new ElectionImport(imp);
+            test.importElection(getClass().getResourceAsStream("test.csv"));
+        } catch (NullPointerException e) {
+            System.out.println(e.toString());
+        }
 
         // test exception(?)
         try {

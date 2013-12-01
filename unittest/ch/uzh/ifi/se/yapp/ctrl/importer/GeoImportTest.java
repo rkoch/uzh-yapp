@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -50,7 +51,13 @@ public class GeoImportTest {
 
         try {
 
-            GeoImport test = new GeoImport();
+            String[] ids = { "BZ_13.txt", "KT_09.txt" };
+            InputStream districts = getClass().getResourceAsStream(ids[0]);
+            InputStream cantons = getClass().getResourceAsStream(ids[1]);
+
+            IdImport imp = new IdImport(districts, cantons);
+
+            GeoImport test = new GeoImport(imp);
 
             test.parseKml(getClass().getResourceAsStream("geo_bound_district.kml"));
 
