@@ -51,6 +51,6 @@ public interface IVisualisationAccessor
      *
      * @param pId
      */
-    void deletVisualization(String pId);
+    void deleteVisualization(String pId);
 
 }

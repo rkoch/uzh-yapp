@@ -214,10 +214,9 @@ public class VisualisationManager
 
 
     @Override
-    public void deletVisualization(String pId) {
-
+    public void deleteVisualization(String pId) {
         IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
-        // visAdpt.deleteVisualion(pId);
+        visAdpt.deleteVisualizationById(pId);
     }
 
 
