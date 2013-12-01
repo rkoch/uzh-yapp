@@ -224,12 +224,6 @@ public class ApplicationBootstrap
 
         });
 
-        // Google+ Button
-        HorizontalPanel panelGoogleButton = new HorizontalPanel();
-        mMainPanel.add(panelGoogleButton);
-        panelGoogleButton.add( new InlineHTML("<g:plusone></g:plusone>" ));
-
-
         mTitleInput.setFocus(true);
     }
 
@@ -275,6 +269,13 @@ public class ApplicationBootstrap
             table.setText(rowIdx, 7, Double.toString(label.getRatio()) + "%");
         }
         mMainPanel.add(table);
+
+        // Google+ Button
+        HorizontalPanel panelGoogleButton = new HorizontalPanel();
+        mMainPanel.add(panelGoogleButton);
+
+        panelGoogleButton.add(new InlineHTML("<g:plusone></g:plusone>"));
+
     }
 
 
