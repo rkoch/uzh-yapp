@@ -39,4 +39,6 @@ public interface IYappServiceAsync {
 
     void getVisualisation(String pId, AsyncCallback<VisualisationDTO> pCallback);
 
+    void removeVisualisation(String pId, AsyncCallback<Void> pCallback);
+
 }

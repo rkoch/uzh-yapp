@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.facade.gwt.server;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -64,7 +65,7 @@ public class YappServiceImpl
             return ret;
         } catch (Exception pEx) {
             // Error happened
-            LOGGER.warning(String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()));
+            LOGGER.log(Level.WARNING, String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
         }
 
         return null;
@@ -79,9 +80,22 @@ public class YappServiceImpl
             return acc.getVisualisationById(pId);
         } catch (Exception pEx) {
             // Not found or some other error happened
-            LOGGER.warning(String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()));
+            LOGGER.log(Level.WARNING, String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
         }
 
         return null;
+    }
+
+
+    @Override
+    public void removeVisualisation(String pId) {
+        IVisualisationAccessor acc = AccessorFactory.getVisualisationAccessor();
+
+        try {
+            acc.deletVisualization(pId);
+        } catch (Exception pEx) {
+            // Error happened
+            LOGGER.log(Level.WARNING, String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "removeVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
+        }
     }
 }

@@ -37,7 +37,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
@@ -69,6 +68,7 @@ public class ApplicationBootstrap
     private ListBox                 mElectionInput;
     private TextArea                mCommentInput;
     private Button                  mSaveButton;
+    private Button                  mDeleteButton;
 
 
     public ApplicationBootstrap() {
@@ -270,11 +270,23 @@ public class ApplicationBootstrap
         }
         mMainPanel.add(table);
 
-        // Google+ Button
-        HorizontalPanel panelGoogleButton = new HorizontalPanel();
-        mMainPanel.add(panelGoogleButton);
+        // Delete button
+        HorizontalPanel panelActions = new HorizontalPanel();
+        mMainPanel.add(panelActions);
 
-        panelGoogleButton.add(new InlineHTML("<g:plusone></g:plusone>"));
+        mDeleteButton = new Button("Löschen");
+        panelActions.add(mDeleteButton);
+        mDeleteButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent pEvent) {
+                removeData(pData.getId());
+            }
+
+        });
+
+        // Google+ Button
+        panelActions.add(new HTML("<g:plusone></g:plusone>"));
 
     }
 
@@ -349,6 +361,28 @@ public class ApplicationBootstrap
                 Window.alert("There was an error on the server: " + pCaught.getMessage());
                 // Ensure that the button is enabled again on leaving
                 mSaveButton.setEnabled(true);
+            }
+
+        });
+    }
+
+    private void removeData(String pId) {
+        mDeleteButton.setEnabled(false);
+
+        mRemoteService.removeVisualisation(pId, new AsyncCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void pResult) {
+                String newUrl = Window.Location.createUrlBuilder().removeParameter("id").buildString();
+                Window.Location.replace(newUrl);
+            }
+
+            @Override
+            public void onFailure(Throwable pCaught) {
+                // TODO Display error message
+                Window.alert("Could not remove visualisation: " + pCaught.getMessage());
+                // Ensure that the button is enabled again on leaving
+                mDeleteButton.setEnabled(true);
             }
 
         });

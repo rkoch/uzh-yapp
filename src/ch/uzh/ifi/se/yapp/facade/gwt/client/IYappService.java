@@ -50,4 +50,9 @@ public interface IYappService
      */
     VisualisationDTO getVisualisation(String pId);
 
+    /**
+     * @param pId The visualisation id to remove
+     */
+    void removeVisualisation(String pId);
+
 }
