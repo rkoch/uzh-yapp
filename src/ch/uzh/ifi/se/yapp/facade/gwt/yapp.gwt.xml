@@ -31,4 +31,7 @@
   <!-- RPC Interfaces -->
   <servlet path='/yapp/api' class='ch.uzh.ifi.se.yapp.facade.gwt.server.YappServiceImpl'/>
 
+  <!-- Module inheriting -->
+  <inherits name="com.google.maps.gwt.GoogleMaps" />
+
 </module>

@@ -206,7 +206,7 @@ public class GeoDataAdapter
     @Override
     public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate) {
         GeoBoundary newestGeoBoundary = new GeoBoundary();
-        System.out.println("received date: " + pDate.toString());
+//        System.out.println("received date: " + pDate.toString());
         try {
             // IllegalArgumentException - If the provided filter values are not supported.
             Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString()); // YYYY-MM-DD
@@ -256,7 +256,7 @@ public class GeoDataAdapter
     @Override
     public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
         Entity geoBoundary = new Entity(EntityConst.GEO_BOUNDARY, pGeoBoundary.getId());
-        System.out.println("inserted date: " + pGeoBoundary.getLocalDate().toString());
+//        System.out.println("inserted date: " + pGeoBoundary.getLocalDate().toString());
         geoBoundary.setProperty(EntityConst.ID, pGeoBoundary.getId());
         geoBoundary.setProperty(EntityConst.LOCAL_DATE, pGeoBoundary.getLocalDate().toString());
 

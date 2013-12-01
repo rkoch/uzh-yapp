@@ -41,9 +41,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.maps.gwt.client.GoogleMap;
+import com.google.maps.gwt.client.MapOptions;
+import com.google.maps.gwt.client.MapTypeId;
 
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
@@ -284,6 +288,23 @@ public class ApplicationBootstrap
             mMainPanel.add(table);
         } else { // Graphical
             // TODO rko
+            MapOptions options = MapOptions.create();
+
+//            options.setCenter(LatLng.create(latCenter, lngCenter));
+            options.setZoom(6);
+            options.setMapTypeId(MapTypeId.ROADMAP);
+            options.setDraggable(true);
+            options.setMapTypeControl(true);
+            options.setScaleControl(true);
+            options.setScrollwheel(true);
+
+            SimplePanel widg = new SimplePanel();
+
+            widg.setSize("100%", "100%");
+
+            GoogleMap theMap = GoogleMap.create(widg.getElement(), options);
+
+            mMainPanel.add(widg);
         }
         // Delete button
         HorizontalPanel panelActions = new HorizontalPanel();

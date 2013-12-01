@@ -87,7 +87,7 @@ public class GeoImport
                             GeoBoundary pGeoBoundary = new GeoBoundary();
 
                             pGeoBoundary.setId(mIdImport.getInvertedDistricts().get(placemark.getName().toString()));
-                            pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
+                            pGeoBoundary.setLocalDate(new LocalDate("2010-01-01"));
 
 //                            if(pGeoBoundary.getId() == null) {
 //                                System.out.println(placemark.getName());

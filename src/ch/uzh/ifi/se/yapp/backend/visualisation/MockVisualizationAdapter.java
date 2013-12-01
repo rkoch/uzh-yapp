@@ -43,7 +43,7 @@ public class MockVisualizationAdapter
 
     @Override
     public void deleteVisualizationById(String pId) {
-        System.out.println("deleted " + pId);
+//        System.out.println("deleted " + pId);
     }
 
     @Override
