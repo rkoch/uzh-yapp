@@ -28,11 +28,12 @@ public class ResultLabelDTO
 
     private int    mYesVoteCount;
     private int    mNoVoteCount;
-    private int    mInvalidVoteCount;  // This is a computed value
-    private int    mEmptyVoteCount;    // This is a computed value
+    private int    mValidVoteCount;
+    private int    mEmptyVoteCount;     // This is a computed value
     private int    mTotalEligibleCount;
     private int    mDeliveredVoteCount;
-    private double mRatio;             // This is a computed value
+    private double mRatio;              // This is a computed value
+    private double mYesVoteRatio;       // This is a computed value
 
     public int getYesVoteCount() {
         return mYesVoteCount;
@@ -51,11 +52,11 @@ public class ResultLabelDTO
     }
 
     public int getInvalidVoteCount() {
-        return mInvalidVoteCount;
+        return mValidVoteCount;
     }
 
-    public void setInvalicVoteCount(int pInvalidVoteCount) {
-        mInvalidVoteCount = pInvalidVoteCount;
+    public void setInvalicVoteCount(int pValidVoteCount) {
+        mValidVoteCount = pValidVoteCount;
     }
 
     public int getEmptyVoteCount() {
@@ -90,14 +91,23 @@ public class ResultLabelDTO
         mRatio = pRatio;
     }
 
+    public double getYesVoteRatio() {
+        return mYesVoteRatio;
+    }
+
+    public void setYesVoteRatio(double yesVoteRatio) {
+        mYesVoteRatio = yesVoteRatio;
+    }
+
     public void addResultLabels(ResultLabelDTO pLabel) {
         mYesVoteCount += pLabel.getYesVoteCount();
         mNoVoteCount += pLabel.getNoVoteCount();
-        mInvalidVoteCount += pLabel.getInvalidVoteCount();
+        mValidVoteCount += pLabel.getInvalidVoteCount();
         mEmptyVoteCount += pLabel.getEmptyVoteCount();
         mTotalEligibleCount += pLabel.getTotalEligibleCount();
         mDeliveredVoteCount += pLabel.getDeliveredVoteCount();
-        mRatio = mYesVoteCount / mNoVoteCount;
-    }
+        mRatio = (double)mYesVoteCount / (double)mNoVoteCount;
+        mYesVoteRatio = (double)mYesVoteCount / (double)mValidVoteCount;
 
+    }
 }

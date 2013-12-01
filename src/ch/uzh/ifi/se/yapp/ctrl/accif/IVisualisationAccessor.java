@@ -46,11 +46,11 @@ public interface IVisualisationAccessor
     VisualisationDTO createVisualisation(VisualisationCreationDTO pVisualisationCreationDTO);
 
     /**
-     * <b>saveVisualization</b> <br>
-     * Description: saves a List<Visualization> on the server.
+     * <b>deleteVisualization</b> <br>
+     * Description: deletes a visualization from the server.
      *
-     * @param pVisualisationDTO VisualisationDTO to be saved.
+     * @param pId
      */
-    void insertVisualization(String pId);
+    void deletVisualization(String pId);
 
 }
