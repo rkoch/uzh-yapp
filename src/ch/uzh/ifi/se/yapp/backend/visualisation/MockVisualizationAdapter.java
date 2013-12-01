@@ -21,6 +21,7 @@ package ch.uzh.ifi.se.yapp.backend.visualisation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
@@ -72,8 +73,16 @@ public class MockVisualizationAdapter
     }
 
     @Override
-    public void insertVisualization(Visualization pVisualization) {
-        // TODO: implementation of jdo
+    public Visualization insertVisualization(Visualization pVisualization) {
+        Visualization tmp = new Visualization();
+        tmp.setAuthor("asdf");
+        tmp.setComment("aslödfkj");
+        tmp.setElectionId("552.2");
+        tmp.setId(new UUID(0, 0));
+        tmp.setTitle("title");
+        tmp.setType(VisualizationType.TABLE);
+        return tmp;
+
     }
 
 }

@@ -160,7 +160,7 @@ public class VisualizationAdapter
     }
 
     @Override
-    public void insertVisualization(Visualization pVisualization) {
+    public Visualization insertVisualization(Visualization pVisualization) {
 
         Entity visualization = new Entity(EntityConst.VISUALIZATION, pVisualization.getId().toString());
         visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
@@ -183,6 +183,7 @@ public class VisualizationAdapter
         } catch (DatastoreFailureException dfe) {
             LOGGER.log(Level.WARNING, dfe.toString(), dfe);
         }
+        return pVisualization;
     }
 
 }

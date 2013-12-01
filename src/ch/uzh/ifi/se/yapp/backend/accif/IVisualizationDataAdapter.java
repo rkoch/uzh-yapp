@@ -58,7 +58,8 @@ public interface IVisualizationDataAdapter
      * Description: saves a List<Visualization> on the server.
      *
      * @param pVisualization Visualization to be saved.
+     * @return the inserted visualization
      */
-    void insertVisualization(Visualization pVisualization);
+    Visualization insertVisualization(Visualization pVisualization);
 
 }
