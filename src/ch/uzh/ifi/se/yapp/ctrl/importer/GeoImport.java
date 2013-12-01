@@ -51,7 +51,11 @@ public class GeoImport
 
     private static final Logger LOGGER    = getLogger(ElectionImport.class);
 
-    private static IdImport     pIdImport = new IdImport();
+    private static IdImport     pIdImport;
+
+    public GeoImport(IdImport IdImport) {
+        pIdImport = IdImport;
+    }
 
     public void parseKml(InputStream pFilePath)
             throws IOException {
@@ -69,38 +73,32 @@ public class GeoImport
     private void parseFeature(Feature feature)
             throws IOException {
 
-        try {
+        if (feature != null) {
+            if (feature instanceof Document) {
+                Document document = (Document) feature;
+                List<Feature> featureList = document.getFeature();
+                for (Feature documentFeature : featureList) {
+                    if (documentFeature instanceof Placemark) {
+                        Placemark placemark = (Placemark) documentFeature;
+                        if (placemark.getGeometry() instanceof Polygon) {
+                            Geometry geometry = placemark.getGeometry();
+                            GeoBoundary pGeoBoundary = new GeoBoundary();
 
-            if (feature != null) {
-                if (feature instanceof Document) {
-                    Document document = (Document) feature;
-                    List<Feature> featureList = document.getFeature();
-                    for (Feature documentFeature : featureList) {
-                        if (documentFeature instanceof Placemark) {
-                            Placemark placemark = (Placemark) documentFeature;
-                            if (placemark.getGeometry() instanceof Polygon) {
-                                Geometry geometry = placemark.getGeometry();
-                                GeoBoundary pGeoBoundary = new GeoBoundary();
+                            pGeoBoundary.setId(pIdImport.getInvertedDistricts().get(placemark.getName().toString()));
+                            pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
 
-                                pGeoBoundary.setId(pIdImport.getInvertedDistricts().get(placemark.getName().toString()));
-                                pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
+//                            if(pGeoBoundary.getId() == null) {
+//                                System.out.println(placemark.getName());
+//                            }
 
-                                if(pGeoBoundary.getId() == null) {
-                                    System.out.println(placemark.getName());
-                                }
+                            pGeoBoundary.setGeoPoints(parseGeometry(geometry));
 
-                                pGeoBoundary.setGeoPoints(parseGeometry(geometry));
-
-                                IGeoDataAdapter adpt = BackendAccessorFactory.getGeoDataAdapter();
-                                adpt.insertGeoBoundary(pGeoBoundary);
-                            }
+                            IGeoDataAdapter adpt = BackendAccessorFactory.getGeoDataAdapter();
+                            adpt.insertGeoBoundary(pGeoBoundary);
                         }
                     }
                 }
             }
-
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.toString(), e);
         }
     }
 

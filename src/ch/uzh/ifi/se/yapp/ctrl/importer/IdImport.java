@@ -40,14 +40,21 @@ public class IdImport
 
     private static final Logger   LOGGER            = getLogger(ElectionImport.class);
 
-    private static final String   districtFilePath  = "BZ_13.txt";
-    private static final String   cantonFilePath    = "KT_09.txt";
-
     private Map<String, District> districts         = new HashMap<String, District>();
     private Map<String, String>   invertedDistricts = new HashMap<String, String>();
     private Map<String, String>   cantons           = new HashMap<String, String>();
 
 
+    public IdImport(InputStream districtFilePath, InputStream cantonFilePath) throws IOException {
+
+        try {
+
+            importDistrictsId(districtFilePath, cantonFilePath);
+
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e.toString(), e);
+        }
+    }
 
     /**
      * <b>importDistrictsId</b> <br>
@@ -55,15 +62,14 @@ public class IdImport
      *
      * @throws IOException
      */
-    private void importDistrictsId()
+    private void importDistrictsId(InputStream districtFilePath, InputStream cantonFilePath)
             throws IOException {
 
         try {
 
-            importCantonId();
+            importCantonId(cantonFilePath);
 
-            InputStream input = IdImport.class.getResourceAsStream(districtFilePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            BufferedReader br = new BufferedReader(new InputStreamReader(districtFilePath));
 
             String line;
 
@@ -116,13 +122,12 @@ public class IdImport
      *
      * @throws IOException
      */
-    public void importCantonId()
+    public void importCantonId(InputStream cantonFilePath)
             throws IOException {
 
         try {
 
-            InputStream input = IdImport.class.getResourceAsStream(cantonFilePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            BufferedReader br = new BufferedReader(new InputStreamReader(cantonFilePath));
 
             String line;
 
@@ -150,33 +155,15 @@ public class IdImport
         }
     }
 
-    public Map<String, District> getDistricts()
-            throws IOException {
-        try {
+    public Map<String, District> getDistricts() {
 
-            importDistrictsId();
-            return districts;
-
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.toString(), e);
-        }
-
-        return null;
+        return districts;
     }
 
 
-    public Map<String, String> getInvertedDistricts()
-            throws IOException {
-        try {
+    public Map<String, String> getInvertedDistricts() {
 
-            importDistrictsId();
-            return invertedDistricts;
-
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.toString(), e);
-        }
-
-        return null;
+        return invertedDistricts;
     }
 
 }

@@ -44,7 +44,11 @@ public class ElectionImport
 
     private static final Logger LOGGER    = BaseObject.getLogger(ElectionImport.class);
 
-    private static IdImport     pIdImport = new IdImport();
+    private static IdImport     pIdImport;
+
+    public ElectionImport(IdImport idImport) {
+        pIdImport = idImport;
+    }
 
     /**
      * <b>importElection</b> <br>
