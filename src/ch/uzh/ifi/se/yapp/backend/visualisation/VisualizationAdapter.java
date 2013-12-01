@@ -49,10 +49,33 @@ public class VisualizationAdapter
     /**
      * Logger to list exceptions and errors for this class.
      */
-    private Logger LOGGER = BaseObject.getLogger(VisualizationAdapter.class);
+    private static final Logger LOGGER = getLogger(VisualizationAdapter.class);
 
     @Override
     public void cleanup() {
+    }
+
+    @Override
+    public void deleteVisualizationById(String pId) {
+
+        Entity visualization = new Entity(EntityConst.VISUALIZATION, pId);
+        visualization.setProperty(EntityConst.ID, pId);
+        visualization.setProperty(EntityConst.ELECTION_ID, "");
+        visualization.setProperty(EntityConst.VISUALIZATION_TYPE, "TRASH");
+
+        try {
+            // IllegalArgumentException - If the specified entity was incomplete.
+            // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
+            // DatastoreFailureException - If any other datastore error occurs.
+            DatastoreFactory.getVisualizationDatastore().put(visualization);
+
+        } catch (IllegalArgumentException iae) {
+            LOGGER.log(Level.WARNING, iae.toString(), iae);
+        } catch (ConcurrentModificationException cme) {
+            LOGGER.log(Level.WARNING, cme.toString(), cme);
+        } catch (DatastoreFailureException dfe) {
+            LOGGER.log(Level.WARNING, dfe.toString(), dfe);
+        }
     }
 
     @Override
@@ -73,12 +96,17 @@ public class VisualizationAdapter
             // set type
             VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
             resVis.setType(vt);
+
             // set title, comment, author
             resVis.setTitle((String) result.getProperty(EntityConst.TITLE));
             resVis.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
             resVis.setComment((String) result.getProperty(EntityConst.COMMENT));
         }
-        return resVis;
+        if (resVis.getType() != VisualizationType.TRASH) {
+            return resVis;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -105,25 +133,27 @@ public class VisualizationAdapter
             // set type
             VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
             tmp.setType(vt);
-            // set title, author, comment
-            tmp.setTitle((String) result.getProperty(EntityConst.TITLE));
-            tmp.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
-            tmp.setComment((String) result.getProperty(EntityConst.COMMENT));
+            if (vt != VisualizationType.TRASH) {
+                // set title, author, comment
+                tmp.setTitle((String) result.getProperty(EntityConst.TITLE));
+                tmp.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
+                tmp.setComment((String) result.getProperty(EntityConst.COMMENT));
 
-            try {
-                // UnsupportedOperationException - if the add operation is not supported by this list
-                // ClassCastException - if the class of the specified element prevents it from being added to this list
-                // NullPointerException - if the specified element is null and this list does not permit null elements
-                // IllegalArgumentException - if some property of this element prevents it from being added to this list
-                tmpList.add(tmp);
-            } catch (UnsupportedOperationException uoe) {
-                LOGGER.log(Level.WARNING, uoe.toString(), uoe);
-            } catch (ClassCastException cce) {
-                LOGGER.log(Level.WARNING, cce.toString(), cce);
-            } catch (NullPointerException npe) {
-                LOGGER.log(Level.WARNING, npe.toString(), npe);
-            } catch (IllegalArgumentException iae) {
-                LOGGER.log(Level.WARNING, iae.toString(), iae);
+                try {
+                    // UnsupportedOperationException - if the add operation is not supported by this list
+                    // ClassCastException - if the class of the specified element prevents it from being added to this list
+                    // NullPointerException - if the specified element is null and this list does not permit null elements
+                    // IllegalArgumentException - if some property of this element prevents it from being added to this list
+                    tmpList.add(tmp);
+                } catch (UnsupportedOperationException uoe) {
+                    LOGGER.log(Level.WARNING, uoe.toString(), uoe);
+                } catch (ClassCastException cce) {
+                    LOGGER.log(Level.WARNING, cce.toString(), cce);
+                } catch (NullPointerException npe) {
+                    LOGGER.log(Level.WARNING, npe.toString(), npe);
+                } catch (IllegalArgumentException iae) {
+                    LOGGER.log(Level.WARNING, iae.toString(), iae);
+                }
             }
         }
         return tmpList;
@@ -131,7 +161,8 @@ public class VisualizationAdapter
 
     @Override
     public void insertVisualization(Visualization pVisualization) {
-        Entity visualization = new Entity(EntityConst.VISUALIZATION);
+
+        Entity visualization = new Entity(EntityConst.VISUALIZATION, pVisualization.getId().toString());
         visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
         visualization.setProperty(EntityConst.ELECTION_ID, pVisualization.getElectionId());
         visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType().toString());
@@ -144,6 +175,7 @@ public class VisualizationAdapter
             // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
             // DatastoreFailureException - If any other datastore error occurs.
             DatastoreFactory.getVisualizationDatastore().put(visualization);
+
         } catch (IllegalArgumentException iae) {
             LOGGER.log(Level.WARNING, iae.toString(), iae);
         } catch (ConcurrentModificationException cme) {
