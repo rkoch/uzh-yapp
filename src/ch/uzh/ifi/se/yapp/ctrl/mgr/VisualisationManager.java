@@ -179,6 +179,7 @@ public class VisualisationManager
         }
 
         visualDTO.setId(visual.getId().toString());
+        visualDTO.setType(visualType);
         visualDTO.setElection(elecDTO);
         visualDTO.setResults(districtResultList);
 //        visualDTO.setResults(cantonResultList);
