@@ -23,10 +23,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImportTest;
+import ch.uzh.ifi.se.yapp.ctrl.importer.GeoImportTest;
+import ch.uzh.ifi.se.yapp.ctrl.importer.IdImportTest;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ ElectionImportTest.class })
+@Suite.SuiteClasses({ ElectionImportTest.class, GeoImportTest.class, IdImportTest.class })
 public class ImportTestSuite {
 
 }

@@ -40,16 +40,17 @@ public class IdImport
 
     private static final Logger   LOGGER            = getLogger(ElectionImport.class);
 
-    private Map<String, District> districts         = new HashMap<String, District>();
-    private Map<String, String>   invertedDistricts = new HashMap<String, String>();
-    private Map<String, String>   cantons           = new HashMap<String, String>();
+    private Map<String, District> mDistricts         = new HashMap<String, District>();
+    private Map<String, String>   mInvertedDistricts = new HashMap<String, String>();
+    private Map<String, String>   mCantons           = new HashMap<String, String>();
 
 
-    public IdImport(InputStream districtFilePath, InputStream cantonFilePath) throws IOException {
+    public IdImport(InputStream pDistrictFilePath, InputStream pCantonFilePath)
+            throws IOException {
 
         try {
 
-            importDistrictsId(districtFilePath, cantonFilePath);
+            importDistrictsId(pDistrictFilePath, pCantonFilePath);
 
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.toString(), e);
@@ -62,14 +63,14 @@ public class IdImport
      *
      * @throws IOException
      */
-    private void importDistrictsId(InputStream districtFilePath, InputStream cantonFilePath)
+    private void importDistrictsId(InputStream pDistrictFilePath, InputStream pCantonFilePath)
             throws IOException {
 
         try {
 
-            importCantonId(cantonFilePath);
+            importCantonId(pCantonFilePath);
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(districtFilePath));
+            BufferedReader br = new BufferedReader(new InputStreamReader(pDistrictFilePath));
 
             String line;
 
@@ -101,11 +102,11 @@ public class IdImport
                 pDistrict.setId(pId);
                 pDistrict.setName(pName);
                 pDistrict.setCantonId(pCantonId);
-                pDistrict.setCanton(cantons.get(pCantonId));
+                pDistrict.setCanton(mCantons.get(pCantonId));
                 pDistrict.setLocalDate(new LocalDate("2013-01-01"));
 
-                districts.put(pId, pDistrict);
-                invertedDistricts.put(pName, pId);
+                mDistricts.put(pId, pDistrict);
+                mInvertedDistricts.put(pName, pId);
             }
 
             br.close();
@@ -145,7 +146,7 @@ public class IdImport
                     pName = itr.nextToken();
                 }
 
-                cantons.put(pId, pName);
+                mCantons.put(pId, pName);
             }
 
             br.close();
@@ -157,13 +158,13 @@ public class IdImport
 
     public Map<String, District> getDistricts() {
 
-        return districts;
+        return mDistricts;
     }
 
 
     public Map<String, String> getInvertedDistricts() {
 
-        return invertedDistricts;
+        return mInvertedDistricts;
     }
 
 }

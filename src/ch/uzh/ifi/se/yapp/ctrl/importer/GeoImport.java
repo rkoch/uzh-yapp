@@ -49,13 +49,15 @@ import de.micromata.opengis.kml.v_2_2_0.Polygon;
 public class GeoImport
         extends BaseObject {
 
-    private static final Logger LOGGER    = getLogger(ElectionImport.class);
+    private static final Logger LOGGER = getLogger(ElectionImport.class);
 
-    private static IdImport     pIdImport;
+    private final IdImport      mIdImport;
 
-    public GeoImport(IdImport IdImport) {
-        pIdImport = IdImport;
+
+    public GeoImport(IdImport pIdImport) {
+        mIdImport = pIdImport;
     }
+
 
     public void parseKml(InputStream pFilePath)
             throws IOException {
@@ -70,12 +72,12 @@ public class GeoImport
         }
     }
 
-    private void parseFeature(Feature feature)
+    private void parseFeature(Feature pFeature)
             throws IOException {
 
-        if (feature != null) {
-            if (feature instanceof Document) {
-                Document document = (Document) feature;
+        if (pFeature != null) {
+            if (pFeature instanceof Document) {
+                Document document = (Document) pFeature;
                 List<Feature> featureList = document.getFeature();
                 for (Feature documentFeature : featureList) {
                     if (documentFeature instanceof Placemark) {
@@ -84,7 +86,7 @@ public class GeoImport
                             Geometry geometry = placemark.getGeometry();
                             GeoBoundary pGeoBoundary = new GeoBoundary();
 
-                            pGeoBoundary.setId(pIdImport.getInvertedDistricts().get(placemark.getName().toString()));
+                            pGeoBoundary.setId(mIdImport.getInvertedDistricts().get(placemark.getName().toString()));
                             pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
 
 //                            if(pGeoBoundary.getId() == null) {
@@ -103,10 +105,10 @@ public class GeoImport
     }
 
 
-    private List<GeoPoint> parseGeometry(Geometry geometry) {
-        if (geometry != null) {
-            if (geometry instanceof Polygon) {
-                Polygon polygon = (Polygon) geometry;
+    private List<GeoPoint> parseGeometry(Geometry pGeometry) {
+        if (pGeometry != null) {
+            if (pGeometry instanceof Polygon) {
+                Polygon polygon = (Polygon) pGeometry;
                 Boundary outerBoundaryIs = polygon.getOuterBoundaryIs();
                 if (outerBoundaryIs != null) {
                     LinearRing linearRing = outerBoundaryIs.getLinearRing();
@@ -128,12 +130,12 @@ public class GeoImport
         return null;
     }
 
-    private GeoPoint parseCoordinate(Coordinate coordinate) {
-        if (coordinate != null) {
+    private GeoPoint parseCoordinate(Coordinate pCoordinate) {
+        if (pCoordinate != null) {
             GeoPoint pGeoPoint = new GeoPoint();
 
-            BigDecimal pX = new BigDecimal(coordinate.getLongitude());
-            BigDecimal pY = new BigDecimal(coordinate.getLatitude());
+            BigDecimal pX = new BigDecimal(pCoordinate.getLongitude());
+            BigDecimal pY = new BigDecimal(pCoordinate.getLatitude());
 
             pGeoPoint.setX(pX);
             pGeoPoint.setY(pY);

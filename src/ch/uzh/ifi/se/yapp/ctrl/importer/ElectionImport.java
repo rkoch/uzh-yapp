@@ -42,12 +42,12 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class ElectionImport
         extends BaseObject {
 
-    private static final Logger LOGGER    = BaseObject.getLogger(ElectionImport.class);
+    private static final Logger LOGGER = BaseObject.getLogger(ElectionImport.class);
 
-    private static IdImport     pIdImport;
+    private final IdImport      mIdImport;
 
-    public ElectionImport(IdImport idImport) {
-        pIdImport = idImport;
+    public ElectionImport(IdImport pIdImport) {
+        mIdImport = pIdImport;
     }
 
     /**
@@ -82,8 +82,8 @@ public class ElectionImport
                     DistrictResult pDResult = new DistrictResult();
                     District pDistrict = new District();
 
-                    if (pIdImport.getDistricts().containsKey(cells[0])) {
-                        pDistrict = pIdImport.getDistricts().get(cells[0]);
+                    if (mIdImport.getDistricts().containsKey(cells[0])) {
+                        pDistrict = mIdImport.getDistricts().get(cells[0]);
                     }
                     pDResult.setDistrict(pDistrict);
 
