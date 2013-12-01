@@ -138,9 +138,9 @@ public class VisualisationManagerTest {
         assertTrue(visualDTO.getElection().getId().equals("elecId"));
         assertTrue(visualDTO.getId().equals(id));
 
-        assertEquals(1, visualDTO.getDistrictResultList().get(0).getResultLabel().getDeliveredVoteCount());
-        assertEquals(3, visualDTO.getCantonResultList().get(0).getResultLabel().getDeliveredVoteCount());
-        assertEquals(2, visualDTO.getDistrictResultList().size());
+        assertEquals(1, visualDTO.getResults().get(0).getLabel().getDeliveredVoteCount());
+//        assertEquals(3, visualDTO.getCantonResultList().get(0).getLabel().getDeliveredVoteCount());
+        assertEquals(2, visualDTO.getResults().size());
         assertTrue(visualDTO.getElection().getDate().equals("2013-01-01"));
 
     }

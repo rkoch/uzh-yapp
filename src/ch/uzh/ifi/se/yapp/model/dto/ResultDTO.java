@@ -29,9 +29,8 @@ public class ResultDTO
 
     private String            mId;
     private String            mName;
-    private ResultLabelDTO    mResultLabel;
-    private List<GeoPointDTO> mDistrictGeoPointList;
-    private List<GeoPointDTO> mCantonGeoPointList;
+    private ResultLabelDTO    mLabel;
+    private List<GeoPointDTO> mBoundaries;
 
 
     public String getId() {
@@ -50,28 +49,20 @@ public class ResultDTO
         mName = pName;
     }
 
-    public ResultLabelDTO getResultLabel() {
-        return mResultLabel;
+    public ResultLabelDTO getLabel() {
+        return mLabel;
     }
 
-    public void setResultLabel(ResultLabelDTO pResultLabel) {
-        mResultLabel = pResultLabel;
+    public void setLabel(ResultLabelDTO pLabel) {
+        mLabel = pLabel;
     }
 
-    public List<GeoPointDTO> getGeoPointList() {
-        return mDistrictGeoPointList;
+    public List<GeoPointDTO> getBoundaries() {
+        return mBoundaries;
     }
 
-    public void setDistrictGeoPointList(List<GeoPointDTO> pDistrictGeoPointList) {
-        mDistrictGeoPointList = pDistrictGeoPointList;
-    }
-
-    public List<GeoPointDTO> getCantonGeoPointList() {
-        return mCantonGeoPointList;
-    }
-
-    public void setCantonGeoPointList(List<GeoPointDTO> pCantonGeoPointList) {
-        mCantonGeoPointList = pCantonGeoPointList;
+    public void setBoundaries(List<GeoPointDTO> pBoundaries) {
+        mBoundaries = pBoundaries;
     }
 
 }

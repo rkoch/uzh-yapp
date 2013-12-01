@@ -257,8 +257,8 @@ public class ApplicationBootstrap
 
         int rowIdx = 1;
 
-        for (ResultDTO res : pData.getDistrictResultList()) {
-            ResultLabelDTO label = res.getResultLabel();
+        for (ResultDTO res : pData.getResults()) {
+            ResultLabelDTO label = res.getLabel();
             table.setText(rowIdx, 0, res.getName());
             table.setText(rowIdx, 1, Integer.toString(label.getYesVoteCount()));
             table.setText(rowIdx, 2, Integer.toString(label.getNoVoteCount()));

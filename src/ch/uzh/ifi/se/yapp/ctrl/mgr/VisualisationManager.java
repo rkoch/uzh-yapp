@@ -93,10 +93,10 @@ public class VisualisationManager
             resLabel.setTotalEligibleCount(dr.getTotalEligibleCount());
             resLabel.setYesVoteCount(dr.getYesVoteCount());
             resLabel.setYesVoteRatio(dr.getYesVoteRatio());
-            res.setResultLabel(resLabel);
+            res.setLabel(resLabel);
 
             if (visualType == VisualizationType.TABLE) {
-                res.setDistrictGeoPointList(null);
+                res.setBoundaries(null);
             } else {
                 // create district geo result dto
                 GeoBoundary districtGeoBoundary = geoAdpt.getGeoBoundaryByDistrictAndDate(dr.getDistrict().getName(), elec.getDate());
@@ -107,7 +107,7 @@ public class VisualisationManager
                     gpdto.setY(gp.getY());
                     districtGeoPointList.add(gpdto);
                 }
-                res.setDistrictGeoPointList(districtGeoPointList);
+                res.setBoundaries(districtGeoPointList);
             }
             districtResultList.add(res);
 
@@ -132,7 +132,7 @@ public class VisualisationManager
                 canton.setDistrictIdList(disList);
                 cantons.add(canton);
             }
-            res.setCantonGeoPointList(null);
+            res.setBoundaries(null);
         }
 
         // create canton result list
@@ -152,15 +152,15 @@ public class VisualisationManager
 
             for (ResultDTO disResLabel : districtResultList) {
                 if (can.getDistrictIdList().contains(disResLabel.getId())) {
-                    resLabel.addResultLabels(disResLabel.getResultLabel());
+                    resLabel.addResultLabels(disResLabel.getLabel());
                 }
             }
-            canRes.setResultLabel(resLabel);
+            canRes.setLabel(resLabel);
 
 
 
             if (visualType == VisualizationType.TABLE) {
-                canRes.setCantonGeoPointList(null);
+                canRes.setBoundaries(null);
             } else {
                 // create canton geo result dto
                 GeoBoundary cantonGeoBoundary = geoAdpt.getGeoBoundaryByDistrictAndDate(can.getName(), elec.getDate());
@@ -171,17 +171,17 @@ public class VisualisationManager
                     gpdto.setY(gp.getY());
                     cantonGeoPointList.add(gpdto);
                 }
-                canRes.setCantonGeoPointList(cantonGeoPointList);
+                canRes.setBoundaries(cantonGeoPointList);
             }
             cantonResultList.add(canRes);
-            canRes.setDistrictGeoPointList(null);
+            canRes.setBoundaries(null);
 
         }
 
         visualDTO.setId(visual.getId().toString());
         visualDTO.setElection(elecDTO);
-        visualDTO.setDistrictResultList(districtResultList);
-        visualDTO.setCantonResultList(cantonResultList);
+        visualDTO.setResults(districtResultList);
+//        visualDTO.setResults(cantonResultList);
         visualDTO.setAuthor(visual.getAuthor());
         visualDTO.setTitle(visual.getTitle());
         visualDTO.setComment(visual.getComment());
@@ -196,19 +196,19 @@ public class VisualisationManager
         IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
 
-          Visualization visual = new Visualization();
+        Visualization visual = new Visualization();
 
-          visual.setElectionId(pVisualisationCreationDTO.getElectionId());
-          visual.setType(pVisualisationCreationDTO.getVisualizationType());
-          visual.setAuthor(pVisualisationCreationDTO.getAuthor());
-          visual.setComment(pVisualisationCreationDTO.getComment());
-          visual.setTitle(pVisualisationCreationDTO.getTitle());
+        visual.setElectionId(pVisualisationCreationDTO.getElectionId());
+        visual.setType(pVisualisationCreationDTO.getVisualizationType());
+        visual.setAuthor(pVisualisationCreationDTO.getAuthor());
+        visual.setComment(pVisualisationCreationDTO.getComment());
+        visual.setTitle(pVisualisationCreationDTO.getTitle());
 
-          String visualId = visual.getId().toString();
+        String visualId = visual.getId().toString();
 
-          visAdpt.insertVisualization(visual);
+        visAdpt.insertVisualization(visual);
 
-          return getVisualisationById(visualId);
+        return getVisualisationById(visualId);
 
     }
 
@@ -217,7 +217,7 @@ public class VisualisationManager
     public void deletVisualization(String pId) {
 
         IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
-        //visAdpt.deleteVisualion(pId);
+        // visAdpt.deleteVisualion(pId);
     }
 
 

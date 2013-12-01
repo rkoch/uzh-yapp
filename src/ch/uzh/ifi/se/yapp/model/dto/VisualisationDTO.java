@@ -38,8 +38,7 @@ public class VisualisationDTO
     private String            mComment;
     private VisualizationType mType;
     private ElectionDTO       mElection;
-    private List<ResultDTO>   mCantonResultList;
-    private List<ResultDTO>   mDistrictResultList;
+    private List<ResultDTO>   mResults;
 
 
     public String getId() {
@@ -90,20 +89,12 @@ public class VisualisationDTO
         mElection = pElection;
     }
 
-    public List<ResultDTO> getCantonResultList() {
-        return mCantonResultList;
+    public List<ResultDTO> getResults() {
+        return mResults;
     }
 
-    public void setCantonResultList(List<ResultDTO> pCantonResultList) {
-        mCantonResultList = pCantonResultList;
-    }
-
-    public List<ResultDTO> getDistrictResultList() {
-        return mDistrictResultList;
-    }
-
-    public void setDistrictResultList(List<ResultDTO> pDistrictResultList) {
-        mDistrictResultList = pDistrictResultList;
+    public void setResults(List<ResultDTO> pResults) {
+        mResults = pResults;
     }
 
 }

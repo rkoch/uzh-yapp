@@ -29,11 +29,13 @@ public class ResultLabelDTO
     private int    mYesVoteCount;
     private int    mNoVoteCount;
     private int    mValidVoteCount;
-    private int    mEmptyVoteCount;     // This is a computed value
     private int    mTotalEligibleCount;
     private int    mDeliveredVoteCount;
-    private double mRatio;              // This is a computed value
-    private double mYesVoteRatio;       // This is a computed value
+
+    private int    mEmptyVoteCount;    // This is a computed value
+    private double mRatio;             // This is a computed value
+    private double mYesVoteRatio;      // This is a computed value
+
 
     public int getYesVoteCount() {
         return mYesVoteCount;
@@ -95,9 +97,10 @@ public class ResultLabelDTO
         return mYesVoteRatio;
     }
 
-    public void setYesVoteRatio(double yesVoteRatio) {
-        mYesVoteRatio = yesVoteRatio;
+    public void setYesVoteRatio(double pYesVoteRatio) {
+        mYesVoteRatio = pYesVoteRatio;
     }
+
 
     public void addResultLabels(ResultLabelDTO pLabel) {
         mYesVoteCount += pLabel.getYesVoteCount();
@@ -106,8 +109,8 @@ public class ResultLabelDTO
         mEmptyVoteCount += pLabel.getEmptyVoteCount();
         mTotalEligibleCount += pLabel.getTotalEligibleCount();
         mDeliveredVoteCount += pLabel.getDeliveredVoteCount();
-        mRatio = (double)mYesVoteCount / (double)mNoVoteCount;
-        mYesVoteRatio = (double)mYesVoteCount / (double)mValidVoteCount;
-
+        mRatio = (double) mYesVoteCount / (double) mNoVoteCount;
+        mYesVoteRatio = (double) mYesVoteCount / (double) mValidVoteCount;
     }
+
 }
