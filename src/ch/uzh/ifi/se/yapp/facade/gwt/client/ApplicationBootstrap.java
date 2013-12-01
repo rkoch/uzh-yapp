@@ -267,6 +267,7 @@ public class ApplicationBootstrap
             table.setText(rowIdx, 5, Integer.toString(label.getDeliveredVoteCount()));
             table.setText(rowIdx, 6, Integer.toString(label.getTotalEligibleCount()));
             table.setText(rowIdx, 7, Double.toString(label.getRatio()) + "%");
+            rowIdx++;
         }
         mMainPanel.add(table);
 
