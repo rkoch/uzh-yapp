@@ -19,10 +19,13 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.joda.time.LocalDate;
 
@@ -46,37 +49,58 @@ import de.micromata.opengis.kml.v_2_2_0.Polygon;
 public class GeoImport
         extends BaseObject {
 
-    private static IdImport pIdImport = new IdImport();
+    private static final Logger LOGGER    = getLogger(ElectionImport.class);
 
-    public void parseKml(InputStream pFilePath) {
-        Kml kml = Kml.unmarshal(pFilePath);
-        Feature feature = kml.getFeature();
-        parseFeature(feature);
+    private static IdImport     pIdImport = new IdImport();
+
+    public void parseKml(InputStream pFilePath)
+            throws IOException {
+        try {
+
+            Kml kml = Kml.unmarshal(pFilePath);
+            Feature feature = kml.getFeature();
+            parseFeature(feature);
+
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e.toString(), e);
+        }
     }
 
-    private void parseFeature(Feature feature) {
-        if (feature != null) {
-            if (feature instanceof Document) {
-                Document document = (Document) feature;
-                List<Feature> featureList = document.getFeature();
-                for (Feature documentFeature : featureList) {
-                    if (documentFeature instanceof Placemark) {
-                        Placemark placemark = (Placemark) documentFeature;
-                        if (placemark.getGeometry() instanceof Polygon) {
-                            Geometry geometry = placemark.getGeometry();
-                            GeoBoundary pGeoBoundary = new GeoBoundary();
+    private void parseFeature(Feature feature)
+            throws IOException {
 
-                            pGeoBoundary.setId(placemark.getName());
-                            pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
+        try {
 
-                            pGeoBoundary.setGeoPoints(parseGeometry(geometry));
+            if (feature != null) {
+                if (feature instanceof Document) {
+                    Document document = (Document) feature;
+                    List<Feature> featureList = document.getFeature();
+                    for (Feature documentFeature : featureList) {
+                        if (documentFeature instanceof Placemark) {
+                            Placemark placemark = (Placemark) documentFeature;
+                            if (placemark.getGeometry() instanceof Polygon) {
+                                Geometry geometry = placemark.getGeometry();
+                                GeoBoundary pGeoBoundary = new GeoBoundary();
 
-                            IGeoDataAdapter adpt = BackendAccessorFactory.getGeoDataAdapter();
-                            adpt.insertGeoBoundary(pGeoBoundary);
+                                pGeoBoundary.setId(pIdImport.getInvertedDistricts().get(placemark.getName().toString()));
+                                pGeoBoundary.setLocalDate(new LocalDate("2013-01-01"));
+
+                                if(pGeoBoundary.getId() == null) {
+                                    System.out.println(placemark.getName());
+                                }
+
+                                pGeoBoundary.setGeoPoints(parseGeometry(geometry));
+
+                                IGeoDataAdapter adpt = BackendAccessorFactory.getGeoDataAdapter();
+                                adpt.insertGeoBoundary(pGeoBoundary);
+                            }
                         }
                     }
                 }
             }
+
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e.toString(), e);
         }
     }
 

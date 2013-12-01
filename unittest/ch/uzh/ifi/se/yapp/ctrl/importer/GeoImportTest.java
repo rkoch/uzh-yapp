@@ -19,6 +19,8 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,10 +45,18 @@ public class GeoImportTest {
     }
 
     @Test
-    public void test() {
-        GeoImport test = new GeoImport();
+    public void test()
+            throws IOException {
 
-        test.parseKml(getClass().getResourceAsStream("geo_bound_district.kml"));
+        try {
+
+            GeoImport test = new GeoImport();
+
+            test.parseKml(getClass().getResourceAsStream("geo_bound_district.kml"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
