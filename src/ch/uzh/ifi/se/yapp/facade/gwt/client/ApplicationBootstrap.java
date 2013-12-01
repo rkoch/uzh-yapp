@@ -282,78 +282,76 @@ public class ApplicationBootstrap
     private void validateAndSubmitForm() {
         mSaveButton.setEnabled(false);
 
-        try {
-            String title = mTitleInput.getValue();
-            String author = mAuthorInput.getValue();
-            String year = mYearInput.getValue(mYearInput.getSelectedIndex());
-            String electionId = mElectionInput.getValue(mElectionInput.getSelectedIndex());
-            String comment = mCommentInput.getValue();
+        String title = mTitleInput.getValue();
+        String author = mAuthorInput.getValue();
+        String year = mYearInput.getValue(mYearInput.getSelectedIndex());
+        String electionId = mElectionInput.getValue(mElectionInput.getSelectedIndex());
+        String comment = mCommentInput.getValue();
 
-            // validate
-            if (title.isEmpty()) {
-                mTitleInput.setFocus(true);
-                mTitleInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-                return;
-            } else {
-                mTitleInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
-            }
-
-            if (author.isEmpty()) {
-                mAuthorInput.setFocus(true);
-                mAuthorInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-                return;
-            } else {
-                mAuthorInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
-            }
-
-            if ((year == null) || year.isEmpty()) {
-                mYearInput.setFocus(true);
-                mYearInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-                return;
-            } else {
-                mYearInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
-            }
-
-            if ((electionId == null) || electionId.isEmpty()) {
-                mElectionInput.setFocus(true);
-                mElectionInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-                return;
-            } else {
-                mElectionInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
-            }
-
-            // Submit
-
-            VisualisationCreationDTO dto = new VisualisationCreationDTO();
-            dto.setTitle(title);
-            dto.setAuthor(author);
-            dto.setElectionId(electionId);
-            dto.setComment(comment);
-            dto.setVisualizationType(VisualizationType.TABLE); // Only supporting table layout for now
-
-            mRemoteService.createVisualisation(dto, new AsyncCallback<VisualisationDTO>() {
-
-                @Override
-                public void onSuccess(VisualisationDTO pResult) {
-                    // Display visualization on successful result
-                    if (pResult != null) {
-                        buildVisualizeMask(pResult);
-                    } else {
-                        build404Mask();
-                    }
-                }
-
-                @Override
-                public void onFailure(Throwable pCaught) {
-                    // TODO Display error message
-                    Window.alert("There was an error on the server: " + pCaught.getMessage());
-                }
-
-            });
-        } finally {
-            // Ensure that the button is enabled again on leaving
-            mSaveButton.setEnabled(true);
+        // validate
+        if (title.isEmpty()) {
+            mTitleInput.setFocus(true);
+            mTitleInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            return;
+        } else {
+            mTitleInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
+
+        if (author.isEmpty()) {
+            mAuthorInput.setFocus(true);
+            mAuthorInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            return;
+        } else {
+            mAuthorInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
+        if ((year == null) || year.isEmpty()) {
+            mYearInput.setFocus(true);
+            mYearInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            return;
+        } else {
+            mYearInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
+        if ((electionId == null) || electionId.isEmpty()) {
+            mElectionInput.setFocus(true);
+            mElectionInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            return;
+        } else {
+            mElectionInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
+        // Submit
+
+        VisualisationCreationDTO dto = new VisualisationCreationDTO();
+        dto.setTitle(title);
+        dto.setAuthor(author);
+        dto.setElectionId(electionId);
+        dto.setComment(comment);
+        dto.setVisualizationType(VisualizationType.TABLE); // Only supporting table layout for now
+
+        mRemoteService.createVisualisation(dto, new AsyncCallback<VisualisationDTO>() {
+
+            @Override
+            public void onSuccess(VisualisationDTO pResult) {
+                // Display visualization on successful result
+                if (pResult != null) {
+                    String newUrl = Window.Location.createUrlBuilder().setParameter("id", pResult.getId()).buildString();
+                    Window.Location.assign(newUrl);
+                } else {
+                    build404Mask();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable pCaught) {
+                // TODO Display error message
+                Window.alert("There was an error on the server: " + pCaught.getMessage());
+                // Ensure that the button is enabled again on leaving
+                mSaveButton.setEnabled(true);
+            }
+
+        });
     }
 
     private void build404Mask() {
