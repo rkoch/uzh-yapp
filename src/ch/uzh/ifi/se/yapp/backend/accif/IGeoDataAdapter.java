@@ -56,6 +56,7 @@ public interface IGeoDataAdapter
      * @param pDistrictId DistrictId of desired District ("BezirksNr")
      * @param pDate Date of GeoBoundary
      * @return GeoBoundary
+     * @throws EntityNotFoundException if the GeoBoundary was not found
      */
     GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate)
             throws EntityNotFoundException;

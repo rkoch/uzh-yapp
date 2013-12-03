@@ -43,6 +43,7 @@ public interface IVisualizationDataAdapter
      *
      * @param pId String which represents the UUID.
      * @return Visualization
+     * @throws EntityNotFoundException if the Visualization was not found
      */
     Visualization getVisualizationById(String pId)
             throws EntityNotFoundException;

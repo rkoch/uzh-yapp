@@ -36,8 +36,10 @@ public interface ILandscapeDataAdapter
      *
      * @param pId DistrictId of a specific district, ("BezirksNr")
      * @return District according to the given parameters
+     * @throws EntityNotFoundException if the election was not found
      */
-    District getDistrictById(String pId) throws EntityNotFoundException;
+    District getDistrictById(String pId)
+            throws EntityNotFoundException;
 
     /**
      * <b>getDistrictByIdAndDate</b> <br>
@@ -45,9 +47,11 @@ public interface ILandscapeDataAdapter
      *
      * @param pId DistrictId of a specific district, "BezirksNr"
      * @param pDate Date
-     * @return District in a certain year with a certain id.
+     * @return District in a certain year with a certain id
+     * @throws EntityNotFoundException if the District was not found
      */
-    District getDistrictByIdAndDate(String pId, LocalDate pDate) throws EntityNotFoundException;
+    District getDistrictByIdAndDate(String pId, LocalDate pDate)
+            throws EntityNotFoundException;
 
     /**
      * <b>getAllDistricts</b> <br>

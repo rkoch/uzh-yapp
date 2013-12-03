@@ -37,6 +37,7 @@ public interface IElectionDataAdapter
      *
      * @param pId
      * @return Election
+     * @throws EntityNotFoundException if the Election was not found
      */
     Election getElectionById(String pId)
             throws EntityNotFoundException;
