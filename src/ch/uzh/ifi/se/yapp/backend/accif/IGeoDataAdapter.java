@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
 
 
@@ -56,7 +57,8 @@ public interface IGeoDataAdapter
      * @param pDate Date of GeoBoundary
      * @return GeoBoundary
      */
-    GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate);
+    GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate)
+            throws EntityNotFoundException;
 
     /**
      * <b>insertGeoBoundary</b> <br>

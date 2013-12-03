@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
 
 
@@ -37,7 +38,8 @@ public interface IElectionDataAdapter
      * @param pId
      * @return Election
      */
-    Election getElectionById(String pId);
+    Election getElectionById(String pId)
+            throws EntityNotFoundException;
 
     /**
      * <b>getElectionsByDateRange</b> <br>

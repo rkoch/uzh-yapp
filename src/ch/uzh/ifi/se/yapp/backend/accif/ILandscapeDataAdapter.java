@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 
@@ -36,7 +37,7 @@ public interface ILandscapeDataAdapter
      * @param pId DistrictId of a specific district, ("BezirksNr")
      * @return District according to the given parameters
      */
-    District getDistrictById(String pId);
+    District getDistrictById(String pId) throws EntityNotFoundException;
 
     /**
      * <b>getDistrictByIdAndDate</b> <br>
@@ -46,7 +47,7 @@ public interface ILandscapeDataAdapter
      * @param pDate Date
      * @return District in a certain year with a certain id.
      */
-    District getDistrictByIdAndDate(String pId, LocalDate pDate);
+    District getDistrictByIdAndDate(String pId, LocalDate pDate) throws EntityNotFoundException;
 
     /**
      * <b>getAllDistricts</b> <br>
