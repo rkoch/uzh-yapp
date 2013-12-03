@@ -19,9 +19,9 @@
  */
 package ch.uzh.ifi.se.yapp.backend.accif;
 
-import ch.uzh.ifi.se.yapp.backend.election.ElectionAdapter;
-import ch.uzh.ifi.se.yapp.backend.geo.GeoDataAdapter;
-import ch.uzh.ifi.se.yapp.backend.landscape.LandscapeAdapter;
+import ch.uzh.ifi.se.yapp.backend.election.MemcachedElectionAdapter;
+import ch.uzh.ifi.se.yapp.backend.geo.MemcachedGeoDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.landscape.MemcachedLandscapeAdapter;
 import ch.uzh.ifi.se.yapp.backend.visualisation.MemcachedVisualizationAdapter;
 
 
@@ -34,9 +34,9 @@ public abstract class BackendAccessorFactory {
 
 
     static {
-        sElectionAdpt = new ElectionAdapter();
-        sGeoAdpt = new GeoDataAdapter();
-        sLandAdpt = new LandscapeAdapter();
+        sElectionAdpt = new MemcachedElectionAdapter();
+        sGeoAdpt = new MemcachedGeoDataAdapter();
+        sLandAdpt = new MemcachedLandscapeAdapter();
         sVisAdpt = new MemcachedVisualizationAdapter();
     }
 
