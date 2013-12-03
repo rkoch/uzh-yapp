@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="lib/appengine-api-labs.jar"/>
 	<classpathentry kind="lib" path="lib/appengine-api-stubs.jar"/>
 	<classpathentry kind="lib" path="lib/appengine-api.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/JavaAPIforKml.jar" sourcepath="war/WEB-INF/lib/JavaAPIforKml-sources.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-maps.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
