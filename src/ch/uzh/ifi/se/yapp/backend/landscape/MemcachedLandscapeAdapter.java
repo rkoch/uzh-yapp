@@ -17,27 +17,28 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.backend.visualisation;
+package ch.uzh.ifi.se.yapp.backend.landscape;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import org.joda.time.LocalDate;
+
+import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class MemcachedVisualizationAdapter
+public class MemcachedLandscapeAdapter
         extends BaseObject
-        implements IVisualizationDataAdapter {
+        implements ILandscapeDataAdapter {
 
-    private final Map<String, Visualization> mStorage;
+    private final Map<String, District> mStorage;
 
-
-    public MemcachedVisualizationAdapter() {
+    public MemcachedLandscapeAdapter() {
         mStorage = new HashMap<>();
     }
 
@@ -46,37 +47,39 @@ public class MemcachedVisualizationAdapter
     }
 
     @Override
-    public Visualization getVisualizationById(String pId)
+    public District getDistrictById(String pId)
             throws EntityNotFoundException {
-        Visualization ret = mStorage.get(pId);
+        District ret = mStorage.get(pId);
         if (ret == null) {
-            throw new EntityNotFoundException("Visualisation " + pId + " not found.");
+            throw new EntityNotFoundException("District " + pId + " not found.");
         }
-        return new Visualization(ret);
+        return new District(ret);
     }
 
     @Override
-    public List<Visualization> getAllVisualizations() {
-        List<Visualization> ret = new ArrayList<>();
-
-        for (Visualization entry : mStorage.values()) {
-            ret.add(new Visualization(entry));
+    public District getDistrictByIdAndDate(String pId, LocalDate pDate)
+            throws EntityNotFoundException {
+        // TODO pDate makes no sense anymore... pId as map-key
+        District ret = mStorage.get(pId);
+        if (ret == null) {
+            throw new EntityNotFoundException("District " + pId + " not found.");
         }
+        return new District(ret);
 
-        return ret;
     }
 
     @Override
-    public Visualization insertVisualization(Visualization pVisualization) {
-        String id = pVisualization.getId().toString();
-
-        mStorage.put(id, new Visualization(pVisualization));
-
-        return new Visualization(pVisualization);
+    public List<District> getAllDistricts() {
+        List<District> retList = new ArrayList<>();
+        for (Map.Entry<String, District> entry : mStorage.entrySet()) {
+            retList.add(entry.getValue());
+        }
+        return retList;
     }
 
     @Override
-    public void deleteVisualizationById(String pId) {
-        mStorage.remove(pId);
+    public void insertDistrict(District pDistrict) {
+        String id = pDistrict.getId();
+        mStorage.put(id, new District(pDistrict));
     }
 }

@@ -17,27 +17,28 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.backend.visualisation;
+package ch.uzh.ifi.se.yapp.backend.geo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import org.joda.time.LocalDate;
+
+import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class MemcachedVisualizationAdapter
+public class MemcachedGeoDataAdapter
         extends BaseObject
-        implements IVisualizationDataAdapter {
+        implements IGeoDataAdapter {
 
-    private final Map<String, Visualization> mStorage;
+    private final Map<String, GeoBoundary> mStorage;
 
-
-    public MemcachedVisualizationAdapter() {
+    public MemcachedGeoDataAdapter() {
         mStorage = new HashMap<>();
     }
 
@@ -46,37 +47,37 @@ public class MemcachedVisualizationAdapter
     }
 
     @Override
-    public Visualization getVisualizationById(String pId)
+    public List<GeoBoundary> getAllGeoBoundary() {
+        List<GeoBoundary> retList = new ArrayList<>();
+        for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
+            retList.add(entry.getValue());
+        }
+        return retList;
+    }
+
+    @Override
+    public List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate) {
+        // TODO how to handle date?
+        List<GeoBoundary> retList = new ArrayList<>();
+        for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
+            retList.add(entry.getValue());
+        }
+        return retList;
+    }
+
+    @Override
+    public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate)
             throws EntityNotFoundException {
-        Visualization ret = mStorage.get(pId);
-        if (ret == null) {
-            throw new EntityNotFoundException("Visualisation " + pId + " not found.");
+        for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
+            if (entry.getValue().getId() == pDistrictId) {
+                return new GeoBoundary(entry.getValue());
+            }
         }
-        return new Visualization(ret);
+        throw new EntityNotFoundException("District with id '" + pDistrictId + "' and LocalDate '" + pDate + "' not found");
     }
 
     @Override
-    public List<Visualization> getAllVisualizations() {
-        List<Visualization> ret = new ArrayList<>();
-
-        for (Visualization entry : mStorage.values()) {
-            ret.add(new Visualization(entry));
-        }
-
-        return ret;
-    }
-
-    @Override
-    public Visualization insertVisualization(Visualization pVisualization) {
-        String id = pVisualization.getId().toString();
-
-        mStorage.put(id, new Visualization(pVisualization));
-
-        return new Visualization(pVisualization);
-    }
-
-    @Override
-    public void deleteVisualizationById(String pId) {
-        mStorage.remove(pId);
+    public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
+        mStorage.put(pGeoBoundary.getId(), pGeoBoundary);
     }
 }
