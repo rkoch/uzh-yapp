@@ -31,13 +31,22 @@ public class Visualization
 
     private UUID              mId;
     private String            mElectionId;
-    private String            title;
-    private String            comment;
-    private String            author;
+    private String            mTitle;
+    private String            mComment;
+    private String            mAuthor;
     private VisualizationType mType;
 
     public Visualization() {
         generateId();
+    }
+
+    public Visualization(Visualization pOrig) {
+        mId = pOrig.mId;
+        mElectionId = pOrig.mElectionId;
+        mTitle = pOrig.mTitle;
+        mComment = pOrig.mComment;
+        mAuthor = pOrig.mAuthor;
+        mType = pOrig.mType;
     }
 
     /**
@@ -87,7 +96,7 @@ public class Visualization
      * @return the title
      */
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
 
@@ -95,7 +104,7 @@ public class Visualization
      * @param pTitle the title to set
      */
     public void setTitle(String pTitle) {
-        title = pTitle;
+        mTitle = pTitle;
     }
 
 
@@ -103,7 +112,7 @@ public class Visualization
      * @return the comment
      */
     public String getComment() {
-        return comment;
+        return mComment;
     }
 
 
@@ -111,7 +120,7 @@ public class Visualization
      * @param pComment the comment to set
      */
     public void setComment(String pComment) {
-        comment = pComment;
+        mComment = pComment;
     }
 
 
@@ -119,14 +128,14 @@ public class Visualization
      * @return the author
      */
     public String getAuthor() {
-        return author;
+        return mAuthor;
     }
 
     /**
      * @param pAuthor the author to set
      */
     public void setAuthor(String pAuthor) {
-        author = pAuthor;
+        mAuthor = pAuthor;
     }
 
     public VisualizationType getType() {

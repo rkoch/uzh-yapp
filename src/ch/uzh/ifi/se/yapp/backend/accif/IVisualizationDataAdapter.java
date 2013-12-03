@@ -21,6 +21,7 @@ package ch.uzh.ifi.se.yapp.backend.accif;
 
 import java.util.List;
 
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
 
 
@@ -43,7 +44,8 @@ public interface IVisualizationDataAdapter
      * @param pId String which represents the UUID.
      * @return Visualization
      */
-    Visualization getVisualizationById(String pId);
+    Visualization getVisualizationById(String pId)
+            throws EntityNotFoundException;
 
     /**
      * <b>getAllVisualizations</b> <br>

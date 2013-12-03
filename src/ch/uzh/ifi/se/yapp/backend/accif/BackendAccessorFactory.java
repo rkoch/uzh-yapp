@@ -22,7 +22,7 @@ package ch.uzh.ifi.se.yapp.backend.accif;
 import ch.uzh.ifi.se.yapp.backend.election.ElectionAdapter;
 import ch.uzh.ifi.se.yapp.backend.geo.GeoDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.landscape.LandscapeAdapter;
-import ch.uzh.ifi.se.yapp.backend.visualisation.VisualizationAdapter;
+import ch.uzh.ifi.se.yapp.backend.visualisation.MemcachedVisualizationAdapter;
 
 
 public abstract class BackendAccessorFactory {
@@ -37,7 +37,7 @@ public abstract class BackendAccessorFactory {
         sElectionAdpt = new ElectionAdapter();
         sGeoAdpt = new GeoDataAdapter();
         sLandAdpt = new LandscapeAdapter();
-        sVisAdpt = new VisualizationAdapter();
+        sVisAdpt = new MemcachedVisualizationAdapter();
     }
 
 
