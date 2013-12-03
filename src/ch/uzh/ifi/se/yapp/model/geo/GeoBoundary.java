@@ -40,6 +40,12 @@ public class GeoBoundary
     public GeoBoundary() {
     }
 
+    public GeoBoundary(GeoBoundary pOrig) {
+        mId = pOrig.mId;
+        mGeoPoints = pOrig.mGeoPoints;
+        mLocalDate = pOrig.mLocalDate;
+    }
+
     /**
      * <b>setId</b>
      * <br>Description: sets Id of the GeoBoundary. Is defined as the

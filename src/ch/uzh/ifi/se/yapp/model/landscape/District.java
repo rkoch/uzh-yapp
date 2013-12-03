@@ -36,6 +36,13 @@ public class District
 
 
 
+    public District(District pOrig) {
+        mId = pOrig.mId;
+        mName = pOrig.mName;
+        mCantonId = pOrig.mCanton;
+        mLocalDate = pOrig.mLocalDate;
+    }
+
     /**
      * <b>District</b> <br>
      * Description: Creates a new instance of this object using a string. Its format must be: id,name,cantonId,canton,localdate
