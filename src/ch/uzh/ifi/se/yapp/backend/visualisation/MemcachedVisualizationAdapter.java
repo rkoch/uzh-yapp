@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.backend.visualisation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,23 +56,21 @@ public class MemcachedVisualizationAdapter
         return new Visualization(ret);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Visualization> getAllVisualizations() {
         List<Visualization> ret = new ArrayList<>();
-
         for (Visualization entry : mStorage.values()) {
             ret.add(new Visualization(entry));
         }
-
+        Collections.sort(ret);
         return ret;
     }
 
     @Override
     public Visualization insertVisualization(Visualization pVisualization) {
         String id = pVisualization.getId().toString();
-
         mStorage.put(id, new Visualization(pVisualization));
-
         return new Visualization(pVisualization);
     }
 
