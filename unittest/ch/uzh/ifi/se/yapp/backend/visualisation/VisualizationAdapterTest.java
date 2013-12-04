@@ -23,85 +23,86 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-
+import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
+import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
 
 
 public class VisualizationAdapterTest {
 
-    private final LocalServiceTestHelper mHelper            = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-
-    private VisualizationAdapter         mVisualizationAdpt = new VisualizationAdapter();
-    private Visualization                mVisualization     = new Visualization();
-
-
-    @Before
-    public void setUp() {
-        mHelper.setUp();
-    }
-
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
-        mVisualizationAdpt = null;
-        mVisualization = null;
-    }
+    private IVisualizationDataAdapter mVisualizationAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
+    private Visualization             mVisualization     = new Visualization();
 
 
     @Test
-    public void insertVisualization() {
+    public void testinsertVisualization() {
         mVisualization.setElectionId("552.1");
         mVisualization.setType(VisualizationType.MAP);
-        mVisualizationAdpt.insertVisualization(mVisualization);
+        Visualization ret = mVisualizationAdpt.insertVisualization(mVisualization);
+        mVisualizationAdpt.deleteVisualizationById("552.1");
     }
 
     @Test
     public void getAllVisualizations() {
-        insertVisualization();
-        Visualization v2 = new Visualization();
-        v2.setElectionId("552.2");
-        v2.setType(VisualizationType.MAP);
-        mVisualizationAdpt.insertVisualization(v2);
-
         List<Visualization> tmpList = mVisualizationAdpt.getAllVisualizations();
+        for (int i=0; i< tmpList.size(); i++) {
+            mVisualizationAdpt.deleteVisualizationById(tmpList.get(i).getId().toString());
+        }
+        tmpList = null;
+        mVisualization.setElectionId("552.1");
+        mVisualization.setType(VisualizationType.MAP);
+        Visualization ret = mVisualizationAdpt.insertVisualization(mVisualization);
+
+        Visualization mVisualization2 = new Visualization();
+        mVisualization2.setElectionId("552.2");
+        mVisualization2.setType(VisualizationType.MAP);
+        Visualization ret2 = mVisualizationAdpt.insertVisualization(mVisualization2);
+
+        List<Visualization> tmpList2 = mVisualizationAdpt.getAllVisualizations();
+
         // check size
-        assertEquals(tmpList.size(), 2);
+        assertEquals(2, tmpList2.size());
         // check member variables
-        assertEquals(tmpList.get(0).getElectionId(), "552.1");
-        assertEquals(tmpList.get(0).getType(), VisualizationType.MAP);
-        assertEquals(tmpList.get(1).getElectionId(), "552.2");
-        assertEquals(tmpList.get(1).getType(), VisualizationType.MAP);
+        assertEquals("552.1", tmpList2.get(0).getElectionId());
+        assertEquals(VisualizationType.MAP, tmpList2.get(0).getType());
+        assertEquals("552.2", tmpList2.get(1).getElectionId());
+        assertEquals(VisualizationType.MAP, tmpList2.get(1).getType());
+        mVisualizationAdpt.deleteVisualizationById("552.1");
+        mVisualizationAdpt.deleteVisualizationById("552.2");
 
     }
 
     @Test
-    public void getVisualizationById() {
-        insertVisualization();
+    public void getVisualizationById()
+            throws EntityNotFoundException {
+        mVisualization.setElectionId("552.1");
+        mVisualization.setType(VisualizationType.MAP);
+        Visualization ret = mVisualizationAdpt.insertVisualization(mVisualization);
+
         Visualization l = mVisualizationAdpt.getVisualizationById(mVisualization.getId().toString());
         // check member variable
         assertEquals("552.1", l.getElectionId());
         assertEquals(VisualizationType.MAP, l.getType());
+        mVisualizationAdpt.deleteVisualizationById("552.1");
+
     }
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
     @Test
-    public void deleteVisualizationById() {
+    public void deleteVisualizationById()
+            throws EntityNotFoundException {
+        mVisualization.setElectionId("552.1");
+        mVisualization.setType(VisualizationType.MAP);
+        Visualization ret = mVisualizationAdpt.insertVisualization(mVisualization);
+        exception.expect(EntityNotFoundException.class);
         mVisualizationAdpt.deleteVisualizationById(mVisualization.getId().toString());
         Visualization l = mVisualizationAdpt.getVisualizationById(mVisualization.getId().toString());
-        assertEquals(null, l);
     }
-
-    @Test
-    public void deleteVisualizations() {
-        mVisualizationAdpt.deleteVisualizationById(mVisualization.getId().toString());
-        List<Visualization> list = mVisualizationAdpt.getAllVisualizations();
-        assertEquals(0, list.size());
-    }
-
 }
