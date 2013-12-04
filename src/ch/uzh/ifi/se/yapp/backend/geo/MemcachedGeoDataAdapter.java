@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.backend.geo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,22 +47,37 @@ public class MemcachedGeoDataAdapter
     public void cleanup() {
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<GeoBoundary> getAllGeoBoundary() {
         List<GeoBoundary> retList = new ArrayList<>();
         for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
             retList.add(entry.getValue());
         }
+        Collections.sort(retList);
         return retList;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate) {
-        // TODO how to handle date?
         List<GeoBoundary> retList = new ArrayList<>();
+        List<String> checkedIds = new ArrayList<>(); // list with already checked ids
         for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
-            retList.add(entry.getValue());
+            if ((entry.getValue().getLocalDate().isBefore(pDate) || entry.getValue().getLocalDate().isEqual(pDate))
+                    && !checkedIds.contains(entry.getValue().getId())) {
+                GeoBoundary tmpGb = entry.getValue();
+                // get newest GeoBoundary for each GeoBoundary
+                for (Map.Entry<String, GeoBoundary> innerEntry :  mStorage.entrySet()) {
+                    if (innerEntry.getValue().getLocalDate().isAfter(tmpGb.getLocalDate())) {
+                        tmpGb = innerEntry.getValue();
+                    }
+                }
+                checkedIds.add(tmpGb.getId());
+                retList.add(tmpGb);
+            }
         }
+        Collections.sort(retList);
         return retList;
     }
 
@@ -69,7 +85,7 @@ public class MemcachedGeoDataAdapter
     public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate)
             throws EntityNotFoundException {
         for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
-            if (entry.getValue().getId() == pDistrictId) {
+            if (entry.getValue().getId() == pDistrictId && entry.getValue().getLocalDate().isEqual(pDate)) {
                 return new GeoBoundary(entry.getValue());
             }
         }
@@ -78,6 +94,7 @@ public class MemcachedGeoDataAdapter
 
     @Override
     public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
-        mStorage.put(pGeoBoundary.getId(), pGeoBoundary);
+        String tmpId = pGeoBoundary.getId() + "_" + pGeoBoundary.getLocalDate().toString();
+        mStorage.put(tmpId, pGeoBoundary);
     }
 }
