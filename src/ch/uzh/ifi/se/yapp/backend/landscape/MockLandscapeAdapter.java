@@ -22,11 +22,6 @@ package ch.uzh.ifi.se.yapp.backend.landscape;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.LocalDate;
-
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -36,7 +31,6 @@ public class MockLandscapeAdapter
         extends BaseObject
         implements ILandscapeDataAdapter {
 
-    private DatastoreService mLandscapeDatastore = DatastoreServiceFactory.getDatastoreService();
 
     @Override
     public void cleanup() {
@@ -51,14 +45,6 @@ public class MockLandscapeAdapter
         return d;
     }
 
-    @Override
-    public District getDistrictByIdAndDate(String pId, LocalDate pDate) {
-        // Date is stored in District.mDateTime
-        District d = new District();
-        d.setId("Imboden");
-        d.setCanton("Graubünden");
-        return d;
-    }
 
     @Override
     public List<District> getAllDistricts() {
