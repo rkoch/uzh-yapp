@@ -17,7 +17,7 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.geo;
+package ch.uzh.ifi.se.yapp.model.election;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,73 +28,78 @@ import org.joda.time.LocalDate;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class GeoBoundary
-        extends BaseObject
-        implements Comparable<GeoBoundary> {
+public class Election
+        extends BaseObject {
 
-    private String             mId;
-    private LocalDate          mLocalDate;
-    private final Set<Polygon> mPolygons;
+    /**
+     * Official submission nr
+     */
+    private String            mId;
+    private String            mTitle;
+    private String            mDescription;
+    private LocalDate         mDate;
+    private final Set<Result> mResults;
 
 
-    public GeoBoundary() {
-        mPolygons = new HashSet<>();
+    public Election() {
+        mResults = new HashSet<>();
     }
 
 
     /**
-     * Gets the ID of this polygon. It is defined as the ID of the district or canton
-     * which these polygons represent.
+     * Returns the ID of the election. This is the official submission nr (e.g. 552.1)
+     * Note: The format can vary in its form: e.g. 550, but also 552.1 or 552.2
      *
-     * @return Representative ID
+     * @return Election ID
      */
     public String getId() {
         return mId;
     }
 
     /**
-     * Sets the ID of this polygon. It is defined as the ID of the district or canton
-     * which these polygons represent.
+     * Sets the ID of the election. This is the official submission nr (e.g. 552.1)
+     * Note: The format can vary in its form: e.g. 550, but also 552.1 or 552.2
      *
-     * @param pId Representative ID
+     * @param pId Election ID
      */
     public void setId(String pId) {
         mId = pId;
     }
 
-    public LocalDate getLocalDate() {
-        return mLocalDate;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public void setLocalDate(LocalDate pLocalDate) {
-        mLocalDate = pLocalDate;
+    public void setTitle(String pTitle) {
+        mTitle = pTitle;
     }
 
-    public Set<Polygon> getPolygons() {
-        return Collections.unmodifiableSet(mPolygons);
+    public String getDescription() {
+        return mDescription;
     }
 
-    public void addPolygon(Polygon pPolygon) {
-        mPolygons.add(pPolygon);
+    public void setDescription(String pDescription) {
+        mDescription = pDescription;
     }
 
-    public void removePolygon(Polygon pPolygon) {
-        mPolygons.remove(pPolygon);
+    public LocalDate getDate() {
+        return mDate;
     }
 
+    public void setDate(LocalDate pDate) {
+        mDate = pDate;
+    }
 
-    @Override
-    public int compareTo(GeoBoundary pOther) {
-        if (mLocalDate.isAfter(pOther.getLocalDate())) {
-            return -1;
-        }
-        if (mLocalDate.isBefore(pOther.getLocalDate())) {
-            return 1;
-        }
-        if (mLocalDate.isEqual(pOther.getLocalDate())) {
-            return 0;
-        }
-        return 0;
+    public Set<Result> getResults() {
+        return Collections.unmodifiableSet(mResults);
+    }
+
+    public void addResult(Result pResult) {
+        mResults.add(pResult);
+    }
+
+    public void removeResult(Result pResult) {
+        mResults.remove(pResult);
     }
 
 }

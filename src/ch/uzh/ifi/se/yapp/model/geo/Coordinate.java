@@ -17,15 +17,39 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.base;
+package ch.uzh.ifi.se.yapp.model.geo;
+
+import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public enum VisualizationType {
+public class Coordinate
+        extends BaseObject {
 
-    TABLE,
-    MAP,
-    TRASH, // for "deleted" visualizations
+    private double mLatitude;
+    private double mLongitude;
 
-    ;
+
+    public Coordinate(double pLatitude, double pLongitude) {
+        super();
+        mLatitude = pLatitude;
+        mLongitude = pLongitude;
+    }
+
+
+    public double getLatitude() {
+        return mLatitude;
+    }
+
+    public void setLatitude(double pLatitude) {
+        mLatitude = pLatitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
+    }
+
+    public void setLongitude(double pLongitude) {
+        mLongitude = pLongitude;
+    }
 
 }

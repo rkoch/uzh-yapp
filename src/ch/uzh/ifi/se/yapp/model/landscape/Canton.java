@@ -17,19 +17,26 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.dto;
+package ch.uzh.ifi.se.yapp.model.landscape;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class CantonDTO
-        extends BaseDTO
-        implements Serializable {
+public class Canton
+        extends BaseObject {
 
-    private String       mId;
-    private String       mName;
-    private List<String> mDistrictIdList;
+    private String            mId;
+    private String            mName;
+    private final Set<String> mDistricts;
+
+
+    public Canton() {
+        mDistricts = new HashSet<>();
+    }
 
 
     public String getId() {
@@ -48,12 +55,20 @@ public class CantonDTO
         mName = pName;
     }
 
-    public List<String> getDistrictIdList() {
-        return mDistrictIdList;
+    public Set<String> getDistricts() {
+        return Collections.unmodifiableSet(mDistricts);
     }
 
-    public void setDistrictIdList(List<String> pDistrictIdList) {
-        mDistrictIdList = pDistrictIdList;
+    public boolean hasDistrict(String pDistrictId) {
+        return mDistricts.contains(pDistrictId);
+    }
+
+    public void addDistrict(String pDistrictId) {
+        mDistricts.add(pDistrictId);
+    }
+
+    public void removeDistrict(String pDistrictId) {
+        mDistricts.remove(pDistrictId);
     }
 
 }

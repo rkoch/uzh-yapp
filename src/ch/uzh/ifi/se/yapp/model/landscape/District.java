@@ -19,43 +19,17 @@
  */
 package ch.uzh.ifi.se.yapp.model.landscape;
 
-
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class District
         extends BaseObject
-        implements Comparable {
+        implements Comparable<District> {
 
-    private String    mId;       // Id ("BezirksNr")
-    private String    mName;     // Name of District
-    private String    mCantonId; // Id of Canton ("KantonsNr")
-    private String    mCanton;   // Name of Canton
+    private String mId;
+    private String mName;
+    private String mCanton;
 
-    public District(District pOrig) {
-        mId = pOrig.mId;
-        mName = pOrig.mName;
-        mCantonId = pOrig.mCanton;
-    }
-
-    /**
-     * <b>District</b> <br>
-     * Description: Creates a new instance of this object using a string. Its format must be: id,name,cantonId,canton,localdate
-     *
-     * @param pString
-     */
-    public District(String pString) {
-        String[] arr = pString.split(",");
-        //System.out.println("District: " + arr[0] + ", " + arr[1] + "," + arr[2] + ", " + arr[3] + ", " + arr[4] + ":::");
-
-        mId = arr[0];
-        mName = arr[1];
-        mCantonId = arr[2];
-        mCanton = arr[3];
-    }
-
-    public District() {
-    }
 
     public String getId() {
         return mId;
@@ -73,14 +47,6 @@ public class District
         mName = pName;
     }
 
-    public String getCantonId() {
-        return mCantonId;
-    }
-
-    public void setCantonId(String pCantonId) {
-        mCantonId = pCantonId;
-    }
-
     public String getCanton() {
         return mCanton;
     }
@@ -89,49 +55,25 @@ public class District
         mCanton = pCanton;
     }
 
-    /**
-     * Format: id,name,cantonId,canton
-     */
-    @Override
-    public String toString() {
-        String res = "";
-        if (mId != null) {
-            res += mId + ",";
-        } else {
-            res += " ,";
+
+    public void connectCanton(Canton pCanton) {
+        if (pCanton != null) {
+            mCanton = pCanton.getId();
+            pCanton.addDistrict(mId);
         }
-        if (mName != null) {
-            res += mName + ",";
-        } else {
-            res += " ,";
-        }
-        if (mCantonId != null) {
-            res += mCantonId + ",";
-        } else {
-            res += " ,";
-        }
-        if (mCanton != null) {
-            res += mCanton + ",";
-        } else {
-            res += " ,";
-        }
-        return res;
     }
 
+
     @Override
-    public int compareTo(Object pO) {
-        District other = (District) pO;
-        if (Integer.parseInt(mId) < Integer.parseInt(other.getId())) {
+    public int compareTo(District pOther) {
+        if (Integer.parseInt(mId) < Integer.parseInt(pOther.getId())) {
             return -1;
-        }
-        if (Integer.parseInt(mId) == Integer.parseInt(other.getId())) {
+        } else if (Integer.parseInt(mId) == Integer.parseInt(pOther.getId())) {
             return 0;
-        }
-        if (Integer.parseInt(mId) > Integer.parseInt(other.getId())) {
+        } else if (Integer.parseInt(mId) > Integer.parseInt(pOther.getId())) {
             return 1;
         }
         return 0;
     }
-
 
 }

@@ -17,16 +17,14 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.backend.base;
+package ch.uzh.ifi.se.yapp.model.base;
 
 
 public enum AdministrativeUnit {
 
     CANTON,
-
     DISTRICT,
-
-    MUNICIPALITY,
+//  MUNICIPALITY,
 
     ;
 
