@@ -28,7 +28,8 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Election
-extends BaseObject {
+        extends BaseObject
+        implements Comparable {
 
     private String               mId;         // SubmissionNr ("VorlagsNr"), e.g. 552.1
     private String               mTitle;
@@ -44,11 +45,12 @@ extends BaseObject {
     /**
      * <b>Election</b>
      * Creates an Electionobject.
+     *
      * @param pString Containing the member variables except mResults. Must have this Format: mId,mTitle,mDescription,YYYY-MM-DD
      * @param pDistrictResult districtResults
      */
     public Election(String pString, List<DistrictResult> pDistrictResult) {
-        //(mId + "," + mTitle + "," + mDescription + "," + mDate.toString()
+        // (mId + "," + mTitle + "," + mDescription + "," + mDate.toString()
         String[] arr = pString.split(",");
         mId = arr[0];
         mTitle = arr[1];
@@ -115,11 +117,12 @@ extends BaseObject {
     }
 
     /**
-     *<b>toString</b>
-     *<br>Description: Returns a String containing the member variables prepared
-     *to store them in the Datastore.
-     *<br><b>Note:</b> DistrictResults are not contained. Use getDistrictResultIdAsString additionally.
-     *@return String
+     * <b>toString</b> <br>
+     * Description: Returns a String containing the member variables prepared
+     * to store them in the Datastore. <br>
+     * <b>Note:</b> DistrictResults are not contained. Use getDistrictResultIdAsString additionally.
+     *
+     * @return String
      */
     @Override
     public String toString() {
@@ -145,5 +148,13 @@ extends BaseObject {
             res += " ,";
         }
         return res;
+    }
+
+
+    @Override
+    public int compareTo(Object pO) {
+        Election other = (Election) pO;
+        int ret = mDate.compareTo(other.getDate());
+        return ret;
     }
 }

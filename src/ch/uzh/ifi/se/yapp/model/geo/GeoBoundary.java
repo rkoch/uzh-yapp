@@ -27,7 +27,8 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class GeoBoundary
-        extends BaseObject {
+        extends BaseObject
+        implements Comparable {
 
     /**
      * The geopoint list is sorted
@@ -83,5 +84,22 @@ public class GeoBoundary
     public LocalDate getLocalDate() {
         return mLocalDate;
     }
+
+    @Override
+    public int compareTo(Object pO) {
+        GeoBoundary other = (GeoBoundary) pO;
+        if (mLocalDate.isAfter(other.getLocalDate())) {
+            return -1;
+        }
+        if (mLocalDate.isBefore(other.getLocalDate())) {
+            return 1;
+        }
+        if (mLocalDate.isEqual(other.getLocalDate())) {
+            return 0;
+        }
+        return 0;
+    }
+
+
 
 }

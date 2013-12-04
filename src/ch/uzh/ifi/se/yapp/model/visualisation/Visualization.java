@@ -26,7 +26,8 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Visualization
-        extends BaseObject {
+        extends BaseObject
+        implements Comparable {
 
 
     private UUID              mId;
@@ -144,5 +145,20 @@ public class Visualization
 
     public void setType(VisualizationType pType) {
         mType = pType;
+    }
+
+    @Override
+    public int compareTo(Object pO) {
+        Visualization other = (Visualization) pO;
+        if (Double.parseDouble(mElectionId) < Double.parseDouble(other.getElectionId())) {
+            return 1;
+        }
+        if (Double.parseDouble(mElectionId) == Double.parseDouble(other.getElectionId())) {
+            return 0;
+        }
+        if (Double.parseDouble(mElectionId) > Double.parseDouble(other.getElectionId())) {
+            return -1;
+        }
+        return 0;
     }
 }

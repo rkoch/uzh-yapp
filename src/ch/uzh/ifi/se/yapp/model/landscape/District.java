@@ -20,27 +20,22 @@
 package ch.uzh.ifi.se.yapp.model.landscape;
 
 
-import org.joda.time.LocalDate;
-
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class District
-        extends BaseObject {
+        extends BaseObject
+        implements Comparable {
 
     private String    mId;       // Id ("BezirksNr")
     private String    mName;     // Name of District
     private String    mCantonId; // Id of Canton ("KantonsNr")
     private String    mCanton;   // Name of Canton
-    private LocalDate mLocalDate; // Date in which above properties existed
-
-
 
     public District(District pOrig) {
         mId = pOrig.mId;
         mName = pOrig.mName;
         mCantonId = pOrig.mCanton;
-        mLocalDate = pOrig.mLocalDate;
     }
 
     /**
@@ -57,8 +52,6 @@ public class District
         mName = arr[1];
         mCantonId = arr[2];
         mCanton = arr[3];
-        mLocalDate = new LocalDate(arr[4]);
-
     }
 
     public District() {
@@ -96,16 +89,8 @@ public class District
         mCanton = pCanton;
     }
 
-    public void setLocalDate(LocalDate pLocalDate) {
-        mLocalDate = pLocalDate;
-    }
-
-    public LocalDate getLocalDate() {
-        return mLocalDate;
-    }
-
     /**
-     * Format: id,name,cantonId,canton,localdate
+     * Format: id,name,cantonId,canton
      */
     @Override
     public String toString() {
@@ -130,12 +115,22 @@ public class District
         } else {
             res += " ,";
         }
-        if (mLocalDate != null) {
-            res += mLocalDate.toString() + ",";
-        } else {
-            res += "1848-01-01" + ",";
-        }
         return res;
+    }
+
+    @Override
+    public int compareTo(Object pO) {
+        District other = (District) pO;
+        if (Integer.parseInt(mId) < Integer.parseInt(other.getId())) {
+            return -1;
+        }
+        if (Integer.parseInt(mId) == Integer.parseInt(other.getId())) {
+            return 0;
+        }
+        if (Integer.parseInt(mId) > Integer.parseInt(other.getId())) {
+            return 1;
+        }
+        return 0;
     }
 
 
