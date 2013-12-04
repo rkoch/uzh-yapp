@@ -58,7 +58,6 @@ public interface IElectionDataAdapter
      * Description: returns a Map<String, String> with all Elections in it. <br>
      * Key: ElectionId (SubmissionNr, e.g. 552.2) <br>
      * Values: Title of election.
-     * Sorted in ascending order by election id.
      *
      * @return This method returns the elections without any results (so only metadata for now)
      */

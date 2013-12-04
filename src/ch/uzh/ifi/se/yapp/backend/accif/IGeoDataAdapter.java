@@ -43,6 +43,7 @@ public interface IGeoDataAdapter
      * <b>getAllGeoBoundaryByDate</b> <br>
      * Description: returns a List with all GeoBoundaries in it which are
      * up-to-date at the given Date
+     * Sorted by date in ascending order
      *
      * @param pDate
      * @return List<GeoBoundary>

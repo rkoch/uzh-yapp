@@ -21,8 +21,6 @@ package ch.uzh.ifi.se.yapp.backend.accif;
 
 import java.util.List;
 
-import org.joda.time.LocalDate;
-
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 
@@ -42,20 +40,9 @@ public interface ILandscapeDataAdapter
             throws EntityNotFoundException;
 
     /**
-     * <b>getDistrictByIdAndDate</b> <br>
-     * Description: returns a District with a certain id in a certain date.
-     *
-     * @param pId DistrictId of a specific district, "BezirksNr"
-     * @param pDate Date
-     * @return District in a certain year with a certain id
-     * @throws EntityNotFoundException if the District was not found
-     */
-    District getDistrictByIdAndDate(String pId, LocalDate pDate)
-            throws EntityNotFoundException;
-
-    /**
      * <b>getAllDistricts</b> <br>
      * Description: returns a List with all districts
+     * Sorted by id in ascending order
      *
      * @return List<District>
      */
