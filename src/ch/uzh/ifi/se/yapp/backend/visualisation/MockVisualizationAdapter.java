@@ -21,11 +21,9 @@ package ch.uzh.ifi.se.yapp.backend.visualisation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
-import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -47,42 +45,47 @@ public class MockVisualizationAdapter
     }
 
     @Override
-    public Visualization getVisualizationById(String pId) {
-        Visualization v = new Visualization();
-        v.setElectionId("552.1");
-        v.setType(VisualizationType.TABLE);
-        return v;
+    public Visualisation getVisualizationById(String pId) {
+        /*
+         * Visualization v = new Visualization();
+         * v.setElectionId("552.1");
+         * v.setType(VisualizationType.TABLE);
+         * return v;
+         */
+        return new Visualisation();
     }
 
     @Override
-    public List<Visualization> getAllVisualizations() {
-        List<Visualization> tmpList = new ArrayList<>();
-
-        Visualization v = new Visualization();
-        v.setElectionId("552.1");
-        v.setType(VisualizationType.TABLE);
-
-        Visualization v2 = new Visualization();
-        v2.setElectionId("552.1");
-        v2.setType(VisualizationType.TABLE);
-
-        tmpList.add(v);
-        tmpList.add(v2);
-
+    public List<Visualisation> getAllVisualizations() {
+        List<Visualisation> tmpList = new ArrayList<>();
+        /*
+         * Visualization v = new Visualization();
+         * v.setElectionId("552.1");
+         * v.setType(VisualizationType.TABLE);
+         *
+         * Visualization v2 = new Visualization();
+         * v2.setElectionId("552.1");
+         * v2.setType(VisualizationType.TABLE);
+         *
+         * tmpList.add(v);
+         * tmpList.add(v2);
+         */
         return tmpList;
     }
 
     @Override
-    public Visualization insertVisualization(Visualization pVisualization) {
-        Visualization tmp = new Visualization();
-        tmp.setAuthor("asdf");
-        tmp.setComment("aslödfkj");
-        tmp.setElectionId("552.2");
-        tmp.setId(new UUID(0, 0));
-        tmp.setTitle("title");
-        tmp.setType(VisualizationType.TABLE);
-        return tmp;
-
+    public Visualisation insertVisualization(Visualisation pVisualization) {
+        /*
+         * Visualization tmp = new Visualization();
+         * tmp.setAuthor("asdf");
+         * tmp.setComment("aslödfkj");
+         * tmp.setElectionId("552.2");
+         * tmp.setId(new UUID(0, 0));
+         * tmp.setTitle("title");
+         * tmp.setType(VisualizationType.TABLE);
+         * return tmp;
+         */
+        return new Visualisation();
     }
 
 }

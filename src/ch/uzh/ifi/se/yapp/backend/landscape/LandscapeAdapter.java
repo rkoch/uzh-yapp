@@ -20,13 +20,9 @@
 package ch.uzh.ifi.se.yapp.backend.landscape;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.appengine.api.datastore.DatastoreFailureException;
-import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
@@ -60,13 +56,14 @@ public class LandscapeAdapter
         Query districtQuery = new Query(EntityConst.DISTRICT).setFilter(idFilter);
         PreparedQuery pq = DatastoreFactory.getDistrictDatastore().prepare(districtQuery);
         District tmp = new District();
-
-        for (Entity result : pq.asIterable()) {
-            tmp.setId((String) result.getProperty(EntityConst.ID));
-            tmp.setName((String) result.getProperty(EntityConst.NAME));
-            tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
-            tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
-        }
+        /*
+         * for (Entity result : pq.asIterable()) {
+         * tmp.setId((String) result.getProperty(EntityConst.ID));
+         * tmp.setName((String) result.getProperty(EntityConst.NAME));
+         * tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
+         * tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
+         * }
+         */
         return tmp;
     }
 
@@ -74,62 +71,66 @@ public class LandscapeAdapter
     @Override
     public List<District> getAllDistricts() {
         List<District> tmpList = new ArrayList<>();
-        Query districtQuery = new Query(EntityConst.DISTRICT);
-
-        try {
-            // NullPointerException - If any argument is null.
-            districtQuery.addSort(EntityConst.ID);
-        } catch (NullPointerException npe) {
-            LOGGER.log(Level.WARNING, npe.toString(), npe);
-        }
-
-        PreparedQuery pq = DatastoreFactory.getDistrictDatastore().prepare(districtQuery);
-
-        for (Entity result : pq.asIterable()) {
-            District tmp = new District();
-            tmp.setId((String) result.getProperty(EntityConst.ID));
-            tmp.setName((String) result.getProperty(EntityConst.NAME));
-            tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
-            tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
-            try {
-                // UnsupportedOperationException - if the add operation is not supported by this list
-                // ClassCastException - if the class of the specified element prevents it from being added to this list
-                // NullPointerException - if the specified element is null and this list does not permit null elements
-                // IllegalArgumentException - if some property of this element prevents it from being added to this list
-                tmpList.add(tmp);
-            } catch (UnsupportedOperationException uoe) {
-                LOGGER.log(Level.WARNING, uoe.toString(), uoe);
-            } catch (ClassCastException cce) {
-                LOGGER.log(Level.WARNING, cce.toString(), cce);
-            } catch (NullPointerException npe) {
-                LOGGER.log(Level.WARNING, npe.toString(), npe);
-            } catch (IllegalArgumentException iae) {
-                LOGGER.log(Level.WARNING, iae.toString(), iae);
-            }
-        }
+        /*
+         * Query districtQuery = new Query(EntityConst.DISTRICT);
+         *
+         * try {
+         * // NullPointerException - If any argument is null.
+         * districtQuery.addSort(EntityConst.ID);
+         * } catch (NullPointerException npe) {
+         * LOGGER.log(Level.WARNING, npe.toString(), npe);
+         * }
+         *
+         * PreparedQuery pq = DatastoreFactory.getDistrictDatastore().prepare(districtQuery);
+         *
+         * for (Entity result : pq.asIterable()) {
+         * District tmp = new District();
+         * tmp.setId((String) result.getProperty(EntityConst.ID));
+         * tmp.setName((String) result.getProperty(EntityConst.NAME));
+         * tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
+         * tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
+         * try {
+         * // UnsupportedOperationException - if the add operation is not supported by this list
+         * // ClassCastException - if the class of the specified element prevents it from being added to this list
+         * // NullPointerException - if the specified element is null and this list does not permit null elements
+         * // IllegalArgumentException - if some property of this element prevents it from being added to this list
+         * tmpList.add(tmp);
+         * } catch (UnsupportedOperationException uoe) {
+         * LOGGER.log(Level.WARNING, uoe.toString(), uoe);
+         * } catch (ClassCastException cce) {
+         * LOGGER.log(Level.WARNING, cce.toString(), cce);
+         * } catch (NullPointerException npe) {
+         * LOGGER.log(Level.WARNING, npe.toString(), npe);
+         * } catch (IllegalArgumentException iae) {
+         * LOGGER.log(Level.WARNING, iae.toString(), iae);
+         * }
+         * }
+         */
         return tmpList;
     }
 
     @Override
     public void insertDistrict(District pDistrict) {
-        Entity district = new Entity(EntityConst.DISTRICT, pDistrict.getId());
-
-        district.setProperty(EntityConst.ID, pDistrict.getId());
-        district.setProperty(EntityConst.NAME, pDistrict.getName());
-        district.setProperty(EntityConst.CANTON_ID, pDistrict.getCantonId());
-        district.setProperty(EntityConst.CANTON, pDistrict.getCanton());
-
-        try {
-            // IllegalArgumentException - If the specified entity was incomplete.
-            // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
-            // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.getDistrictDatastore().put(district);
-        } catch (IllegalArgumentException iae) {
-            LOGGER.log(Level.WARNING, iae.toString(), iae);
-        } catch (ConcurrentModificationException cme) {
-            LOGGER.log(Level.WARNING, cme.toString(), cme);
-        } catch (DatastoreFailureException dfe) {
-            LOGGER.log(Level.WARNING, dfe.toString(), dfe);
-        }
+        /*
+         * Entity district = new Entity(EntityConst.DISTRICT, pDistrict.getId());
+         *
+         * district.setProperty(EntityConst.ID, pDistrict.getId());
+         * district.setProperty(EntityConst.NAME, pDistrict.getName());
+         * district.setProperty(EntityConst.CANTON_ID, pDistrict.getCantonId());
+         * district.setProperty(EntityConst.CANTON, pDistrict.getCanton());
+         *
+         * try {
+         * // IllegalArgumentException - If the specified entity was incomplete.
+         * // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
+         * // DatastoreFailureException - If any other datastore error occurs.
+         * DatastoreFactory.getDistrictDatastore().put(district);
+         * } catch (IllegalArgumentException iae) {
+         * LOGGER.log(Level.WARNING, iae.toString(), iae);
+         * } catch (ConcurrentModificationException cme) {
+         * LOGGER.log(Level.WARNING, cme.toString(), cme);
+         * } catch (DatastoreFailureException dfe) {
+         * LOGGER.log(Level.WARNING, dfe.toString(), dfe);
+         * }
+         */
     }
 }

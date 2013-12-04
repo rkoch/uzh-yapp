@@ -40,8 +40,8 @@ public class MockLandscapeAdapter
     @Override
     public District getDistrictById(String pId) {
         District d = new District();
-        d.setId("Imboden");
-        d.setCanton("Graubünden");
+//          d.setId("Imboden");
+//          d.setCanton("Graubünden");
         return d;
     }
 
@@ -49,22 +49,23 @@ public class MockLandscapeAdapter
     @Override
     public List<District> getAllDistricts() {
         List<District> tmpList = new ArrayList<>();
-
-        District d1 = new District();
-        d1.setId("Imboden");
-        d1.setCanton("Graubünden");
-
-        District d2 = new District();
-        d2.setId("Maloja");
-        d2.setCanton("Graubünden");
-
-        District d3 = new District();
-        d3.setId("Winterthur");
-        d3.setCanton("Zürich");
-
-        tmpList.add(d1);
-        tmpList.add(d2);
-        tmpList.add(d3);
+        /*
+         * District d1 = new District();
+         * d1.setId("Imboden");
+         * d1.setCanton("Graubünden");
+         *
+         * District d2 = new District();
+         * d2.setId("Maloja");
+         * d2.setCanton("Graubünden");
+         *
+         * District d3 = new District();
+         * d3.setId("Winterthur");
+         * d3.setCanton("Zürich");
+         *
+         * tmpList.add(d1);
+         * tmpList.add(d2);
+         * tmpList.add(d3);
+         */
         return tmpList;
     }
 
