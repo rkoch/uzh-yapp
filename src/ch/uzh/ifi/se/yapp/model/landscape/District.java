@@ -19,43 +19,16 @@
  */
 package ch.uzh.ifi.se.yapp.model.landscape;
 
-
-import org.joda.time.LocalDate;
-
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class District
         extends BaseObject {
 
-    private String    mId;       // Id ("BezirksNr")
-    private String    mName;     // Name of District
-    private String    mCantonId; // Id of Canton ("KantonsNr")
-    private String    mCanton;   // Name of Canton
-    private LocalDate mLocalDate; // Date in which above properties existed
+    private String mId;
+    private String mName;
+    private String mCanton;
 
-
-
-    /**
-     * <b>District</b> <br>
-     * Description: Creates a new instance of this object using a string. Its format must be: id,name,cantonId,canton,localdate
-     *
-     * @param pString
-     */
-    public District(String pString) {
-        String[] arr = pString.split(",");
-        //System.out.println("District: " + arr[0] + ", " + arr[1] + "," + arr[2] + ", " + arr[3] + ", " + arr[4] + ":::");
-
-        mId = arr[0];
-        mName = arr[1];
-        mCantonId = arr[2];
-        mCanton = arr[3];
-        mLocalDate = new LocalDate(arr[4]);
-
-    }
-
-    public District() {
-    }
 
     public String getId() {
         return mId;
@@ -73,14 +46,6 @@ public class District
         mName = pName;
     }
 
-    public String getCantonId() {
-        return mCantonId;
-    }
-
-    public void setCantonId(String pCantonId) {
-        mCantonId = pCantonId;
-    }
-
     public String getCanton() {
         return mCanton;
     }
@@ -89,47 +54,12 @@ public class District
         mCanton = pCanton;
     }
 
-    public void setLocalDate(LocalDate pLocalDate) {
-        mLocalDate = pLocalDate;
-    }
 
-    public LocalDate getLocalDate() {
-        return mLocalDate;
+    public void connectCanton(Canton pCanton) {
+        if (pCanton != null) {
+            mCanton = pCanton.getId();
+            pCanton.addDistrict(mId);
+        }
     }
-
-    /**
-     * Format: id,name,cantonId,canton,localdate
-     */
-    @Override
-    public String toString() {
-        String res = "";
-        if (mId != null) {
-            res += mId + ",";
-        } else {
-            res += " ,";
-        }
-        if (mName != null) {
-            res += mName + ",";
-        } else {
-            res += " ,";
-        }
-        if (mCantonId != null) {
-            res += mCantonId + ",";
-        } else {
-            res += " ,";
-        }
-        if (mCanton != null) {
-            res += mCanton + ",";
-        } else {
-            res += " ,";
-        }
-        if (mLocalDate != null) {
-            res += mLocalDate.toString() + ",";
-        } else {
-            res += "1848-01-01" + ",";
-        }
-        return res;
-    }
-
 
 }

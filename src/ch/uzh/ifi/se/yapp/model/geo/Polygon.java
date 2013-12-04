@@ -19,53 +19,46 @@
  */
 package ch.uzh.ifi.se.yapp.model.geo;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class GeoPoint
+public class Polygon
         extends BaseObject {
 
-    private BigDecimal mX;
-    private BigDecimal mY;
+    private final List<Coordinate> mCoordinates;
 
 
-    public GeoPoint() {
-    }
-
-    /**
-     * <b>GeoPoint</b>
-     * <br>Description: Creates a new instance with a string.
-     * <br><b>Format:</b> x/y
-     * @param pString
-     */
-    public GeoPoint(String pString) {
-        String[] strArr = pString.split("/");
-        mX = new BigDecimal(strArr[0]);
-        mY = new BigDecimal(strArr[1]);
+    public Polygon() {
+        mCoordinates = new ArrayList<>();
     }
 
 
-    public BigDecimal getX() {
-        return mX;
+    public List<Coordinate> getCoordinates() {
+        return Collections.unmodifiableList(mCoordinates);
     }
 
-    public void setX(BigDecimal pX) {
-        mX = pX;
+    public void addCoordinateBack(Coordinate pCoordinate) {
+        mCoordinates.add(pCoordinate);
     }
 
-    public BigDecimal getY() {
-        return mY;
+    public void addCoordinateFront(Coordinate pCoordinate) {
+        mCoordinates.add(0, pCoordinate);
     }
 
-    public void setY(BigDecimal pY) {
-        mY = pY;
+    public void putCoordinate(int pIndex, Coordinate pCoordinate) {
+        mCoordinates.add(pIndex, pCoordinate);
     }
 
-    @Override
-    public String toString() {
-        return (mX + "/" + mY);
+    public void removeCoordinate(Coordinate pCoordinate) {
+        mCoordinates.remove(pCoordinate);
+    }
+
+    public void removeCoordinateAt(int pIndex) {
+        mCoordinates.remove(pIndex);
     }
 
 }

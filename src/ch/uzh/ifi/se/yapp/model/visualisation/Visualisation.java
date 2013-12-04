@@ -17,68 +17,86 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.model.geo;
+package ch.uzh.ifi.se.yapp.model.visualisation;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
 
-import org.joda.time.LocalDate;
-
+import ch.uzh.ifi.se.yapp.model.base.AdministrativeUnit;
+import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class GeoBoundary
+public class Visualisation
         extends BaseObject {
 
     private String             mId;
-    private LocalDate          mLocalDate;
-    private final Set<Polygon> mPolygons;
+    private String             mTitle;
+    private VisualizationType  mType;
+    private AdministrativeUnit mDetail;
+    private String             mAuthor;
+    private String             mComment;
+    private String             mElection;
 
 
-    public GeoBoundary() {
-        mPolygons = new HashSet<>();
+    public Visualisation() {
+        mId = UUID.randomUUID().toString();
     }
 
 
-    /**
-     * Gets the ID of this polygon. It is defined as the ID of the district or canton
-     * which these polygons represent.
-     *
-     * @return Representative ID
-     */
     public String getId() {
         return mId;
     }
 
-    /**
-     * Sets the ID of this polygon. It is defined as the ID of the district or canton
-     * which these polygons represent.
-     *
-     * @param pId Representative ID
-     */
     public void setId(String pId) {
         mId = pId;
     }
 
-    public LocalDate getLocalDate() {
-        return mLocalDate;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public void setLocalDate(LocalDate pLocalDate) {
-        mLocalDate = pLocalDate;
+    public void setTitle(String pTitle) {
+        mTitle = pTitle;
     }
 
-    public Set<Polygon> getPolygons() {
-        return Collections.unmodifiableSet(mPolygons);
+    public VisualizationType getType() {
+        return mType;
     }
 
-    public void addPolygon(Polygon pPolygon) {
-        mPolygons.add(pPolygon);
+    public void setType(VisualizationType pType) {
+        mType = pType;
     }
 
-    public void removePolygon(Polygon pPolygon) {
-        mPolygons.remove(pPolygon);
+    public AdministrativeUnit getDetail() {
+        return mDetail;
+    }
+
+    public void setDetail(AdministrativeUnit pDetail) {
+        mDetail = pDetail;
+    }
+
+    public String getAuthor() {
+        return mAuthor;
+    }
+
+    public void setAuthor(String pAuthor) {
+        mAuthor = pAuthor;
+    }
+
+    public String getComment() {
+        return mComment;
+    }
+
+    public void setComment(String pComment) {
+        mComment = pComment;
+    }
+
+    public String getElection() {
+        return mElection;
+    }
+
+    public void setElection(String pElection) {
+        mElection = pElection;
     }
 
 }
