@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.joda.time.LocalDate;
-
 import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -68,49 +66,10 @@ public class LandscapeAdapter
             tmp.setName((String) result.getProperty(EntityConst.NAME));
             tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
             tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
-            tmp.setLocalDate((LocalDate) result.getProperty(EntityConst.LOCAL_DATE));
         }
         return tmp;
     }
 
-    @Override
-    public District getDistrictByIdAndDate(String pId, LocalDate pDate) {
-        // create a new datastore query with a filter to retrieve only
-        // results older or equal than pDate
-        District newestDistrict = new District();
-
-        try {
-            // IllegalArgumentException - If the provided filter values are not supported.
-            Filter dateMaxFilter = new FilterPredicate(EntityConst.LOCAL_DATE, FilterOperator.LESS_THAN_OR_EQUAL, pDate.toString());
-
-            Query districtQuery = new Query(EntityConst.DISTRICT).setFilter(dateMaxFilter);
-            PreparedQuery pq = DatastoreFactory.getDistrictDatastore().prepare(districtQuery);
-
-            // tmpMaxDate is newest Change of District pDistrictId
-            LocalDate tmpMaxDate = new LocalDate(1848, 1, 1); // year, month, dayOfmonth
-
-            // go over all received results
-            for (Entity result : pq.asIterable()) {
-                District tmp = new District();
-                tmp.setId((String) result.getProperty(EntityConst.ID));
-                tmp.setName((String) result.getProperty(EntityConst.NAME));
-                tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
-                tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
-                // create LocalDate out of a String
-                String str = (String) result.getProperty(EntityConst.LOCAL_DATE);
-                LocalDate ld = new LocalDate(str);
-                tmp.setLocalDate(ld);
-                // check if tmp.localDate is newer or not
-                if (tmpMaxDate.isBefore(tmp.getLocalDate())) {
-                    tmpMaxDate = tmp.getLocalDate();
-                    newestDistrict = tmp;
-                }
-            }
-        } catch (IllegalArgumentException iae) {
-            LOGGER.log(Level.WARNING, iae.toString(), iae);
-        }
-        return newestDistrict;
-    }
 
     @Override
     public List<District> getAllDistricts() {
@@ -132,11 +91,6 @@ public class LandscapeAdapter
             tmp.setName((String) result.getProperty(EntityConst.NAME));
             tmp.setCantonId((String) result.getProperty(EntityConst.CANTON_ID));
             tmp.setCanton((String) result.getProperty(EntityConst.CANTON));
-            // create LocalDate out of a String
-            String str = (String) result.getProperty(EntityConst.LOCAL_DATE);
-            LocalDate ld = new LocalDate(str);
-            tmp.setLocalDate(ld);
-
             try {
                 // UnsupportedOperationException - if the add operation is not supported by this list
                 // ClassCastException - if the class of the specified element prevents it from being added to this list
@@ -164,7 +118,6 @@ public class LandscapeAdapter
         district.setProperty(EntityConst.NAME, pDistrict.getName());
         district.setProperty(EntityConst.CANTON_ID, pDistrict.getCantonId());
         district.setProperty(EntityConst.CANTON, pDistrict.getCanton());
-        district.setProperty(EntityConst.LOCAL_DATE, pDistrict.getLocalDate().toString());
 
         try {
             // IllegalArgumentException - If the specified entity was incomplete.
