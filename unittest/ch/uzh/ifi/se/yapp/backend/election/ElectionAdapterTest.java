@@ -25,14 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-
+import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
+import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
@@ -40,26 +39,13 @@ import ch.uzh.ifi.se.yapp.model.landscape.Election;
 
 public class ElectionAdapterTest {
 
-    private final LocalServiceTestHelper mHelper       = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    private Election                     mElection     = new Election();
-    private ElectionAdapter              mElectionAdpt = new ElectionAdapter();
-    private List<DistrictResult>         mResults      = new ArrayList<>();
-
-
-    @Before
-    public void setUp() {
-        mHelper.setUp();
-    }
-
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
-    }
+    private Election             mElection     = new Election();
+    private IElectionDataAdapter mElectionAdpt = BackendAccessorFactory.getElectionDataAdapter();
+    private List<DistrictResult> mResults      = new ArrayList<>();
 
     @Test
     public void insert() {
-        mElection.setDate(new LocalDate(2013, 03, 02));
         mElection.setDescription("Test-Beschreibung");
         mElection.setId("550");
 
@@ -75,7 +61,6 @@ public class ElectionAdapterTest {
         d.setCantonId("1");
         d.setId("2603");
         d.setName("Test-Bezirk");
-        d.setLocalDate(new LocalDate(2013, 03, 02));
 
         dr.setDistrict(d);
 
@@ -86,7 +71,6 @@ public class ElectionAdapterTest {
 
     @Test
     public void insert2() {
-        mElection.setDate(new LocalDate(2013, 01, 02));
         mElection.setDescription("Test-Beschreibung2");
         mElection.setId("551");
 
@@ -102,7 +86,6 @@ public class ElectionAdapterTest {
         d.setCantonId("2");
         d.setId("2602");
         d.setName("Test-Bezirk2");
-        d.setLocalDate(new LocalDate(2013, 01, 02));
 
         dr.setDistrict(d);
 
@@ -120,36 +103,26 @@ public class ElectionAdapterTest {
     }
 
     @Test
-    public void getElectionsByDateRange() {
-        insert();
-        insert2();
-
-        List<Election> result = mElectionAdpt.getElectionsByDateRange(new LocalDate(2013, 03, 02), new LocalDate(2013, 01, 02));
-        assertEquals("551", result.get(0).getId());
-        assertEquals("550", result.get(1).getId());
-    }
-
-    @Test
-    public void getElectionById() {
-        //insert();
+    public void getElectionById() throws EntityNotFoundException {
+        // insert();
         insert2();
 
         Election result = mElectionAdpt.getElectionById("551");
-        //assertEquals("551", result.getId());
+        // assertEquals("551", result.getId());
 
         // check result
         DistrictResult dr1 = mResults.get(0);
         DistrictResult dr2 = result.getResults().get(0);
 
         assertEquals(dr1.getDeliveredVoteCount(), dr2.getDeliveredVoteCount());
-        //assertEquals(dr1.getDistrict(), dr2.getDistrict());
+        // assertEquals(dr1.getDistrict(), dr2.getDistrict());
         assertEquals(dr1.getEmptyVoteCount(), dr2.getEmptyVoteCount());
         assertEquals(dr1.getNoVoteCount(), dr2.getNoVoteCount());
-        //assertEquals(dr1.getRatio(), dr2.getRatio());
+        // assertEquals(dr1.getRatio(), dr2.getRatio());
         assertEquals(dr1.getTotalEligibleCount(), dr2.getTotalEligibleCount());
         assertEquals(dr1.getValidVoteCount(), dr2.getValidVoteCount());
         assertEquals(dr1.getYesVoteCount(), dr2.getYesVoteCount());
-        //assertEquals(dr1.getYesVoteRatio(), dr2.getYesVoteRatio());
+        // assertEquals(dr1.getYesVoteRatio(), dr2.getYesVoteRatio());
 
         District d1 = dr1.getDistrict();
         District d2 = dr2.getDistrict();
@@ -157,10 +130,18 @@ public class ElectionAdapterTest {
         assertEquals(d1.getCanton(), d2.getCanton());
         assertEquals(d1.getCantonId(), d2.getCantonId());
         assertEquals(d1.getId(), d2.getId());
-        assertEquals(d1.getLocalDate(), d2.getLocalDate());
         assertEquals(d1.getName(), d2.getName());
 
 
+    }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+    @Test
+    public void testEntityNotFoundException() throws EntityNotFoundException {
+        insert();
+        exception.expect(EntityNotFoundException.class);
+        Election ret = mElectionAdpt.getElectionById("560"); // should throw a EntityNotFoundException
     }
 
 }

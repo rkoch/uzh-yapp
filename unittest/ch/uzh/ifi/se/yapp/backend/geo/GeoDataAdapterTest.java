@@ -26,13 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-
+import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
+import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
 import ch.uzh.ifi.se.yapp.model.geo.GeoPoint;
 
@@ -58,24 +58,11 @@ import ch.uzh.ifi.se.yapp.model.geo.GeoPoint;
  */
 public class GeoDataAdapterTest {
 
-    private final LocalServiceTestHelper mHelper   = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-
-    private GeoBoundary                  mBoundary = new GeoBoundary();
-    private GeoPoint                     mPoint    = new GeoPoint();
-    private GeoPoint                     mPoint2   = new GeoPoint();
-    private List<GeoPoint>               mPoints   = new ArrayList<>();
-    private GeoDataAdapter               mGeoAdpt  = new GeoDataAdapter();
-
-
-    @Before
-    public void setUp() {
-        mHelper.setUp();
-    }
-
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
-    }
+    private GeoBoundary     mBoundary = new GeoBoundary();
+    private GeoPoint        mPoint    = new GeoPoint();
+    private GeoPoint        mPoint2   = new GeoPoint();
+    private List<GeoPoint>  mPoints   = new ArrayList<>();
+    private IGeoDataAdapter mGeoAdpt  = BackendAccessorFactory.getGeoDataAdapter();
 
 
     @Test
@@ -95,7 +82,7 @@ public class GeoDataAdapterTest {
     }
 
     @Test
-    public void getGeoBoundaryByDistricAndDate() {
+    public void getGeoBoundaryByDistricAndDate() throws EntityNotFoundException {
         insertGeoBoundary();
         GeoBoundary res = mGeoAdpt.getGeoBoundaryByDistrictAndDate("1", new LocalDate(2012, 11, 24));
 
@@ -111,9 +98,10 @@ public class GeoDataAdapterTest {
         List<GeoBoundary> tmpList = mGeoAdpt.getAllGeoBoundaryByDate(new LocalDate(2012, 11, 24));
         assertEquals("1", tmpList.get(0).getId());
         assertEquals(new LocalDate(2012, 11, 24), tmpList.get(0).getLocalDate());
-        // TODO: zwei elemente?
-        mBoundary.setId("2");
-        mBoundary.setLocalDate(new LocalDate(2012, 11, 23));
+
+        GeoBoundary mBoundary2 = new GeoBoundary();
+        mBoundary2.setId("2");
+        mBoundary2.setLocalDate(new LocalDate(2012, 11, 23));
 
         mPoint.setX(new BigDecimal(11));
         mPoint.setY(new BigDecimal(11));
@@ -122,8 +110,8 @@ public class GeoDataAdapterTest {
         mPoints.add(mPoint);
         mPoints.add(mPoint2);
 
-        mBoundary.setGeoPoints(mPoints);
-        mGeoAdpt.insertGeoBoundary(mBoundary);
+        mBoundary2.setGeoPoints(mPoints);
+        mGeoAdpt.insertGeoBoundary(mBoundary2);
 
         tmpList = mGeoAdpt.getAllGeoBoundaryByDate(new LocalDate(2012, 11, 24));
         assertEquals("1", tmpList.get(0).getId());
@@ -135,9 +123,10 @@ public class GeoDataAdapterTest {
         List<GeoBoundary> tmpList = mGeoAdpt.getAllGeoBoundaryByDate(new LocalDate(2012, 11, 24));
         assertEquals("1", tmpList.get(0).getId());
         assertEquals(new LocalDate(2012, 11, 24), tmpList.get(0).getLocalDate());
-        // TODO: zwei elemente?
-        mBoundary.setId("2");
-        mBoundary.setLocalDate(new LocalDate(2012, 11, 23));
+
+        GeoBoundary mBoundary2 = new GeoBoundary();
+        mBoundary2.setId("2");
+        mBoundary2.setLocalDate(new LocalDate(2012, 11, 23));
 
         mPoint.setX(new BigDecimal(11));
         mPoint.setY(new BigDecimal(11));
@@ -146,12 +135,23 @@ public class GeoDataAdapterTest {
         mPoints.add(mPoint);
         mPoints.add(mPoint2);
 
-        mBoundary.setGeoPoints(mPoints);
-        mGeoAdpt.insertGeoBoundary(mBoundary);
+        mBoundary2.setGeoPoints(mPoints);
+        mGeoAdpt.insertGeoBoundary(mBoundary2);
         // now there should be 2 geoboundaries in the datastore
         List<GeoBoundary> resultList = mGeoAdpt.getAllGeoBoundary();
         assertEquals("1", resultList.get(0).getId());
         assertEquals("2", resultList.get(1).getId());
+    }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void testEntityNotFoundException() throws EntityNotFoundException {
+        insertGeoBoundary();
+        exception.expect(EntityNotFoundException.class);
+        // should throw EntityNotFoundException
+        GeoBoundary res = mGeoAdpt.getGeoBoundaryByDistrictAndDate("1", new LocalDate(2012, 11, 22));
     }
 
 }
