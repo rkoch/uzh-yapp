@@ -20,11 +20,10 @@
 package ch.uzh.ifi.se.yapp.backend.landscape;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.joda.time.LocalDate;
 
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
@@ -56,24 +55,14 @@ public class MemcachedLandscapeAdapter
         return new District(ret);
     }
 
-    @Override
-    public District getDistrictByIdAndDate(String pId, LocalDate pDate)
-            throws EntityNotFoundException {
-        // TODO pDate makes no sense anymore... pId as map-key
-        District ret = mStorage.get(pId);
-        if (ret == null) {
-            throw new EntityNotFoundException("District " + pId + " not found.");
-        }
-        return new District(ret);
-
-    }
-
+    @SuppressWarnings("unchecked")
     @Override
     public List<District> getAllDistricts() {
         List<District> retList = new ArrayList<>();
         for (Map.Entry<String, District> entry : mStorage.entrySet()) {
             retList.add(entry.getValue());
         }
+        Collections.sort(retList);
         return retList;
     }
 
