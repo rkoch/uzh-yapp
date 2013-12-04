@@ -26,7 +26,7 @@
  </servlet-mapping>
 
  <listener>
-  <listener-class>ch.uzh.ifi.se.yapp.facade.servlet.ElectionImportServlet</listener-class>
+  <listener-class>ch.uzh.ifi.se.yapp.facade.servlet.ImportServlet</listener-class>
  </listener>
 
  <!-- Default page to serve -->

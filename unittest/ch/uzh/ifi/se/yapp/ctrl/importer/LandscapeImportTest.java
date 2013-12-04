@@ -33,7 +33,7 @@ import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 
-public class IdImportTest {
+public class LandscapeImportTest {
 
     private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalTaskQueueTestConfig());
 
@@ -54,7 +54,7 @@ public class IdImportTest {
         InputStream district = getClass().getResourceAsStream(ids[0]);
         InputStream cantons = getClass().getResourceAsStream(ids[1]);
 
-        IdImport test = new IdImport(district, cantons);
+        LandscapeImport test = new LandscapeImport(district, cantons);
 
         Map<String, District> districts = test.getDistricts();
         Map<String, String> invertedDistricts = test.getInvertedDistricts();

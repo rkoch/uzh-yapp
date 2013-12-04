@@ -59,7 +59,7 @@ public class ElectionImportTest {
             InputStream districts = getClass().getResourceAsStream(ids[0]);
             InputStream cantons = getClass().getResourceAsStream(ids[1]);
 
-            IdImport imp = new IdImport(districts, cantons);
+            LandscapeImport imp = new LandscapeImport(districts, cantons);
 
             test = new ElectionImport(imp);
             test.importElection(getClass().getResourceAsStream("test.csv"));

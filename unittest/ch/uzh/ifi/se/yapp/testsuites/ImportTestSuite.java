@@ -24,11 +24,11 @@ import org.junit.runners.Suite;
 
 import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImportTest;
 import ch.uzh.ifi.se.yapp.ctrl.importer.GeoImportTest;
-import ch.uzh.ifi.se.yapp.ctrl.importer.IdImportTest;
+import ch.uzh.ifi.se.yapp.ctrl.importer.LandscapeImportTest;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ ElectionImportTest.class, GeoImportTest.class, IdImportTest.class })
+@Suite.SuiteClasses({ ElectionImportTest.class, GeoImportTest.class, LandscapeImportTest.class })
 public class ImportTestSuite {
 
 }

@@ -24,105 +24,82 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.joda.time.LocalDate;
 
-import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
-import ch.uzh.ifi.se.yapp.model.landscape.District;
-import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
-import ch.uzh.ifi.se.yapp.model.landscape.Election;
+import ch.uzh.ifi.se.yapp.model.election.Election;
+import ch.uzh.ifi.se.yapp.model.election.Result;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class ElectionImport
         extends BaseObject {
 
-    private static final Logger LOGGER = BaseObject.getLogger(ElectionImport.class);
+    private static final Logger        LOGGER = getLogger(ElectionImport.class);
 
-    private final IdImport      mIdImport;
+    private final IElectionDataAdapter mStorageAdapter;
 
-    public ElectionImport(IdImport pIdImport) {
-        mIdImport = pIdImport;
+
+    public ElectionImport(IElectionDataAdapter pStorageAdapter) {
+        mStorageAdapter = pStorageAdapter;
     }
 
+
     /**
-     * <b>importElection</b> <br>
      * Description: import a csv file and instance an election and save it on the server
      *
      * @pre pFile.exist() == true
      * @param pFile in .csv format
      * @throws IOException
      */
-    public void importElection(InputStream pFilePath)
+    public void runImport(InputStream pElectionStream)
             throws IOException {
-        try {
-            Election pElection = new Election();
-            List<DistrictResult> pList = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new InputStreamReader(pElectionStream, "utf-8"));
+        Election election = new Election();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(pFilePath, "ISO-8859-1"));
-            String line = null;
-            int count = 0;
+        // reads .csv until all lines are finished
+        String line;
+        int lineCount = 0;
+        while ((line = br.readLine()) != null) {
+            String[] cells = line.split(";");
 
-            // reads .csv until all lines are finished
-            while ((line = br.readLine()) != null) {
-                String[] cells = line.split(";");
-
-                // writes data in DistrictResult
-                if (count == 0) {
-                    pElection.setDate(getDate(cells[0]));
-                    pElection.setId(cells[2]);
-                } else if (count == 1) {
-                    pElection.setTitle(cells[0]);
-                } else {
-                    DistrictResult pDResult = new DistrictResult();
-                    District pDistrict = new District();
-
-                    if (mIdImport.getDistricts().containsKey(cells[0])) {
-                        pDistrict = mIdImport.getDistricts().get(cells[0]);
-                    }
-                    pDResult.setDistrict(pDistrict);
-
-                    pDResult.setTotalEligibleCount(Integer.parseInt(cells[2]));
-                    pDResult.setDeliveredVoteCount(Integer.parseInt(cells[3]));
-                    pDResult.setValidVoteCount(Integer.parseInt(cells[5]));
-                    pDResult.setYesVoteCount(Integer.parseInt(cells[6]));
-                    pDResult.setNoVoteCount(Integer.parseInt(cells[7]));
-                    pDResult.setEmptyVoteCount();
-                    pDResult.setRatio();
-                    pDResult.setYesVoteRatio();
-
-                    pList.add(pDResult);
-                }
-                count++;
+            if (lineCount == 0) {
+                election.setDate(extractDate(cells[0]));
+                election.setId(cells[2]);
+            } else if (lineCount == 1) {
+                election.setTitle(cells[0]);
+            } else {
+                Result result = new Result();
+                result.setLandscape(cells[0]);
+                result.setTotalEligibleCount(Integer.parseInt(cells[2]));
+                result.setDeliveredCount(Integer.parseInt(cells[3]));
+                result.setValidCount(Integer.parseInt(cells[5]));
+                result.setYesCount(Integer.parseInt(cells[6]));
+                result.setNoCount(Integer.parseInt(cells[7]));
+                election.addResult(result);
             }
-
-            pElection.setResults(pList);
-
-            br.close();
-
-            // saves Election on server (Google App Engine)
-            IElectionDataAdapter adpt = BackendAccessorFactory.getElectionDataAdapter();
-            adpt.insertElection(pElection);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e.toString(), e);
+            lineCount++;
         }
+
+        br.close();
+
+        // persist election
+        mStorageAdapter.insertElection(election);
     }
 
+
     /**
-     * <b>getDate</b> <br>
-     * Description: converts a String to a yoda LocalDate
+     * Converts a string to a YODAtime LocalDate
      *
-     * @param pDate
-     * @return LocalDate
+     * @param pToConvert the string which contains the date to convert
+     * @return LocalDate Converted date
      */
-    public LocalDate getDate(String pDate) {
+    public LocalDate extractDate(String pToConvert) {
         try {
-            String[] fragments = pDate.split(" ");
+            String[] fragments = pToConvert.split(" ");
 
             int day = Integer.parseInt(fragments[2]);
             int month = 0;
@@ -168,14 +145,14 @@ public class ElectionImport
                 default:
                     throw new InvalidParameterException();
             }
-
             LocalDate date = new LocalDate(year, month, day);
 
             return date;
-        } catch (InvalidParameterException e) {
-            LOGGER.log(Level.WARNING, e.toString(), e);
+        } catch (Exception pEx) {
+            LOGGER.log(Level.WARNING, pEx.toString(), pEx);
         }
 
         return null;
     }
+
 }

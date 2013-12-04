@@ -51,11 +51,21 @@ public class GeoImport
 
     private static final Logger LOGGER = getLogger(ElectionImport.class);
 
-    private final IdImport      mIdImport;
+    private LandscapeImport     mIdImport;
 
 
-    public GeoImport(IdImport pIdImport) {
+    public GeoImport(IGeoDataAdapter pStorageAdapter) {
+
+    }
+
+    public GeoImport(LandscapeImport pIdImport) {
         mIdImport = pIdImport;
+    }
+
+
+    public void runImport(InputStream pGeoStream)
+            throws IOException {
+
     }
 
 

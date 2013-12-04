@@ -1,0 +1,147 @@
+﻿101;1;Affoltern
+102;1;Andelfingen
+103;1;Bülach
+104;1;Dielsdorf
+105;1;Hinwil
+106;1;Horgen
+107;1;Meilen
+108;1;Pfäffikon
+109;1;Uster
+110;1;Winterthur
+111;1;Dietikon
+112;1;Zürich
+241;2;Jura Bernois
+242;2;Biel/Bienne
+243;2;Seeland
+244;2;Oberaargau
+245;2;Emmental
+246;2;Bern-Mittelland
+247;2;Thun
+248;2;Obersimmental-Saanen
+249;2;Frutigen-Niedersimmental
+250;2;Interlaken-Oberhasli
+301;3;Entlebuch
+302;3;Hochdorf
+303;3;Luzern
+304;3;Sursee
+305;3;Willisau
+400;4;Uri
+501;5;Einsiedeln
+502;5;Gersau
+503;5;Höfe
+504;5;Küssnacht
+505;5;March
+506;5;Schwyz
+600;6;Obwalden
+700;7;Nidwalden
+800;8;Glarus
+900;9;Zug
+1001;10;La Broye
+1002;10;La Glâne
+1003;10;La Gruyère
+1004;10;La Sarine
+1005;10;See
+1006;10;Sense
+1007;10;La Veveyse
+1101;11;Gäu
+1102;11;Thal
+1103;11;Bucheggberg
+1104;11;Dorneck
+1105;11;Gösgen
+1106;11;Wasseramt
+1107;11;Lebern
+1108;11;Olten
+1109;11;Solothurn
+1110;11;Thierstein
+1200;12;Basel-Stadt
+1301;13;Arlesheim
+1302;13;Laufen
+1303;13;Liestal
+1304;13;Sissach
+1305;13;Waldenburg
+1401;14;Oberklettgau
+1402;14;Reiat
+1403;14;Schaffhausen
+1404;14;Schleitheim
+1405;14;Stein
+1406;14;Unterklettgau
+1501;15;Hinterland
+1502;15;Mittelland
+1503;15;Vorderland
+1600;16;Appenzell Innerrhoden
+1721;17;St. Gallen
+1722;17;Rorschach
+1723;17;Rheintal
+1724;17;Werdenberg
+1725;17;Sarganserland
+1726;17;See-Gaster
+1727;17;Toggenburg
+1728;17;Wil
+1821;18;Albula
+1822;18;Bernina
+1823;18;Hinterrhein
+1824;18;Imboden
+1825;18;Inn
+1826;18;Landquart
+1827;18;Maloja
+1828;18;Moesa
+1829;18;Plessur
+1830;18;Prättigau/Davos
+1831;18;Surselva
+1901;19;Aarau
+1902;19;Baden
+1903;19;Bremgarten
+1904;19;Brugg
+1905;19;Kulm
+1906;19;Laufenburg
+1907;19;Lenzburg
+1908;19;Muri
+1909;19;Rheinfelden
+1910;19;Zofingen
+1911;19;Zurzach
+2011;20;Arbon
+2012;20;Frauenfeld
+2013;20;Kreuzlingen
+2014;20;Münchwilen
+2015;20;Weinfelden
+2101;21;Bellinzona
+2102;21;Blenio
+2103;21;Leventina
+2104;21;Locarno
+2105;21;Lugano
+2106;21;Mendrisio
+2107;21;Riviera
+2108;21;Vallemaggia
+2221;22;Aigle
+2222;22;Broye-Vully
+2223;22;Gros-de-Vaud
+2224;22;Jura-Nord vaudois
+2225;22;Lausanne
+2226;22;Lavaux-Oron
+2227;22;Morges
+2228;22;Nyon
+2229;22;Ouest lausannois
+2230;22;Riviera-Pays-d'Enhaut
+2301;23;Brig
+2302;23;Conthey
+2303;23;Entremont
+2304;23;Goms
+2305;23;Hérens
+2306;23;Leuk
+2307;23;Martigny
+2308;23;Monthey
+2309;23;Raron
+2310;23;Saint-Maurice
+2311;23;Sierre
+2312;23;Sion
+2313;23;Visp
+2401;24;Boudry
+2402;24;La Chaux-de-Fonds
+2403;24;Le Locle
+2404;24;Neuchâtel
+2405;24;Val-de-Ruz
+2406;24;Val-de-Travers
+2500;25;Genève
+2601;26;Delémont
+2602;26;Les Franches-Montagnes
+2603;26;Porrentruy
