@@ -30,6 +30,11 @@ public class District
     private String mName;
     private String mCanton;
 
+    public District(District pOrig) {
+        mId = pOrig.getId();
+        mName = pOrig.getName();
+        mCanton = pOrig.getCanton();
+    }
 
     public String getId() {
         return mId;
