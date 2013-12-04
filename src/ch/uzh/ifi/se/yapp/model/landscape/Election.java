@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 
+import ch.uzh.ifi.se.yapp.model.election.Result;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -31,11 +32,11 @@ public class Election
         extends BaseObject
         implements Comparable {
 
-    private String               mId;         // SubmissionNr ("VorlagsNr"), e.g. 552.1
-    private String               mTitle;
-    private String               mDescription;
-    private List<DistrictResult> mResults;
-    private LocalDate            mDate;
+    private String       mId;         // SubmissionNr ("VorlagsNr"), e.g. 552.1
+    private String       mTitle;
+    private String       mDescription;
+    private List<Result> mResults;
+    private LocalDate    mDate;
 
 
     public Election() {
@@ -47,16 +48,16 @@ public class Election
      * Creates an Electionobject.
      *
      * @param pString Containing the member variables except mResults. Must have this Format: mId,mTitle,mDescription,YYYY-MM-DD
-     * @param pDistrictResult districtResults
+     * @param pResult districtResults
      */
-    public Election(String pString, List<DistrictResult> pDistrictResult) {
+    public Election(String pString, List<Result> pResult) {
         // (mId + "," + mTitle + "," + mDescription + "," + mDate.toString()
         String[] arr = pString.split(",");
         mId = arr[0];
         mTitle = arr[1];
         mDescription = arr[2];
         mDate = new LocalDate(arr[3]);
-        mResults = pDistrictResult;
+        mResults = pResult;
     }
 
 
@@ -100,11 +101,11 @@ public class Election
         mDescription = pDescription;
     }
 
-    public List<DistrictResult> getResults() {
+    public List<Result> getResults() {
         return mResults;
     }
 
-    public void setResults(List<DistrictResult> pResults) {
+    public void setResults(List<Result> pResults) {
         mResults = pResults;
     }
 
@@ -120,7 +121,7 @@ public class Election
      * <b>toString</b> <br>
      * Description: Returns a String containing the member variables prepared
      * to store them in the Datastore. <br>
-     * <b>Note:</b> DistrictResults are not contained. Use getDistrictResultIdAsString additionally.
+     * <b>Note:</b> Results are not contained. Use getResultIdAsString additionally.
      *
      * @return String
      */
