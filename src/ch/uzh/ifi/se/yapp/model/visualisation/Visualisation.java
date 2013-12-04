@@ -43,6 +43,15 @@ public class Visualisation
         mId = UUID.randomUUID().toString();
     }
 
+    public Visualisation(Visualisation pOrig) {
+        mId = pOrig.getId();
+        mTitle = pOrig.getTitle();
+        mType = pOrig.getType();
+        mDetail = pOrig.getDetail();
+        mAuthor = pOrig.getAuthor();
+        mComment = pOrig.getComment();
+        mElection = pOrig.getElection();
+    }
 
     public String getId() {
         return mId;
