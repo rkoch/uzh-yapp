@@ -41,6 +41,12 @@ public class GeoBoundary
         mPolygons = new HashSet<>();
     }
 
+    public GeoBoundary(GeoBoundary pOrig) {
+        mId = pOrig.getId();
+        mLocalDate = pOrig.getLocalDate();
+        mPolygons = pOrig.getPolygons();
+    }
+
 
     /**
      * Gets the ID of this polygon. It is defined as the ID of the district or canton
