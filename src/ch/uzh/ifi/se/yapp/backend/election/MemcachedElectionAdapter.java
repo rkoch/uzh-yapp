@@ -20,6 +20,7 @@
 package ch.uzh.ifi.se.yapp.backend.election;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ public class MemcachedElectionAdapter
         return ret;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Election> getElectionsByDateRange(LocalDate pDate1, LocalDate pDate2) {
         List<Election> retList = new ArrayList<>();
@@ -64,6 +66,7 @@ public class MemcachedElectionAdapter
                 retList.add(entry.getValue());
             }
         }
+        Collections.sort(retList);
         return retList;
     }
 
