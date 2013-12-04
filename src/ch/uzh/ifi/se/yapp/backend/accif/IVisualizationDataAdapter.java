@@ -22,7 +22,7 @@ package ch.uzh.ifi.se.yapp.backend.accif;
 import java.util.List;
 
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 
 
 public interface IVisualizationDataAdapter
@@ -45,7 +45,7 @@ public interface IVisualizationDataAdapter
      * @return Visualization
      * @throws EntityNotFoundException if the Visualization was not found
      */
-    Visualization getVisualizationById(String pId)
+    Visualisation getVisualizationById(String pId)
             throws EntityNotFoundException;
 
     /**
@@ -54,7 +54,7 @@ public interface IVisualizationDataAdapter
      * Sorted by Electionid in ascending order
      * @return List<Visualization>
      */
-    List<Visualization> getAllVisualizations();
+    List<Visualisation> getAllVisualizations();
 
     /**
      * <b>saveVisualization</b> <br>
@@ -63,6 +63,6 @@ public interface IVisualizationDataAdapter
      * @param pVisualization Visualization to be saved.
      * @return the inserted visualization
      */
-    Visualization insertVisualization(Visualization pVisualization);
+    Visualisation insertVisualization(Visualisation pVisualization);
 
 }
