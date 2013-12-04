@@ -151,13 +151,13 @@ public class Visualization
     public int compareTo(Object pO) {
         Visualization other = (Visualization) pO;
         if (Double.parseDouble(mElectionId) < Double.parseDouble(other.getElectionId())) {
-            return 1;
+            return -1;
         }
         if (Double.parseDouble(mElectionId) == Double.parseDouble(other.getElectionId())) {
             return 0;
         }
         if (Double.parseDouble(mElectionId) > Double.parseDouble(other.getElectionId())) {
-            return -1;
+            return 1;
         }
         return 0;
     }
