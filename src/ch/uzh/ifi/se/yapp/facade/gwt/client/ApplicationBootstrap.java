@@ -307,11 +307,7 @@ public class ApplicationBootstrap
             mMainPanel.add(widg);
         }
         // Delete button
-        HorizontalPanel panelActions = new HorizontalPanel();
-        mMainPanel.add(panelActions);
-
         mDeleteButton = new Button("Löschen");
-        panelActions.add(mDeleteButton);
         mDeleteButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -321,8 +317,11 @@ public class ApplicationBootstrap
 
         });
 
-        // Google+ Button
-        panelActions.add(new HTML("<g:plusone></g:plusone>"));
+        HorizontalPanel panelActions = new HorizontalPanel();
+        panelActions.add(mDeleteButton); // Delete Button
+        panelActions.add(new HTML("<g:plusone></g:plusone>"));  // Google+ Button
+        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link:"+"'>Share by Email</a>"));
+        mMainPanel.add(panelActions);
 
     }
 
