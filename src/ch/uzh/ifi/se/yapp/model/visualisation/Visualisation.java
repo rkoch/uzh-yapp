@@ -27,7 +27,8 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Visualisation
-        extends BaseObject {
+        extends BaseObject
+        implements Comparable<Visualisation> {
 
     private String             mId;
     private String             mTitle;
@@ -42,6 +43,15 @@ public class Visualisation
         mId = UUID.randomUUID().toString();
     }
 
+    public Visualisation(Visualisation pOrig) {
+        mId = pOrig.getId();
+        mTitle = pOrig.getTitle();
+        mType = pOrig.getType();
+        mDetail = pOrig.getDetail();
+        mAuthor = pOrig.getAuthor();
+        mComment = pOrig.getComment();
+        mElection = pOrig.getElection();
+    }
 
     public String getId() {
         return mId;
@@ -97,6 +107,19 @@ public class Visualisation
 
     public void setElection(String pElection) {
         mElection = pElection;
+    }
+
+
+    @Override
+    public int compareTo(Visualisation pOther) {
+        if (Double.parseDouble(mElection) < Double.parseDouble(pOther.mElection)) {
+            return -1;
+        } else if (Double.parseDouble(mElection) == Double.parseDouble(pOther.mElection)) {
+            return 0;
+        } else if (Double.parseDouble(mElection) > Double.parseDouble(pOther.mElection)) {
+            return 1;
+        }
+        return 0;
     }
 
 }

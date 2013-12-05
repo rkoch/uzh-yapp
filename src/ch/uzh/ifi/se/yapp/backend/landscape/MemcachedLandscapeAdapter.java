@@ -20,60 +20,55 @@
 package ch.uzh.ifi.se.yapp.backend.landscape;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class MockLandscapeAdapter
+public class MemcachedLandscapeAdapter
         extends BaseObject
         implements ILandscapeDataAdapter {
 
+    private final Map<String, District> mStorage;
+
+    public MemcachedLandscapeAdapter() {
+        mStorage = new HashMap<>();
+    }
 
     @Override
     public void cleanup() {
-
     }
 
     @Override
-    public District getDistrictById(String pId) {
-        District d = new District();
-//          d.setId("Imboden");
-//          d.setCanton("Graubünden");
-        return d;
+    public District getDistrictById(String pId)
+            throws EntityNotFoundException {
+        District ret = mStorage.get(pId);
+        if (ret == null) {
+            throw new EntityNotFoundException("District " + pId + " not found.");
+        }
+        return new District(ret);
     }
 
-
+    @SuppressWarnings("unchecked")
     @Override
     public List<District> getAllDistricts() {
-        List<District> tmpList = new ArrayList<>();
-        /*
-         * District d1 = new District();
-         * d1.setId("Imboden");
-         * d1.setCanton("Graubünden");
-         *
-         * District d2 = new District();
-         * d2.setId("Maloja");
-         * d2.setCanton("Graubünden");
-         *
-         * District d3 = new District();
-         * d3.setId("Winterthur");
-         * d3.setCanton("Zürich");
-         *
-         * tmpList.add(d1);
-         * tmpList.add(d2);
-         * tmpList.add(d3);
-         */
-        return tmpList;
+        List<District> retList = new ArrayList<>();
+        for (Map.Entry<String, District> entry : mStorage.entrySet()) {
+            retList.add(entry.getValue());
+        }
+        Collections.sort(retList);
+        return retList;
     }
 
     @Override
     public void insertDistrict(District pDistrict) {
-        // DateTime is stored in District.mDateTime
-        // using java data object (jdo)
-        // google data store
+        String id = pDistrict.getId();
+        mStorage.put(id, new District(pDistrict));
     }
-
 }

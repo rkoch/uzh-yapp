@@ -17,43 +17,14 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package ch.uzh.ifi.se.yapp.backend.accif;
-
-import java.util.List;
-
-import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
-import ch.uzh.ifi.se.yapp.model.landscape.District;
+package ch.uzh.ifi.se.yapp.backend.base;
 
 
-public interface ILandscapeDataAdapter
-        extends IBaseAdapter {
+public class EntityNotFoundException
+        extends Exception {
 
-    /**
-     * <b>getDistrictById</b> <br>
-     * Description: returns a District with a certain id
-     *
-     * @param pId DistrictId of a specific district, ("BezirksNr")
-     * @return District according to the given parameters
-     * @throws EntityNotFoundException if the election was not found
-     */
-    District getDistrictById(String pId)
-            throws EntityNotFoundException;
-
-    /**
-     * <b>getAllDistricts</b> <br>
-     * Description: returns a List with all districts
-     * Sorted by id in ascending order
-     *
-     * @return List<District>
-     */
-    List<District> getAllDistricts();
-
-    /**
-     * <b>insertDistrict</b> <br>
-     * Description: Stores a District object on the server.
-     *
-     * @param pDistrict District object to be saved.
-     */
-    void insertDistrict(District pDistrict);
+    public EntityNotFoundException(String pMessage) {
+        super(pMessage);
+    }
 
 }

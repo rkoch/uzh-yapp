@@ -20,25 +20,11 @@
 package ch.uzh.ifi.se.yapp.backend.visualisation;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.appengine.api.datastore.DatastoreFailureException;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
-import com.google.appengine.api.datastore.Query.SortDirection;
-
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
-import ch.uzh.ifi.se.yapp.backend.base.EntityConst;
-import ch.uzh.ifi.se.yapp.backend.persistence.DatastoreFactory;
-import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -57,133 +43,141 @@ public class VisualizationAdapter
 
     @Override
     public void deleteVisualizationById(String pId) {
-
-        Entity visualization = new Entity(EntityConst.VISUALIZATION, pId);
-        visualization.setProperty(EntityConst.ID, pId);
-        visualization.setProperty(EntityConst.ELECTION_ID, "");
-        visualization.setProperty(EntityConst.VISUALIZATION_TYPE, "TRASH");
-
-        try {
-            // IllegalArgumentException - If the specified entity was incomplete.
-            // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
-            // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.getVisualizationDatastore().put(visualization);
-
-        } catch (IllegalArgumentException iae) {
-            LOGGER.log(Level.WARNING, iae.toString(), iae);
-        } catch (ConcurrentModificationException cme) {
-            LOGGER.log(Level.WARNING, cme.toString(), cme);
-        } catch (DatastoreFailureException dfe) {
-            LOGGER.log(Level.WARNING, dfe.toString(), dfe);
-        }
+        /*
+         * Entity visualization = new Entity(EntityConst.VISUALIZATION, pId);
+         * visualization.setProperty(EntityConst.ID, pId);
+         * visualization.setProperty(EntityConst.ELECTION_ID, "");
+         * visualization.setProperty(EntityConst.VISUALIZATION_TYPE, "TRASH");
+         *
+         * try {
+         * // IllegalArgumentException - If the specified entity was incomplete.
+         * // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
+         * // DatastoreFailureException - If any other datastore error occurs.
+         * DatastoreFactory.getVisualizationDatastore().put(visualization);
+         *
+         * } catch (IllegalArgumentException iae) {
+         * LOGGER.log(Level.WARNING, iae.toString(), iae);
+         * } catch (ConcurrentModificationException cme) {
+         * LOGGER.log(Level.WARNING, cme.toString(), cme);
+         * } catch (DatastoreFailureException dfe) {
+         * LOGGER.log(Level.WARNING, dfe.toString(), dfe);
+         * }
+         */
     }
 
     @Override
-    public Visualization getVisualizationById(String pId) {
-        Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
-
-        Query visQuery = new Query(EntityConst.VISUALIZATION);
-        visQuery.setFilter(idFilter);
-        PreparedQuery pq = DatastoreFactory.getVisualizationDatastore().prepare(visQuery);
-
-        Visualization resVis = new Visualization();
-        for (Entity result : pq.asIterable()) {
-            // set id
-            String id = (String) result.getProperty(EntityConst.ID);
-            resVis.setId(id);
-            // set electionid
-            resVis.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
-            // set type
-            VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
-            resVis.setType(vt);
-
-            // set title, comment, author
-            resVis.setTitle((String) result.getProperty(EntityConst.TITLE));
-            resVis.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
-            resVis.setComment((String) result.getProperty(EntityConst.COMMENT));
-        }
-        if (resVis.getType() != VisualizationType.TRASH) {
-            return resVis;
-        } else {
-            return null;
-        }
+    public Visualisation getVisualizationById(String pId) {
+        /*
+         * Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
+         *
+         * Query visQuery = new Query(EntityConst.VISUALIZATION);
+         * visQuery.setFilter(idFilter);
+         * PreparedQuery pq = DatastoreFactory.getVisualizationDatastore().prepare(visQuery);
+         *
+         * Visualiation resVis = new Visualization();
+         * for (Entity result : pq.asIterable()) {
+         * // set id
+         * String id = (String) result.getProperty(EntityConst.ID);
+         * resVis.setId(id);
+         * // set electionid
+         * resVis.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
+         * // set type
+         * VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
+         * resVis.setType(vt);
+         *
+         * // set title, comment, author
+         * resVis.setTitle((String) result.getProperty(EntityConst.TITLE));
+         * resVis.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
+         * resVis.setComment((String) result.getProperty(EntityConst.COMMENT));
+         * }
+         * if (resVis.getType() != VisualizationType.TRASH) {
+         * return resVis;
+         * } else {
+         * return null;
+         * }
+         */
+        return new Visualisation();
     }
 
     @Override
-    public List<Visualization> getAllVisualizations() {
-        List<Visualization> tmpList = new ArrayList<>();
-
-        Query visQuery = new Query(EntityConst.VISUALIZATION);
-        try {
-            // NullPointerException - If any argument is null.
-            visQuery.addSort(EntityConst.ELECTION_ID, SortDirection.ASCENDING);
-        } catch (NullPointerException npe) {
-            LOGGER.log(Level.WARNING, npe.toString(), npe);
-        }
-
-        PreparedQuery pq = DatastoreFactory.getVisualizationDatastore().prepare(visQuery);
-
-        for (Entity result : pq.asIterable()) {
-            Visualization tmp = new Visualization();
-            // set id
-            String id = (String) result.getProperty(EntityConst.ID);
-            tmp.setId(id);
-            // setElection Id
-            tmp.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
-            // set type
-            VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
-            tmp.setType(vt);
-            if (vt != VisualizationType.TRASH) {
-                // set title, author, comment
-                tmp.setTitle((String) result.getProperty(EntityConst.TITLE));
-                tmp.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
-                tmp.setComment((String) result.getProperty(EntityConst.COMMENT));
-
-                try {
-                    // UnsupportedOperationException - if the add operation is not supported by this list
-                    // ClassCastException - if the class of the specified element prevents it from being added to this list
-                    // NullPointerException - if the specified element is null and this list does not permit null elements
-                    // IllegalArgumentException - if some property of this element prevents it from being added to this list
-                    tmpList.add(tmp);
-                } catch (UnsupportedOperationException uoe) {
-                    LOGGER.log(Level.WARNING, uoe.toString(), uoe);
-                } catch (ClassCastException cce) {
-                    LOGGER.log(Level.WARNING, cce.toString(), cce);
-                } catch (NullPointerException npe) {
-                    LOGGER.log(Level.WARNING, npe.toString(), npe);
-                } catch (IllegalArgumentException iae) {
-                    LOGGER.log(Level.WARNING, iae.toString(), iae);
-                }
-            }
-        }
+    public List<Visualisation> getAllVisualizations() {
+        List<Visualisation> tmpList = new ArrayList<>();
+        /*
+         * Query visQuery = new Query(EntityConst.VISUALIZATION);
+         * try {
+         * // NullPointerException - If any argument is null.
+         * visQuery.addSort(EntityConst.ELECTION_ID, SortDirection.ASCENDING);
+         * } catch (NullPointerException npe) {
+         * LOGGER.log(Level.WARNING, npe.toString(), npe);
+         * }
+         *
+         * PreparedQuery pq = DatastoreFactory.getVisualizationDatastore().prepare(visQuery);
+         *
+         * for (Entity result : pq.asIterable()) {
+         * Visualization tmp = new Visualization();
+         * // set id
+         * String id = (String) result.getProperty(EntityConst.ID);
+         * tmp.setId(id);
+         * // setElection Id
+         * tmp.setElectionId((String) result.getProperty(EntityConst.ELECTION_ID));
+         * // set type
+         * VisualizationType vt = VisualizationType.valueOf((String) result.getProperty(EntityConst.VISUALIZATION_TYPE));
+         * tmp.setType(vt);
+         * if (vt != VisualizationType.TRASH) {
+         * // set title, author, comment
+         * tmp.setTitle((String) result.getProperty(EntityConst.TITLE));
+         * tmp.setAuthor((String) result.getProperty(EntityConst.AUTHOR));
+         * tmp.setComment((String) result.getProperty(EntityConst.COMMENT));
+         *
+         * try {
+         * // UnsupportedOperationException - if the add operation is not supported by this list
+         * // ClassCastException - if the class of the specified element prevents it from being added to this list
+         * // NullPointerException - if the specified element is null and this list does not permit null elements
+         * // IllegalArgumentException - if some property of this element prevents it from being added to this list
+         * tmpList.add(tmp);
+         * } catch (UnsupportedOperationException uoe) {
+         * LOGGER.log(Level.WARNING, uoe.toString(), uoe);
+         * } catch (ClassCastException cce) {
+         * LOGGER.log(Level.WARNING, cce.toString(), cce);
+         * } catch (NullPointerException npe) {
+         * LOGGER.log(Level.WARNING, npe.toString(), npe);
+         * } catch (IllegalArgumentException iae) {
+         * LOGGER.log(Level.WARNING, iae.toString(), iae);
+         * }
+         * }
+         * }
+         */
         return tmpList;
     }
 
     @Override
-    public Visualization insertVisualization(Visualization pVisualization) {
-
-        Entity visualization = new Entity(EntityConst.VISUALIZATION, pVisualization.getId().toString());
-        visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
-        visualization.setProperty(EntityConst.ELECTION_ID, pVisualization.getElectionId());
-        visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType().toString());
-        visualization.setProperty(EntityConst.TITLE, pVisualization.getTitle());
-        visualization.setProperty(EntityConst.AUTHOR, pVisualization.getAuthor());
-        visualization.setProperty(EntityConst.COMMENT, pVisualization.getComment());
-
-        try {
-            // IllegalArgumentException - If the specified entity was incomplete.
-            // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
-            // DatastoreFailureException - If any other datastore error occurs.
-            DatastoreFactory.getVisualizationDatastore().put(visualization);
-
-        } catch (IllegalArgumentException iae) {
-            LOGGER.log(Level.WARNING, iae.toString(), iae);
-        } catch (ConcurrentModificationException cme) {
-            LOGGER.log(Level.WARNING, cme.toString(), cme);
-        } catch (DatastoreFailureException dfe) {
-            LOGGER.log(Level.WARNING, dfe.toString(), dfe);
-        }
-        return pVisualization;
+    public Visualisation insertVisualization(Visualisation pVisualization) {
+        /*
+         * Entity visualization = new Entity(EntityConst.VISUALIZATION, pVisualization.getId().toString());
+         * visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
+         * visualization.setProperty(EntityConst.ELECTION_ID, pVisualization.getElectionId());
+         * visualization.setProperty(EntityConst.VISUALIZATION_TYPE, pVisualization.getType().toString());
+         * visualization.setProperty(EntityConst.TITLE, pVisualization.getTitle());
+         * visualization.setProperty(EntityConst.AUTHOR, pVisualization.getAuthor());
+         * visualization.setProperty(EntityConst.COMMENT, pVisualization.getComment());
+         *
+         * try {
+         * // IllegalArgumentException - If the specified entity was incomplete.
+         * // ConcurrentModificationException - If the entity group to which the entity belongs was modified concurrently.
+         * // DatastoreFailureException - If any other datastore error occurs.
+         * DatastoreFactory.getVisualizationDatastore().put(visualization);
+         *
+         * } catch (IllegalArgumentException iae) {
+         * LOGGER.log(Level.WARNING, iae.toString(), iae);
+         * } catch (ConcurrentModificationException cme) {
+         * LOGGER.log(Level.WARNING, cme.toString(), cme);
+         * } catch (DatastoreFailureException dfe) {
+         * LOGGER.log(Level.WARNING, dfe.toString(), dfe);
+         * }
+         * return pVisualization;
+         */
+        return new Visualisation();
     }
+
 
 }
