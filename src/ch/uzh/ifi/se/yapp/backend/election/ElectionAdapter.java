@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import org.joda.time.LocalDate;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
-import ch.uzh.ifi.se.yapp.model.landscape.Election;
+import ch.uzh.ifi.se.yapp.model.election.Election;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 

@@ -32,9 +32,8 @@ import org.junit.rules.ExpectedException;
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
+import ch.uzh.ifi.se.yapp.model.election.Election;
 import ch.uzh.ifi.se.yapp.model.election.Result;
-import ch.uzh.ifi.se.yapp.model.landscape.District;
-import ch.uzh.ifi.se.yapp.model.landscape.Election;
 
 
 public class ElectionAdapterTest {
@@ -42,29 +41,22 @@ public class ElectionAdapterTest {
 
     private Election             mElection     = new Election();
     private IElectionDataAdapter mElectionAdpt = BackendAccessorFactory.getElectionDataAdapter();
-    private List<Result> mResults      = new ArrayList<>();
+    private List<Result>         mResults      = new ArrayList<>();
 
     @Test
     public void insert() {
         mElection.setDescription("Test-Beschreibung");
         mElection.setId("550");
 
-        Result dr = new Result();
-        dr.setTotalEligibleCount(10);
-        dr.setDeliveredCount(50);
-        dr.setValidCount(45);
-        dr.setYesCount(10);
-        dr.setNoCount(35);
+        Result res = new Result();
+        res.setTotalEligibleCount(10);
+        res.setDeliveredCount(50);
+        res.setValidCount(45);
+        res.setYesCount(10);
+        res.setNoCount(35);
+        res.setLandscape("2603");
 
-        District d = new District();
-        d.setCanton("1");
-        d.setId("2603");
-        d.setName("Test-Bezirk");
-
-        dr.setDistrict(d);
-
-        mResults.add(dr);
-        mElection.setResults(mResults);
+        mElection.addResult(res);
         mElectionAdpt.insertElection(mElection);
     }
 
@@ -73,22 +65,15 @@ public class ElectionAdapterTest {
         mElection.setDescription("Test-Beschreibung2");
         mElection.setId("551");
 
-        Result dr = new Result();
-        dr.setTotalEligibleCount(10);
-        dr.setDeliveredCount(50);
-        dr.setValidCount(45);
-        dr.setYesCount(10);
-        dr.setNoCount(35);
+        Result res = new Result();
+        res.setTotalEligibleCount(10);
+        res.setDeliveredCount(50);
+        res.setValidCount(45);
+        res.setYesCount(10);
+        res.setNoCount(35);
+        res.setLandscape("2602");
+        mElection.addResult(res);
 
-        District d = new District();
-        d.setCanton("2");
-        d.setId("2602");
-        d.setName("Test-Bezirk2");
-
-        dr.setDistrict(d);
-
-        mResults.add(dr);
-        mElection.setResults(mResults);
         mElectionAdpt.insertElection(mElection);
     }
 
@@ -101,7 +86,8 @@ public class ElectionAdapterTest {
     }
 
     @Test
-    public void getElectionById() throws EntityNotFoundException {
+    public void getElectionById()
+            throws EntityNotFoundException {
         // insert();
         insert2();
 
@@ -109,27 +95,21 @@ public class ElectionAdapterTest {
         // assertEquals("551", result.getId());
 
         // check result
-        Result dr1 = mResults.get(0);
-        Result dr2 = result.getResults().get(0);
+        Result dr1 = result.getResults().iterator().next();
 
-        assertEquals(dr1.getTotalEligibleCount(), dr2.getTotalEligibleCount());
-        assertEquals(dr1.getDeliveredCount(), dr2.getDeliveredCount());
-        assertEquals(dr1.getValidCount(), dr2.getValidCount());
-        assertEquals(dr1.getYesCount(), dr2.getYesCount());
-        assertEquals(dr1.getNoCount(), dr2.getNoCount());
-
-        District d1 = dr1.getDistrict();
-        District d2 = dr2.getDistrict();
-
-        assertEquals(d1.getCanton(), d2.getCanton());
-        assertEquals(d1.getId(), d2.getId());
-        assertEquals(d1.getName(), d2.getName());
+        assertEquals(dr1.getTotalEligibleCount(), dr1.getTotalEligibleCount());
+        assertEquals(dr1.getDeliveredCount(), dr1.getDeliveredCount());
+        assertEquals(dr1.getValidCount(), dr1.getValidCount());
+        assertEquals(dr1.getYesCount(), dr1.getYesCount());
+        assertEquals(dr1.getNoCount(), dr1.getNoCount());
     }
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
+
     @Test
-    public void testEntityNotFoundException() throws EntityNotFoundException {
+    public void testEntityNotFoundException()
+            throws EntityNotFoundException {
         insert();
         exception.expect(EntityNotFoundException.class);
         Election ret = mElectionAdpt.getElectionById("560"); // should throw a EntityNotFoundException
