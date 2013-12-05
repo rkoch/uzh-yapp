@@ -47,7 +47,6 @@ public class MemcachedGeoDataAdapter
     public void cleanup() {
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<GeoBoundary> getAllGeoBoundary() {
         List<GeoBoundary> retList = new ArrayList<>();
@@ -58,7 +57,6 @@ public class MemcachedGeoDataAdapter
         return retList;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate) {
         List<GeoBoundary> retList = new ArrayList<>();
@@ -69,7 +67,7 @@ public class MemcachedGeoDataAdapter
                 GeoBoundary tmpGb = entry.getValue();
                 // get newest GeoBoundary for each GeoBoundary
                 for (Map.Entry<String, GeoBoundary> innerEntry :  mStorage.entrySet()) {
-                    if (innerEntry.getValue().getLocalDate().isAfter(tmpGb.getLocalDate())) {
+                    if (innerEntry.getValue().getLocalDate().isAfter(tmpGb.getLocalDate()) && entry.getValue().getId() == innerEntry.getValue().getId()) {
                         tmpGb = innerEntry.getValue();
                     }
                 }
