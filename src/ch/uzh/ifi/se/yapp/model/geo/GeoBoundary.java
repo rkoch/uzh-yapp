@@ -33,7 +33,7 @@ public class GeoBoundary
         implements Comparable<GeoBoundary> {
 
     private String             mId;
-    private LocalDate          mLocalDate;
+    private LocalDate          mDate;
     private final Set<Polygon> mPolygons;
 
 
@@ -41,10 +41,18 @@ public class GeoBoundary
         mPolygons = new HashSet<>();
     }
 
+    public GeoBoundary(String pId, LocalDate pDate) {
+        this();
+        mId = pId;
+        mDate = pDate;
+    }
+
     public GeoBoundary(GeoBoundary pOrig) {
         mId = pOrig.getId();
-        mLocalDate = pOrig.getLocalDate();
-        mPolygons = pOrig.getPolygons();
+        if (mDate != null) {
+            mDate = new LocalDate(pOrig.mDate.toString());
+        }
+        mPolygons = new HashSet<>(pOrig.mPolygons);
     }
 
 
@@ -68,12 +76,12 @@ public class GeoBoundary
         mId = pId;
     }
 
-    public LocalDate getLocalDate() {
-        return mLocalDate;
+    public LocalDate getDate() {
+        return mDate;
     }
 
-    public void setLocalDate(LocalDate pLocalDate) {
-        mLocalDate = pLocalDate;
+    public void setDate(LocalDate pDate) {
+        mDate = pDate;
     }
 
     public Set<Polygon> getPolygons() {
@@ -91,13 +99,13 @@ public class GeoBoundary
 
     @Override
     public int compareTo(GeoBoundary pOther) {
-        if (mLocalDate.isAfter(pOther.getLocalDate())) {
+        if (mDate.isAfter(pOther.mDate)) {
             return -1;
         }
-        if (mLocalDate.isBefore(pOther.getLocalDate())) {
+        if (mDate.isBefore(pOther.mDate)) {
             return 1;
         }
-        if (mLocalDate.isEqual(pOther.getLocalDate())) {
+        if (mDate.isEqual(pOther.mDate)) {
             return 0;
         }
         return 0;

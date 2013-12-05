@@ -29,7 +29,8 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Election
-        extends BaseObject {
+        extends BaseObject
+        implements Comparable<Election> {
 
     /**
      * Official submission nr
@@ -100,6 +101,12 @@ public class Election
 
     public void removeResult(Result pResult) {
         mResults.remove(pResult);
+    }
+
+
+    @Override
+    public int compareTo(Election pOther) {
+        return mDate.compareTo(pOther.mDate);
     }
 
 }

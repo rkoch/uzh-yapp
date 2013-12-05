@@ -19,28 +19,27 @@
  */
 package ch.uzh.ifi.se.yapp.model.election;
 
-import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class Result
         extends BaseObject {
 
-    private District mDistrict;
+    private String mLandscape;
 
-    private int      mTotalEligibleCount;
-    private int      mDeliveredCount;
-    private int      mValidCount;
-    private int      mYesCount;
-    private int      mNoCount;
+    private int    mTotalEligibleCount;
+    private int    mDeliveredCount;
+    private int    mValidCount;
+    private int    mYesCount;
+    private int    mNoCount;
 
 
-    public District getDistrict() {
-        return mDistrict;
+    public String getLandscape() {
+        return mLandscape;
     }
 
-    public void setDistrict(District pDistrict) {
-        mDistrict = pDistrict;
+    public void setLandscape(String pLandscape) {
+        mLandscape = pLandscape;
     }
 
     public int getTotalEligibleCount() {
