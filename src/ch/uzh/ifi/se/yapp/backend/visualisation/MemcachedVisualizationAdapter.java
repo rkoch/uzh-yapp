@@ -27,7 +27,7 @@ import java.util.Map;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
@@ -35,7 +35,7 @@ public class MemcachedVisualizationAdapter
         extends BaseObject
         implements IVisualizationDataAdapter {
 
-    private final Map<String, Visualization> mStorage;
+    private final Map<String, Visualisation> mStorage;
 
 
     public MemcachedVisualizationAdapter() {
@@ -47,31 +47,31 @@ public class MemcachedVisualizationAdapter
     }
 
     @Override
-    public Visualization getVisualizationById(String pId)
+    public Visualisation getVisualizationById(String pId)
             throws EntityNotFoundException {
-        Visualization ret = mStorage.get(pId);
+        Visualisation ret = mStorage.get(pId);
         if (ret == null) {
             throw new EntityNotFoundException("Visualisation " + pId + " not found.");
         }
-        return new Visualization(ret);
+        return new Visualisation(ret);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Visualization> getAllVisualizations() {
-        List<Visualization> ret = new ArrayList<>();
-        for (Visualization entry : mStorage.values()) {
-            ret.add(new Visualization(entry));
+    public List<Visualisation> getAllVisualizations() {
+        List<Visualisation> ret = new ArrayList<>();
+        for (Visualisation entry : mStorage.values()) {
+            ret.add(new Visualisation(entry));
         }
         Collections.sort(ret);
         return ret;
     }
 
     @Override
-    public Visualization insertVisualization(Visualization pVisualization) {
+    public Visualisation insertVisualization(Visualisation pVisualization) {
         String id = pVisualization.getId().toString();
-        mStorage.put(id, new Visualization(pVisualization));
-        return new Visualization(pVisualization);
+        mStorage.put(id, new Visualisation(pVisualization));
+        return new Visualisation(pVisualization);
     }
 
     @Override
