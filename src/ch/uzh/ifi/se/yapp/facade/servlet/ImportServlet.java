@@ -29,7 +29,8 @@ import javax.servlet.ServletContextListener;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImport;
-import ch.uzh.ifi.se.yapp.ctrl.importer.GeoImport;
+import ch.uzh.ifi.se.yapp.ctrl.importer.GeoKmlImport;
+import ch.uzh.ifi.se.yapp.ctrl.importer.GeoTextImport;
 import ch.uzh.ifi.se.yapp.ctrl.importer.LandscapeImport;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -62,14 +63,26 @@ public class ImportServlet
         }
 
         // Import Geographic data
-        String[] geoFiles = { "/ch/uzh/ifi/se/yapp/data/geo/20090101-canton-boundaries.txt" };
-        GeoImport geoImporter = new GeoImport(BackendAccessorFactory.getGeoDataAdapter());
-        for (String geo : geoFiles) {
+        String[] geoTxtFiles = { "/ch/uzh/ifi/se/yapp/data/geo/20090101-canton-boundaries.txt" };
+        String[] geoKmlFiles = { "/ch/uzh/ifi/se/yapp/data/geo/20090101-district-boundaries.kml" };
+
+        GeoTextImport geoTxtImporter = new GeoTextImport(BackendAccessorFactory.getGeoDataAdapter());
+        for (String geo : geoTxtFiles) {
+            InputStream is = getClass().getResourceAsStream(geo);
+            try {
+                geoTxtImporter.runImport(is);
+            } catch (IOException pEx) {
+                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo text import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
+            }
+        }
+
+        GeoKmlImport geoImporter = new GeoKmlImport(BackendAccessorFactory.getGeoDataAdapter());
+        for (String geo : geoKmlFiles) {
             InputStream is = getClass().getResourceAsStream(geo);
             try {
                 geoImporter.runImport(is);
             } catch (IOException pEx) {
-                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
+                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo kml import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
             }
         }
 
