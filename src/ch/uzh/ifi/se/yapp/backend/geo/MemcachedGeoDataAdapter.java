@@ -62,12 +62,12 @@ public class MemcachedGeoDataAdapter
         List<GeoBoundary> retList = new ArrayList<>();
         List<String> checkedIds = new ArrayList<>(); // list with already checked ids
         for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
-            if ((entry.getValue().getLocalDate().isBefore(pDate) || entry.getValue().getLocalDate().isEqual(pDate))
+            if ((entry.getValue().getDate().isBefore(pDate) || entry.getValue().getDate().isEqual(pDate))
                     && !checkedIds.contains(entry.getValue().getId())) {
                 GeoBoundary tmpGb = entry.getValue();
                 // get newest GeoBoundary for each GeoBoundary
-                for (Map.Entry<String, GeoBoundary> innerEntry :  mStorage.entrySet()) {
-                    if (innerEntry.getValue().getLocalDate().isAfter(tmpGb.getLocalDate()) && entry.getValue().getId() == innerEntry.getValue().getId()) {
+                for (Map.Entry<String, GeoBoundary> innerEntry : mStorage.entrySet()) {
+                    if (innerEntry.getValue().getDate().isAfter(tmpGb.getDate()) && entry.getValue().getId() == innerEntry.getValue().getId()) {
                         tmpGb = innerEntry.getValue();
                     }
                 }
@@ -83,7 +83,7 @@ public class MemcachedGeoDataAdapter
     public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate)
             throws EntityNotFoundException {
         for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
-            if (entry.getValue().getId() == pDistrictId && entry.getValue().getLocalDate().isEqual(pDate)) {
+            if (entry.getValue().getId() == pDistrictId && entry.getValue().getDate().isEqual(pDate)) {
                 return new GeoBoundary(entry.getValue());
             }
         }
@@ -92,7 +92,7 @@ public class MemcachedGeoDataAdapter
 
     @Override
     public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
-        String tmpId = pGeoBoundary.getId() + "_" + pGeoBoundary.getLocalDate().toString();
+        String tmpId = pGeoBoundary.getId() + "_" + pGeoBoundary.getDate().toString();
         mStorage.put(tmpId, pGeoBoundary);
     }
 }
