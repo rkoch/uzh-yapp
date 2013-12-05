@@ -26,9 +26,9 @@ public class District
         extends BaseObject
         implements Comparable<District> {
 
-    private String mId;
-    private String mName;
-    private String mCanton;
+    private String mId; // Id of District
+    private String mName; // Name of District
+    private String mCanton; // Canton id
 
     public District() {
     }
