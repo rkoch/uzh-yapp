@@ -52,6 +52,7 @@ public interface IVisualizationDataAdapter
      * <b>getAllVisualizations</b> <br>
      * Description: returns a List with all created Visualizations.
      * Sorted by Electionid in ascending order
+     *
      * @return List<Visualization>
      */
     List<Visualisation> getAllVisualizations();
