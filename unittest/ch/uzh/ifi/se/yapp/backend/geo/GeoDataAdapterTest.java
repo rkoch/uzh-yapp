@@ -70,7 +70,7 @@ public class GeoDataAdapterTest {
         mPolygon.addCoordinateBack(mPoint2);
 
         mBoundary.setId("1");
-        mBoundary.setLocalDate(new LocalDate(2012, 11, 24));
+        mBoundary.setDate(new LocalDate(2012, 11, 24));
         mBoundary.addPolygon(mPolygon);
     }
 
@@ -87,7 +87,7 @@ public class GeoDataAdapterTest {
         GeoBoundary res = mGeoAdpt.getGeoBoundaryByDistrictAndDate("1", new LocalDate(2012, 11, 24));
 
         assertEquals("1", res.getId());
-        assertEquals(new LocalDate(2012, 11, 24), res.getLocalDate());
+        assertEquals(new LocalDate(2012, 11, 24), res.getDate());
 
     }
 
@@ -96,11 +96,11 @@ public class GeoDataAdapterTest {
         mGeoAdpt.insertGeoBoundary(mBoundary);
         List<GeoBoundary> tmpList = mGeoAdpt.getAllGeoBoundaryByDate(new LocalDate(2012, 11, 24));
         assertEquals("1", tmpList.get(0).getId());
-        assertEquals(new LocalDate(2012, 11, 24), tmpList.get(0).getLocalDate());
+        assertEquals(new LocalDate(2012, 11, 24), tmpList.get(0).getDate());
 
         GeoBoundary mBoundary2 = new GeoBoundary();
         mBoundary2.setId("2");
-        mBoundary2.setLocalDate(new LocalDate(2012, 11, 23));
+        mBoundary2.setDate(new LocalDate(2012, 11, 23));
         Polygon p = new Polygon();
         p.addCoordinateBack(new Coordinate(222.0, 333.0));
         mBoundary2.addPolygon(p);
@@ -116,11 +116,11 @@ public class GeoDataAdapterTest {
         insertGeoBoundary();
         List<GeoBoundary> tmpList = mGeoAdpt.getAllGeoBoundaryByDate(new LocalDate(2012, 11, 24));
         assertEquals("1", tmpList.get(0).getId());
-        assertEquals(new LocalDate(2012, 11, 24), tmpList.get(0).getLocalDate());
+        assertEquals(new LocalDate(2012, 11, 24), tmpList.get(0).getDate());
 
         GeoBoundary mBoundary2 = new GeoBoundary();
         mBoundary2.setId("2");
-        mBoundary2.setLocalDate(new LocalDate(2012, 11, 23));
+        mBoundary2.setDate(new LocalDate(2012, 11, 23));
         Polygon p = new Polygon();
         p.addCoordinateBack(new Coordinate(222.0, 333.0));
         mBoundary2.addPolygon(p);
