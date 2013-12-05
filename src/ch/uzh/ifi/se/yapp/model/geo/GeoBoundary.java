@@ -49,9 +49,7 @@ public class GeoBoundary
 
     public GeoBoundary(GeoBoundary pOrig) {
         mId = pOrig.getId();
-        if (mDate != null) {
-            mDate = new LocalDate(pOrig.mDate.toString());
-        }
+        mDate = new LocalDate(pOrig.mDate.toString());
         mPolygons = new HashSet<>(pOrig.mPolygons);
     }
 
