@@ -101,7 +101,6 @@ public class MockElectionAdapter
         mElectionB.setDescription(pElection.getDescription());
         mElectionB.setDate(pElection.getDate());
         mElectionB.setTitle(pElection.getTitle());
-        mElectionB.setResults(pElection.getResults());
     }
 
 }

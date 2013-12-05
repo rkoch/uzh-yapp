@@ -29,8 +29,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.joda.time.LocalDate;
-
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -103,7 +101,6 @@ public class IdImport
                 pDistrict.setName(pName);
                 pDistrict.setCantonId(pCantonId);
                 pDistrict.setCanton(mCantons.get(pCantonId));
-                pDistrict.setLocalDate(new LocalDate("2013-01-01"));
 
                 mDistricts.put(pId, pDistrict);
                 mInvertedDistricts.put(pName, pId);

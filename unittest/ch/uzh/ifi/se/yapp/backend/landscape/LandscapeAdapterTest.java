@@ -23,34 +23,21 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-
+import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
+import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 
 public class LandscapeAdapterTest {
 
-    private final LocalServiceTestHelper mHelper        = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    private District                     mDistrict      = new District();
-    private LandscapeAdapter             mLandscapeAdpt = new LandscapeAdapter();
-
-
-    @Before
-    public void setUp() {
-        mHelper.setUp();
-    }
-
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
-    }
+    private District              mDistrict      = new District();
+    private ILandscapeDataAdapter mLandscapeAdpt = BackendAccessorFactory.getLandscapeDataAdapter();
 
 
     @Test
@@ -58,7 +45,6 @@ public class LandscapeAdapterTest {
         mDistrict.setCanton("1");
         mDistrict.setCanton("Graubünden");
         mDistrict.setId("2603");
-        mDistrict.setLocalDate(new LocalDate(2013, 02, 24));
         mDistrict.setName("Test-Bezirk");
 
         mLandscapeAdpt.insertDistrict(mDistrict);
@@ -70,7 +56,6 @@ public class LandscapeAdapterTest {
         mDistrict.setCanton("2");
         mDistrict.setCanton("Zürich");
         mDistrict.setId("120");
-        mDistrict.setLocalDate(new LocalDate(2013, 01, 24));
         mDistrict.setName("Test-Bezirk2");
         mLandscapeAdpt.insertDistrict(mDistrict);
 
@@ -82,34 +67,27 @@ public class LandscapeAdapterTest {
         assertEquals("Test-Bezirk", districtList.get(1).getName());
     }
 
+
     @Test
-    public void getDistrictByIdAndDate() {
-        insertDistrict();
+    public void getDistrictById() throws EntityNotFoundException {
         insertDistrict();
         mDistrict.setCanton("1");
         mDistrict.setCanton("Graubünden");
         mDistrict.setId("2603");
-        mDistrict.setLocalDate(new LocalDate(2013, 01, 24));
         mDistrict.setName("Test-Bezirk");
         mLandscapeAdpt.insertDistrict(mDistrict);
-
-        District result = mLandscapeAdpt.getDistrictByIdAndDate("2603", new LocalDate(2013, 02, 24));
+        District result = mLandscapeAdpt.getDistrictById("2603");
         assertEquals("2603", result.getId());
         assertEquals("Test-Bezirk", result.getName());
     }
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
     @Test
-    public void getDistrictById() {
+    public void testEntityNotFoundException() throws EntityNotFoundException {
         insertDistrict();
-        mDistrict.setCanton("1");
-        mDistrict.setCanton("Graubünden");
-        mDistrict.setId("2603");
-        mDistrict.setLocalDate(new LocalDate(2013, 01, 24));
-        mDistrict.setName("Test-Bezirk");
-        mLandscapeAdpt.insertDistrict(mDistrict);
-        District result = mLandscapeAdpt.getDistrictByIdAndDate("2603", new LocalDate(2013, 02, 24));
-        assertEquals("2603", result.getId());
-        assertEquals("Test-Bezirk", result.getName());
+        exception.expect(EntityNotFoundException.class);
+        District result = mLandscapeAdpt.getDistrictById("1234");
     }
 
 }

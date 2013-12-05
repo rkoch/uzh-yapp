@@ -20,72 +20,62 @@
 package ch.uzh.ifi.se.yapp.backend.visualisation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
-public class MockVisualizationAdapter
+public class MemcachedVisualizationAdapter
         extends BaseObject
         implements IVisualizationDataAdapter {
 
-    public MockVisualizationAdapter() {
+    private final Map<String, Visualisation> mStorage;
+
+
+    public MemcachedVisualizationAdapter() {
+        mStorage = new HashMap<>();
     }
 
     @Override
     public void cleanup() {
-        // TODO Auto-generated method stub
     }
 
     @Override
-    public void deleteVisualizationById(String pId) {
-//        System.out.println("deleted " + pId);
+    public Visualisation getVisualizationById(String pId)
+            throws EntityNotFoundException {
+        Visualisation ret = mStorage.get(pId);
+        if (ret == null) {
+            throw new EntityNotFoundException("Visualisation " + pId + " not found.");
+        }
+        return new Visualisation(ret);
     }
 
-    @Override
-    public Visualisation getVisualizationById(String pId) {
-        /*
-         * Visualization v = new Visualization();
-         * v.setElectionId("552.1");
-         * v.setType(VisualizationType.TABLE);
-         * return v;
-         */
-        return new Visualisation();
-    }
-
+    @SuppressWarnings("unchecked")
     @Override
     public List<Visualisation> getAllVisualizations() {
-        List<Visualisation> tmpList = new ArrayList<>();
-        /*
-         * Visualization v = new Visualization();
-         * v.setElectionId("552.1");
-         * v.setType(VisualizationType.TABLE);
-         *
-         * Visualization v2 = new Visualization();
-         * v2.setElectionId("552.1");
-         * v2.setType(VisualizationType.TABLE);
-         *
-         * tmpList.add(v);
-         * tmpList.add(v2);
-         */
-        return tmpList;
+        List<Visualisation> ret = new ArrayList<>();
+        for (Visualisation entry : mStorage.values()) {
+            ret.add(new Visualisation(entry));
+        }
+        Collections.sort(ret);
+        return ret;
     }
 
     @Override
     public Visualisation insertVisualization(Visualisation pVisualization) {
-        /*
-         * Visualization tmp = new Visualization();
-         * tmp.setAuthor("asdf");
-         * tmp.setComment("aslödfkj");
-         * tmp.setElectionId("552.2");
-         * tmp.setId(new UUID(0, 0));
-         * tmp.setTitle("title");
-         * tmp.setType(VisualizationType.TABLE);
-         * return tmp;
-         */
-        return new Visualisation();
+        String id = pVisualization.getId().toString();
+        mStorage.put(id, new Visualisation(pVisualization));
+        return new Visualisation(pVisualization);
     }
 
+    @Override
+    public void deleteVisualizationById(String pId) {
+        mStorage.remove(pId);
+    }
 }

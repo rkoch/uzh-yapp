@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.landscape.Election;
 
 
@@ -36,8 +37,10 @@ public interface IElectionDataAdapter
      *
      * @param pId
      * @return Election
+     * @throws EntityNotFoundException if the Election was not found
      */
-    Election getElectionById(String pId);
+    Election getElectionById(String pId)
+            throws EntityNotFoundException;
 
     /**
      * <b>getElectionsByDateRange</b> <br>
@@ -55,7 +58,6 @@ public interface IElectionDataAdapter
      * Description: returns a Map<String, String> with all Elections in it. <br>
      * Key: ElectionId (SubmissionNr, e.g. 552.2) <br>
      * Values: Title of election.
-     * Sorted in ascending order by election id.
      *
      * @return This method returns the elections without any results (so only metadata for now)
      */

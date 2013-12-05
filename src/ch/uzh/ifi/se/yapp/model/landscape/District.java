@@ -23,12 +23,21 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class District
-        extends BaseObject {
+        extends BaseObject
+        implements Comparable<District> {
 
-    private String mId;
-    private String mName;
-    private String mCanton;
+    private String mId; // Id of District
+    private String mName; // Name of District
+    private String mCanton; // Canton id
 
+    public District() {
+    }
+
+    public District(District pOrig) {
+        mId = pOrig.getId();
+        mName = pOrig.getName();
+        mCanton = pOrig.getCanton();
+    }
 
     public String getId() {
         return mId;
@@ -60,6 +69,19 @@ public class District
             mCanton = pCanton.getId();
             pCanton.addDistrict(mId);
         }
+    }
+
+
+    @Override
+    public int compareTo(District pOther) {
+        if (Integer.parseInt(mId) < Integer.parseInt(pOther.getId())) {
+            return -1;
+        } else if (Integer.parseInt(mId) == Integer.parseInt(pOther.getId())) {
+            return 0;
+        } else if (Integer.parseInt(mId) > Integer.parseInt(pOther.getId())) {
+            return 1;
+        }
+        return 0;
     }
 
 }

@@ -29,7 +29,8 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class GeoBoundary
-        extends BaseObject {
+        extends BaseObject
+        implements Comparable<GeoBoundary> {
 
     private String             mId;
     private LocalDate          mLocalDate;
@@ -38,6 +39,12 @@ public class GeoBoundary
 
     public GeoBoundary() {
         mPolygons = new HashSet<>();
+    }
+
+    public GeoBoundary(GeoBoundary pOrig) {
+        mId = pOrig.getId();
+        mLocalDate = pOrig.getLocalDate();
+        mPolygons = pOrig.getPolygons();
     }
 
 
@@ -79,6 +86,21 @@ public class GeoBoundary
 
     public void removePolygon(Polygon pPolygon) {
         mPolygons.remove(pPolygon);
+    }
+
+
+    @Override
+    public int compareTo(GeoBoundary pOther) {
+        if (mLocalDate.isAfter(pOther.getLocalDate())) {
+            return -1;
+        }
+        if (mLocalDate.isBefore(pOther.getLocalDate())) {
+            return 1;
+        }
+        if (mLocalDate.isEqual(pOther.getLocalDate())) {
+            return 0;
+        }
+        return 0;
     }
 
 }
