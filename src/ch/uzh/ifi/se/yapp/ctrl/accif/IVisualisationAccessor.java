@@ -53,7 +53,7 @@ public interface IVisualisationAccessor
      *
      * @param pId
      */
-    void deleteVisualization(String pId)
+    void deleteVisualisation(String pId)
             throws Exception;
 
 }

@@ -92,7 +92,7 @@ public class YappServiceImpl
         IVisualisationAccessor acc = AccessorFactory.getVisualisationAccessor();
 
         try {
-            acc.deleteVisualization(pId);
+            acc.deleteVisualisation(pId);
         } catch (Exception pEx) {
             // Error happened
             LOGGER.log(Level.WARNING, String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "removeVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
