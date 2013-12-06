@@ -27,6 +27,7 @@ import java.util.Map;
 
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
+import ch.uzh.ifi.se.yapp.model.landscape.Canton;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -35,10 +36,12 @@ public class MemcachedLandscapeAdapter
         extends BaseObject
         implements ILandscapeDataAdapter {
 
-    private final Map<String, District> mStorage;
+    private final Map<String, District> mDistrictStorage;
+    private final Map<String, Canton> mCantonStorage;
 
     public MemcachedLandscapeAdapter() {
-        mStorage = new HashMap<>();
+        mDistrictStorage = new HashMap<>();
+        mCantonStorage = new HashMap<>();
     }
 
     @Override
@@ -48,18 +51,17 @@ public class MemcachedLandscapeAdapter
     @Override
     public District getDistrictById(String pId)
             throws EntityNotFoundException {
-        District ret = mStorage.get(pId);
+        District ret = mDistrictStorage.get(pId);
         if (ret == null) {
             throw new EntityNotFoundException("District " + pId + " not found.");
         }
         return new District(ret);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<District> getAllDistricts() {
         List<District> retList = new ArrayList<>();
-        for (Map.Entry<String, District> entry : mStorage.entrySet()) {
+        for (Map.Entry<String, District> entry : mDistrictStorage.entrySet()) {
             retList.add(entry.getValue());
         }
         Collections.sort(retList);
@@ -67,8 +69,37 @@ public class MemcachedLandscapeAdapter
     }
 
     @Override
-    public void insertDistrict(District pDistrict) {
+    public District insertDistrict(District pDistrict) {
+        District tmp = new District(pDistrict);
         String id = pDistrict.getId();
-        mStorage.put(id, new District(pDistrict));
+        mDistrictStorage.put(id, tmp);
+        return tmp;
+    }
+
+    @Override
+    public Canton getCantonById(String pId)
+            throws EntityNotFoundException {
+        Canton ret = mCantonStorage.get(pId);
+        if (ret == null) {
+            throw new EntityNotFoundException("Canton " + pId + "not found.");
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Canton> getAllCantons() {
+        List<Canton> ret = new ArrayList<>();
+        for (Map.Entry<String, Canton> entry : mCantonStorage.entrySet()) {
+            ret.add(new Canton(entry.getValue()));
+        }
+        return ret;
+    }
+
+    @Override
+    public Canton insertCanton(Canton pCanton) {
+        Canton tmp = new Canton(pCanton);
+        String tmpId = pCanton.getId();
+        mCantonStorage.put(tmpId, tmp);
+        return tmp;
     }
 }

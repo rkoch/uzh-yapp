@@ -31,7 +31,9 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityConst;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.backend.persistence.DatastoreFactory;
+import ch.uzh.ifi.se.yapp.model.landscape.Canton;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
@@ -110,7 +112,7 @@ public class LandscapeAdapter
     }
 
     @Override
-    public void insertDistrict(District pDistrict) {
+    public District insertDistrict(District pDistrict) {
         /*
          * Entity district = new Entity(EntityConst.DISTRICT, pDistrict.getId());
          *
@@ -132,5 +134,25 @@ public class LandscapeAdapter
          * LOGGER.log(Level.WARNING, dfe.toString(), dfe);
          * }
          */
+        return null;
+    }
+
+    @Override
+    public Canton getCantonById(String pId)
+            throws EntityNotFoundException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Canton> getAllCantons() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Canton insertCanton(Canton pCanton) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

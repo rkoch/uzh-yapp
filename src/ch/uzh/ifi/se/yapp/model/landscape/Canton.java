@@ -38,6 +38,12 @@ public class Canton
         mDistricts = new HashSet<>();
     }
 
+    public Canton(Canton pOrig) {
+        mId = pOrig.mId;
+        mName = pOrig.mName;
+        mDistricts = new HashSet<>(pOrig.mDistricts);
+    }
+
     public Canton(String pId, String pName) {
         this();
         mId = pId;
