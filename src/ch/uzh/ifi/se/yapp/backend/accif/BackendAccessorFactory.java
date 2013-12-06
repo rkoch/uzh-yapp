@@ -30,7 +30,7 @@ public abstract class BackendAccessorFactory {
     private static final IElectionDataAdapter      sElectionAdpt;
     private static final IGeoDataAdapter           sGeoAdpt;
     private static final ILandscapeDataAdapter     sLandAdpt;
-    private static final IVisualizationDataAdapter sVisAdpt;
+    private static final IVisualisationDataAdapter sVisAdpt;
 
 
     static {
@@ -53,7 +53,7 @@ public abstract class BackendAccessorFactory {
         return sLandAdpt;
     }
 
-    public static IVisualizationDataAdapter getVisualisationDataAdapter() {
+    public static IVisualisationDataAdapter getVisualisationDataAdapter() {
         return sVisAdpt;
     }
 

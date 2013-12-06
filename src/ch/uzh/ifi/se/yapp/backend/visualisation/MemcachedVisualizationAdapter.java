@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -33,7 +33,7 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 public class MemcachedVisualizationAdapter
         extends BaseObject
-        implements IVisualizationDataAdapter {
+        implements IVisualisationDataAdapter {
 
     private final Map<String, Visualisation> mStorage;
 
@@ -47,7 +47,7 @@ public class MemcachedVisualizationAdapter
     }
 
     @Override
-    public Visualisation getVisualizationById(String pId)
+    public Visualisation getVisualisationById(String pId)
             throws EntityNotFoundException {
         Visualisation ret = mStorage.get(pId);
         if (ret == null) {
@@ -58,7 +58,7 @@ public class MemcachedVisualizationAdapter
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Visualisation> getAllVisualizations() {
+    public List<Visualisation> getAllVisualisations() {
         List<Visualisation> ret = new ArrayList<>();
         for (Visualisation entry : mStorage.values()) {
             ret.add(new Visualisation(entry));
@@ -68,14 +68,14 @@ public class MemcachedVisualizationAdapter
     }
 
     @Override
-    public Visualisation insertVisualization(Visualisation pVisualization) {
+    public Visualisation insertVisualisation(Visualisation pVisualization) {
         String id = pVisualization.getId().toString();
         mStorage.put(id, new Visualisation(pVisualization));
         return new Visualisation(pVisualization);
     }
 
     @Override
-    public void deleteVisualizationById(String pId) {
+    public void deleteVisualisationById(String pId) {
         mStorage.remove(pId);
     }
 }

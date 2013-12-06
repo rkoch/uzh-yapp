@@ -22,14 +22,14 @@ package ch.uzh.ifi.se.yapp.backend.visualisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class MockVisualizationAdapter
         extends BaseObject
-        implements IVisualizationDataAdapter {
+        implements IVisualisationDataAdapter {
 
     public MockVisualizationAdapter() {
     }
@@ -40,12 +40,12 @@ public class MockVisualizationAdapter
     }
 
     @Override
-    public void deleteVisualizationById(String pId) {
+    public void deleteVisualisationById(String pId) {
 //        System.out.println("deleted " + pId);
     }
 
     @Override
-    public Visualisation getVisualizationById(String pId) {
+    public Visualisation getVisualisationById(String pId) {
         /*
          * Visualization v = new Visualization();
          * v.setElectionId("552.1");
@@ -56,7 +56,7 @@ public class MockVisualizationAdapter
     }
 
     @Override
-    public List<Visualisation> getAllVisualizations() {
+    public List<Visualisation> getAllVisualisations() {
         List<Visualisation> tmpList = new ArrayList<>();
         /*
          * Visualization v = new Visualization();
@@ -74,7 +74,7 @@ public class MockVisualizationAdapter
     }
 
     @Override
-    public Visualisation insertVisualization(Visualisation pVisualization) {
+    public Visualisation insertVisualisation(Visualisation pVisualization) {
         /*
          * Visualization tmp = new Visualization();
          * tmp.setAuthor("asdf");

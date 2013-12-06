@@ -25,7 +25,7 @@ import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 
 
-public interface IVisualizationDataAdapter
+public interface IVisualisationDataAdapter
         extends IBaseAdapter {
 
     /**
@@ -34,7 +34,7 @@ public interface IVisualizationDataAdapter
      *
      * @param pId String which represents the UUID.
      */
-    void deleteVisualizationById(String pId);
+    void deleteVisualisationById(String pId);
 
     /**
      * <b>getVisualizationById</b> <br>
@@ -45,7 +45,7 @@ public interface IVisualizationDataAdapter
      * @return Visualization
      * @throws EntityNotFoundException if the Visualization was not found
      */
-    Visualisation getVisualizationById(String pId)
+    Visualisation getVisualisationById(String pId)
             throws EntityNotFoundException;
 
     /**
@@ -55,15 +55,15 @@ public interface IVisualizationDataAdapter
      *
      * @return List<Visualization>
      */
-    List<Visualisation> getAllVisualizations();
+    List<Visualisation> getAllVisualisations();
 
     /**
      * <b>saveVisualization</b> <br>
      * Description: saves a List<Visualization> on the server.
      *
-     * @param pVisualization Visualization to be saved.
+     * @param pVisualisation Visualization to be saved.
      * @return the inserted visualization
      */
-    Visualisation insertVisualization(Visualisation pVisualization);
+    Visualisation insertVisualisation(Visualisation pVisualisation);
 
 }

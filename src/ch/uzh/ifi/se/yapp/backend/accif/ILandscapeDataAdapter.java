@@ -22,6 +22,7 @@ package ch.uzh.ifi.se.yapp.backend.accif;
 import java.util.List;
 
 import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
+import ch.uzh.ifi.se.yapp.model.landscape.Canton;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 
@@ -54,6 +55,35 @@ public interface ILandscapeDataAdapter
      *
      * @param pDistrict District object to be saved.
      */
-    void insertDistrict(District pDistrict);
+    District insertDistrict(District pDistrict);
+
+
+    /**
+     * <b>getDistrictById</b> <br>
+     * Description: returns a District with a certain id
+     *
+     * @param pId DistrictId of a specific district, ("BezirksNr")
+     * @return District according to the given parameters
+     * @throws EntityNotFoundException if the election was not found
+     */
+    Canton getCantonById(String pId)
+            throws EntityNotFoundException;
+
+    /**
+     * <b>getAllDistricts</b> <br>
+     * Description: returns a List with all districts
+     * Sorted by id in ascending order
+     *
+     * @return List<District>
+     */
+    List<Canton> getAllCantons();
+
+    /**
+     * <b>insertDistrict</b> <br>
+     * Description: Stores a District object on the server.
+     *
+     * @param pDistrict District object to be saved.
+     */
+    Canton insertCanton(Canton pCanton);
 
 }

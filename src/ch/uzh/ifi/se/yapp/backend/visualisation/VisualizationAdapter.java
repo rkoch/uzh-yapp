@@ -23,14 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 
 public class VisualizationAdapter
         extends BaseObject
-        implements IVisualizationDataAdapter {
+        implements IVisualisationDataAdapter {
 
     /**
      * Logger to list exceptions and errors for this class.
@@ -42,7 +42,7 @@ public class VisualizationAdapter
     }
 
     @Override
-    public void deleteVisualizationById(String pId) {
+    public void deleteVisualisationById(String pId) {
         /*
          * Entity visualization = new Entity(EntityConst.VISUALIZATION, pId);
          * visualization.setProperty(EntityConst.ID, pId);
@@ -66,7 +66,7 @@ public class VisualizationAdapter
     }
 
     @Override
-    public Visualisation getVisualizationById(String pId) {
+    public Visualisation getVisualisationById(String pId) {
         /*
          * Filter idFilter = new FilterPredicate(EntityConst.ID, FilterOperator.EQUAL, pId);
          *
@@ -100,7 +100,7 @@ public class VisualizationAdapter
     }
 
     @Override
-    public List<Visualisation> getAllVisualizations() {
+    public List<Visualisation> getAllVisualisations() {
         List<Visualisation> tmpList = new ArrayList<>();
         /*
          * Query visQuery = new Query(EntityConst.VISUALIZATION);
@@ -151,7 +151,7 @@ public class VisualizationAdapter
     }
 
     @Override
-    public Visualisation insertVisualization(Visualisation pVisualization) {
+    public Visualisation insertVisualisation(Visualisation pVisualization) {
         /*
          * Entity visualization = new Entity(EntityConst.VISUALIZATION, pVisualization.getId().toString());
          * visualization.setProperty(EntityConst.ID, pVisualization.getId().toString());
