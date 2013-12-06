@@ -75,7 +75,7 @@ public class LandscapeImport
 
         // Persist cantons
         for (Canton c : cantons.values()) {
-//            mStorageAdapter.insertCanton(c);
+            mStorageAdapter.insertCanton(c);
         }
     }
 

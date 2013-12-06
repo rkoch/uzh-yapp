@@ -21,7 +21,6 @@ package ch.uzh.ifi.se.yapp.ctrl.importer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,10 +28,11 @@ import java.util.logging.Logger;
 
 import org.joda.time.LocalDate;
 
+import com.google.appengine.api.search.GeoPoint;
+
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
-import ch.uzh.ifi.se.yapp.model.geo.GeoPoint;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
 
 import de.micromata.opengis.kml.v_2_2_0.Boundary;
@@ -46,26 +46,26 @@ import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Polygon;
 
 
-public class GeoImport
+public class GeoKmlImport
         extends BaseObject {
 
-    private static final Logger LOGGER = getLogger(ElectionImport.class);
+    private static final Logger LOGGER = getLogger(GeoKmlImport.class);
 
     private LandscapeImport     mIdImport;
 
 
-    public GeoImport(IGeoDataAdapter pStorageAdapter) {
+    public GeoKmlImport(IGeoDataAdapter pStorageAdapter) {
 
     }
 
-    public GeoImport(LandscapeImport pIdImport) {
+    public GeoKmlImport(LandscapeImport pIdImport) {
         mIdImport = pIdImport;
     }
 
 
     public void runImport(InputStream pGeoStream)
             throws IOException {
-
+        // TODO rbrenn: Parse KML here
     }
 
 
@@ -97,7 +97,7 @@ public class GeoImport
                             GeoBoundary pGeoBoundary = new GeoBoundary();
 
                             pGeoBoundary.setId(mIdImport.getInvertedDistricts().get(placemark.getName().toString()));
-                            pGeoBoundary.setLocalDate(new LocalDate("2010-01-01"));
+                            pGeoBoundary.setDate(new LocalDate("2010-01-01"));
 
 //                            if(pGeoBoundary.getId() == null) {
 //                                System.out.println(placemark.getName());
@@ -140,15 +140,12 @@ public class GeoImport
         return null;
     }
 
-    private GeoPoint parseCoordinate(Coordinate pCoordinate) {
+    private ch.uzh.ifi.se.yapp.model.geo.Coordinate parseCoordinate(Coordinate pCoordinate) {
         if (pCoordinate != null) {
-            GeoPoint pGeoPoint = new GeoPoint();
+            ch.uzh.ifi.se.yapp.model.geo.Coordinate pGeoPoint = new ch.uzh.ifi.se.yapp.model.geo.Coordinate();
 
-            BigDecimal pX = new BigDecimal(pCoordinate.getLongitude());
-            BigDecimal pY = new BigDecimal(pCoordinate.getLatitude());
-
-            pGeoPoint.setX(pX);
-            pGeoPoint.setY(pY);
+            pGeoPoint.setLongitude(pCoordinate.getLongitude());
+            pGeoPoint.setLatitude(pCoordinate.getLatitude());
 
 //            System.out.println(coordinate.getLongitude());
 //            System.out.println(coordinate.getLatitude());

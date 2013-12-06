@@ -36,7 +36,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.GeoPointDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
@@ -62,7 +62,7 @@ public class VisualisationManagerTest {
         mHelper.setUp();
 
         IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
-        IVisualizationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
+        IVisualisationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
         mElection.setDate(new LocalDate(2013, 01, 01));
         mElection.setDescription("Description");
@@ -119,7 +119,7 @@ public class VisualisationManagerTest {
         mVisualization.setElectionId("elecId");
         mVisualization.setType(VisualizationType.TABLE);
 
-        visAdpt.insertVisualization(mVisualization);
+        visAdpt.insertVisualisation(mVisualization);
     }
 
     @After

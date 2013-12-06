@@ -22,7 +22,7 @@ package ch.uzh.ifi.se.yapp.ctrl.mgr;
 import com.google.api.server.spi.response.NotFoundException;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
-import ch.uzh.ifi.se.yapp.backend.accif.IVisualizationDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.ctrl.accif.IVisualisationAccessor;
 import ch.uzh.ifi.se.yapp.ctrl.mapper.VisualisationMapper;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
@@ -38,10 +38,10 @@ public class VisualisationManager
     public VisualisationDTO getVisualisationById(String pId)
             throws Exception {
         // define adapters
-        IVisualizationDataAdapter adpt = BackendAccessorFactory.getVisualisationDataAdapter();
+        IVisualisationDataAdapter adpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
         // create new VisualisationDTO
-        Visualization visualisation = adpt.getVisualizationById(pId);
+        Visualization visualisation = adpt.getVisualisationById(pId);
         if (visualisation == null) {
             throw new NotFoundException("Visualisation " + pId + " was not found");
         }
@@ -55,7 +55,7 @@ public class VisualisationManager
     public VisualisationDTO createVisualisation(VisualisationCreationDTO pVisualisationCreationDTO)
             throws Exception {
 
-        IVisualizationDataAdapter adpt = BackendAccessorFactory.getVisualisationDataAdapter();
+        IVisualisationDataAdapter adpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
         Visualization entity = new Visualization();
 
@@ -65,7 +65,7 @@ public class VisualisationManager
         entity.setComment(pVisualisationCreationDTO.getComment());
         entity.setTitle(pVisualisationCreationDTO.getTitle());
 
-        Visualization created = adpt.insertVisualization(entity);
+        Visualization created = adpt.insertVisualisation(entity);
         VisualisationDTO ret = VisualisationMapper.map(BackendAccessorFactory.getGeoDataAdapter(), BackendAccessorFactory.getElectionDataAdapter(), created);
 
         return ret;
@@ -73,10 +73,10 @@ public class VisualisationManager
     }
 
     @Override
-    public void deleteVisualization(String pId)
+    public void deleteVisualisation(String pId)
             throws Exception {
-        IVisualizationDataAdapter adpt = BackendAccessorFactory.getVisualisationDataAdapter();
-        adpt.deleteVisualizationById(pId);
+        IVisualisationDataAdapter adpt = BackendAccessorFactory.getVisualisationDataAdapter();
+        adpt.deleteVisualisationById(pId);
     }
 
 }

@@ -30,7 +30,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 
-public class GeoImportTest {
+public class GeoKmlImportTest {
 
     private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 

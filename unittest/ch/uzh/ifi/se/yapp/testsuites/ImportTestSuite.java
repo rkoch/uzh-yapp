@@ -23,12 +23,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImportTest;
-import ch.uzh.ifi.se.yapp.ctrl.importer.GeoImportTest;
+import ch.uzh.ifi.se.yapp.ctrl.importer.GeoKmlImportTest;
+import ch.uzh.ifi.se.yapp.ctrl.importer.GeoTextImportTest;
 import ch.uzh.ifi.se.yapp.ctrl.importer.LandscapeImportTest;
 
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ ElectionImportTest.class, GeoImportTest.class, LandscapeImportTest.class })
+@Suite.SuiteClasses({ ElectionImportTest.class, GeoKmlImportTest.class, GeoTextImportTest.class, LandscapeImportTest.class })
 public class ImportTestSuite {
 
 }

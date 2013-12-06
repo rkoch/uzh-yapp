@@ -29,6 +29,9 @@ public class Coordinate
     private double mLongitude;
 
 
+    public Coordinate() {
+    }
+
     public Coordinate(double pLatitude, double pLongitude) {
         super();
         mLatitude = pLatitude;
