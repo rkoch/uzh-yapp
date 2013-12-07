@@ -19,14 +19,17 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
-public class PolygonDTO {
+public class PolygonDTO
+        extends BaseDTO
+        implements Serializable {
 
-    private final List<CoordinateDTO> mCoordinates;
+    private List<CoordinateDTO> mCoordinates;
 
 
     public PolygonDTO() {
@@ -36,6 +39,10 @@ public class PolygonDTO {
 
     public List<CoordinateDTO> getCoordinates() {
         return Collections.unmodifiableList(mCoordinates);
+    }
+
+    public void setCoordinates(List<CoordinateDTO> pCoordinates) {
+        mCoordinates = pCoordinates;
     }
 
     public void addCoordinateBack(CoordinateDTO pCoordinate) {

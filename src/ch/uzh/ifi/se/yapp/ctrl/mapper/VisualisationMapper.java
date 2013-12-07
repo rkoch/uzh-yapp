@@ -32,6 +32,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.model.base.AdministrativeUnit;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.CoordinateDTO;
@@ -76,9 +77,11 @@ public class VisualisationMapper {
 
         for (Result entry : resultEnt) {
             String resultId = entry.getLandscape();
-            District d = pLandscapeAdpt.getDistrictById(resultId);
-            if (d == null) {
-//                throw new NotFoundException("District " + resultId + " was not found");
+            District d;
+            try {
+                d = pLandscapeAdpt.getDistrictById(resultId);
+            } catch (EntityNotFoundException pEx) {
+//              throw new NotFoundException("District " + resultId + " was not found");
                 continue;
             }
             String resultName = d.getName();
