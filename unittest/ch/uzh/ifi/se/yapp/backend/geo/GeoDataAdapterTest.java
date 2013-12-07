@@ -57,11 +57,11 @@ import ch.uzh.ifi.se.yapp.model.geo.Polygon;
  */
 public class GeoDataAdapterTest {
 
-    private GeoBoundary      mBoundary       = new GeoBoundary();
-    private Coordinate       mPoint          = new Coordinate(1222.0, 1222.0);
-    private Coordinate       mPoint2         = new Coordinate(1333.0, 1333.0);
-    private Polygon          mPolygon        = new Polygon();
-    private IGeoDataAdapter  mGeoAdpt        = BackendAccessorFactory.getGeoDataAdapter();
+    private GeoBoundary     mBoundary = new GeoBoundary();
+    private Coordinate      mPoint    = new Coordinate(1222.0, 1222.0);
+    private Coordinate      mPoint2   = new Coordinate(1333.0, 1333.0);
+    private Polygon         mPolygon  = new Polygon();
+    private IGeoDataAdapter mGeoAdpt  = BackendAccessorFactory.getGeoDataAdapter();
 
 
     public GeoDataAdapterTest() {
@@ -89,6 +89,16 @@ public class GeoDataAdapterTest {
         assertEquals("1", res.getId());
         assertEquals(new LocalDate(2012, 11, 24), res.getDate());
 
+    }
+
+    @Test
+    public void getGeoBoundaryWithYoungerDate()
+            throws EntityNotFoundException {
+        mGeoAdpt.insertGeoBoundary(mBoundary);
+        GeoBoundary res = mGeoAdpt.getGeoBoundaryByDistrictAndDate("1", new LocalDate(2012, 11, 30));
+
+        assertEquals("1", res.getId());
+        assertEquals(new LocalDate(2012, 11, 24), res.getDate());
     }
 
     @Test
