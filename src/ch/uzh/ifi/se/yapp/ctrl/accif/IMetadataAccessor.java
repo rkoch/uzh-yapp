@@ -43,7 +43,7 @@ public interface IMetadataAccessor
      * @param pDate2
      * @return
      */
-    List<ElectionDTO> getElectionsByDateRange(String pDate1, String pDate2);
+    List<ElectionDTO> getElectionsByDateRange(String pDateFrom, String pDateTo);
 
     /**
      * <b>getElectoinById</b> <br>

@@ -20,7 +20,10 @@
 package ch.uzh.ifi.se.yapp.ctrl.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.joda.time.LocalDate;
 
@@ -28,80 +31,101 @@ import com.google.api.server.spi.response.NotFoundException;
 
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
+import ch.uzh.ifi.se.yapp.model.base.AdministrativeUnit;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
+import ch.uzh.ifi.se.yapp.model.dto.CoordinateDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
-import ch.uzh.ifi.se.yapp.model.dto.GeoPointDTO;
+import ch.uzh.ifi.se.yapp.model.dto.PolygonDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultLabelDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
+import ch.uzh.ifi.se.yapp.model.election.Election;
+import ch.uzh.ifi.se.yapp.model.election.Result;
+import ch.uzh.ifi.se.yapp.model.geo.Coordinate;
 import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
-import ch.uzh.ifi.se.yapp.model.geo.GeoPoint;
+import ch.uzh.ifi.se.yapp.model.geo.Polygon;
+import ch.uzh.ifi.se.yapp.model.landscape.Canton;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
-import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
-import ch.uzh.ifi.se.yapp.model.landscape.Election;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 
 
 public class VisualisationMapper {
 
-    public static VisualisationDTO map(IGeoDataAdapter pGeoDataAdpt, IElectionDataAdapter pElectionAdpt, Visualization pEntity)
+    public static VisualisationDTO map(IGeoDataAdapter pGeoDataAdpt, IElectionDataAdapter pElectionAdpt, ILandscapeDataAdapter pLandscapeAdpt, Visualisation pEntity)
             throws Exception {
         VisualisationDTO dto = new VisualisationDTO();
         VisualizationType type = pEntity.getType();
 
-        dto.setId(pEntity.getId().toString());
+        dto.setId(pEntity.getId());
         dto.setType(type);
         dto.setTitle(pEntity.getTitle());
         dto.setAuthor(pEntity.getAuthor());
         dto.setComment(pEntity.getComment());
 
-        Election electionEnt = pElectionAdpt.getElectionById(pEntity.getElectionId());
+        Election electionEnt = pElectionAdpt.getElectionById(pEntity.getElection());
         if (electionEnt == null) {
-            throw new NotFoundException("Election " + pEntity.getElectionId() + " was not found");
+            throw new NotFoundException("Election " + pEntity.getElection() + " was not found");
         }
 
         ElectionDTO election = map(electionEnt);
         dto.setElection(election);
 
-        List<DistrictResult> resultEnt = electionEnt.getResults();
-        List<ResultDTO> results = new ArrayList<>();
+        Set<Result> resultEnt = electionEnt.getResults();
+        Map<String, ResultDTO> results = new HashMap<>();
 
-        for (DistrictResult entry : resultEnt) {
-            ResultDTO res = new ResultDTO();
-
-            District d = entry.getDistrict();
-            res.setId(d.getId());
-            res.setName(d.getName());
-
-            // Create label
-            ResultLabelDTO label = new ResultLabelDTO();
-            label.setDeliveredVoteCount(entry.getDeliveredVoteCount());
-            label.setEmtyVoteCount(entry.getEmptyVoteCount());
-            label.setInvalicVoteCount(entry.getValidVoteCount());
-            label.setNoVoteCount(entry.getNoVoteCount());
-            label.setRatio(entry.getRatio());
-            label.setTotalEligibleCount(entry.getTotalEligibleCount());
-            label.setYesVoteCount(entry.getYesVoteCount());
-            label.setYesVoteRatio(entry.getYesVoteRatio());
-            res.setLabel(label);
-
-            // Get boundaries
-            if (type == VisualizationType.MAP) {
-                GeoBoundary boundaryEnt = pGeoDataAdpt.getGeoBoundaryByDistrictAndDate(res.getName(), electionEnt.getDate());
-                List<GeoPoint> geoEnt = boundaryEnt.getGeoPoints();
-                List<GeoPointDTO> boundaries = new ArrayList<>();
-                for (GeoPoint geoEntry : geoEnt) {
-                    GeoPointDTO point = new GeoPointDTO();
-                    point.setX(geoEntry.getX());
-                    point.setY(geoEntry.getY());
-                    boundaries.add(point);
+        for (Result entry : resultEnt) {
+            String resultId = entry.getLandscape();
+            District d = pLandscapeAdpt.getDistrictById(resultId);
+            if (d == null) {
+//                throw new NotFoundException("District " + resultId + " was not found");
+                continue;
+            }
+            String resultName = d.getName();
+            if (pEntity.getDetail() == AdministrativeUnit.CANTON) {
+                resultId = d.getCanton();
+                Canton c = pLandscapeAdpt.getCantonById(resultId);
+                if (c == null) {
+                    throw new NotFoundException("Canton " + resultId + " was not found");
                 }
-                res.setBoundaries(boundaries);
+            }
+            ResultDTO res = results.get(resultId);
+            if (res == null) {
+                res = new ResultDTO();
+                res.setId(resultId);
+                res.setName(resultName);
+                results.put(resultId, res);
+
+                // Create label and add boundaries
+                res.setLabel(new ResultLabelDTO());
+
+                // get boundaries
+                if (type == VisualizationType.MAP) {
+                    GeoBoundary boundary = pGeoDataAdpt.getGeoBoundaryByDistrictAndDate(res.getId(), electionEnt.getDate());
+                    List<PolygonDTO> polygons = new ArrayList<>();
+
+                    for (Polygon p : boundary.getPolygons()) {
+                        PolygonDTO polyDto = new PolygonDTO();
+                        for (Coordinate c : p.getCoordinates()) {
+                            polyDto.addCoordinateBack(new CoordinateDTO(c.getLatitude(), c.getLongitude()));
+                        }
+                        polygons.add(polyDto);
+                    }
+
+                    res.setBoundaries(polygons);
+                }
             }
 
-            results.add(res);
+            // Set label contents
+            ResultLabelDTO label = res.getLabel();
+            label.setTotalEligibleCount(label.getTotalEligibleCount() + entry.getTotalEligibleCount());
+            label.setDeliveredCount(label.getDeliveredCount() + entry.getDeliveredCount());
+            label.setValidCount(label.getValidCount() + entry.getValidCount());
+            label.setYesCount(label.getYesCount() + entry.getYesCount());
+            label.setNoCount(label.getNoCount() + entry.getNoCount());
         }
-        dto.setResults(results);
+
+        dto.setResults(new ArrayList<>(results.values()));
 
         return dto;
     }

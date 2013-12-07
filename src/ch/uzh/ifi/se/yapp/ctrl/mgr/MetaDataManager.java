@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
@@ -30,72 +32,65 @@ import org.joda.time.format.DateTimeFormatter;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
 import ch.uzh.ifi.se.yapp.ctrl.accif.IMetadataAccessor;
+import ch.uzh.ifi.se.yapp.ctrl.mapper.VisualisationMapper;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
-import ch.uzh.ifi.se.yapp.model.landscape.Election;
+import ch.uzh.ifi.se.yapp.model.election.Election;
 
 
 public class MetaDataManager
         extends AbstractManager
         implements IMetadataAccessor {
 
+    private static final Logger LOGGER = getLogger(MetaDataManager.class);
+
+
     @Override
     public List<ElectionDTO> getElectionList() {
+        List<ElectionDTO> ret = new ArrayList<>();
+        IElectionDataAdapter adpt = BackendAccessorFactory.getElectionDataAdapter();
 
-        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
-
-        List<ElectionDTO> list = new ArrayList<>();
-
-        Map<String, Election> map = elecAdpt.listElections();
-
-        for (Map.Entry<String, Election> entry : map.entrySet()) {
-            Election elec = entry.getValue();
-            ElectionDTO elecDTO = new ElectionDTO();
-            elecDTO.setId(elec.getId());
-            elecDTO.setTitle(elec.getTitle());
-            elecDTO.setDate(elec.getDate().toString());
-            list.add(elecDTO);
+        Map<String, Election> map = adpt.listElections();
+        for (Election e : map.values()) {
+            ElectionDTO dto = VisualisationMapper.map(e);
+            ret.add(dto);
         }
+        Collections.sort(ret);
 
-        Collections.sort(list);
-
-        return list;
+        return ret;
     }
 
     @Override
-    public List<ElectionDTO> getElectionsByDateRange(String pDate1, String pDate2) {
+    public List<ElectionDTO> getElectionsByDateRange(String pDateFrom, String pDateTo) {
+        List<ElectionDTO> ret = new ArrayList<>();
+        IElectionDataAdapter adpt = BackendAccessorFactory.getElectionDataAdapter();
 
-        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
-
-        List<ElectionDTO> elecDtoList = new ArrayList<>();
         // convert String to LocalDate
         final DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
-        final LocalDate dt1 = dtf.parseLocalDate(pDate1);
-        final LocalDate dt2 = dtf.parseLocalDate(pDate2);
-        List<Election> elecList = elecAdpt.getElectionsByDateRange(dt1, dt2);
+        final LocalDate ldFrom = dtf.parseLocalDate(pDateFrom);
+        final LocalDate ldTo = dtf.parseLocalDate(pDateTo);
 
-        for (Election e : elecList) {
-            ElectionDTO elecDTO = new ElectionDTO();
-            elecDTO.setId(e.getId());
-            elecDTO.setTitle(e.getTitle());
-            // elecDTO.setDate(e.getDate().toString()); //not specified in MockElectionAdapter
-            elecDtoList.add(elecDTO);
+        List<Election> elections = adpt.getElectionsByDateRange(ldFrom, ldTo);
+        for (Election e : elections) {
+            ElectionDTO dto = VisualisationMapper.map(e);
+            ret.add(dto);
         }
 
-        // Collections.sort(elecDtoList); //consequence of the above
-
-        return elecDtoList;
+        return ret;
     }
 
     @Override
     public ElectionDTO getElectionById(String pId) {
-        ElectionDTO elecDTO = new ElectionDTO();
-        Election elec = BackendAccessorFactory.getElectionDataAdapter().getElectionById(pId);
-        elecDTO.setId(pId);
-        elecDTO.setTitle(elec.getTitle());
-        // elecDTO.setDate(elec.getDate().toString()); //not specified in MockElectionAdapter
+        ElectionDTO ret = null;
+        try {
+            Election election = BackendAccessorFactory.getElectionDataAdapter().getElectionById(pId);
+            ret = VisualisationMapper.map(election);
+        } catch (EntityNotFoundException pEx) {
+            LOGGER.log(Level.WARNING, String.format("Election entity %s was not found", pId), pEx);
+        }
 
-        return elecDTO;
+        return ret;
     }
 
 }
