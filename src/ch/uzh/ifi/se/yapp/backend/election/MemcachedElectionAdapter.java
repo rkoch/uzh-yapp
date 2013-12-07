@@ -57,7 +57,6 @@ public class MemcachedElectionAdapter
         return ret;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Election> getElectionsByDateRange(LocalDate pDate1, LocalDate pDate2) {
         List<Election> retList = new ArrayList<>();

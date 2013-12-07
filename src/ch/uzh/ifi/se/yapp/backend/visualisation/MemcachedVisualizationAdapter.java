@@ -56,7 +56,6 @@ public class MemcachedVisualizationAdapter
         return new Visualisation(ret);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Visualisation> getAllVisualisations() {
         List<Visualisation> ret = new ArrayList<>();

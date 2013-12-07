@@ -87,7 +87,7 @@ public class MemcachedGeoDataAdapter
                 return new GeoBoundary(entry.getValue());
             }
         }
-        throw new EntityNotFoundException("District with id '" + pDistrictId + "' and LocalDate '" + pDate + "' not found");
+        throw new EntityNotFoundException("District " + pDistrictId + " with LocalDate " + pDate + " not found");
     }
 
     @Override
