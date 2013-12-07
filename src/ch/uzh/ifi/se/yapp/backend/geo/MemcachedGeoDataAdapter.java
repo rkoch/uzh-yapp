@@ -83,7 +83,7 @@ public class MemcachedGeoDataAdapter
     public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate)
             throws EntityNotFoundException {
         for (Map.Entry<String, GeoBoundary> entry : mStorage.entrySet()) {
-            if (entry.getValue().getId() == pDistrictId && (entry.getValue().getDate().isEqual(pDate) || entry.getValue().getDate().isBefore(pDate))) {
+            if (entry.getValue().getId().equals(pDistrictId) && (entry.getValue().getDate().isEqual(pDate) || entry.getValue().getDate().isBefore(pDate))) {
                 return new GeoBoundary(entry.getValue());
             }
         }
