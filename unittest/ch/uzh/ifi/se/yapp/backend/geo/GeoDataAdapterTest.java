@@ -104,7 +104,7 @@ public class GeoDataAdapterTest {
     @Test
     public void getAllGeoBoundaryByDate() {
         mGeoAdpt.insertGeoBoundary(mBoundary);
-        List<GeoBoundary> tmpList = mGeoAdpt.getAllGeoBoundaryByDate(new LocalDate(2012, 11, 24));
+        List<GeoBoundary> tmpList = mGeoAdpt.getAllGeoBoundaryByDate(new LocalDate(2012, 11, 30));
         assertEquals("1", tmpList.get(0).getId());
         assertEquals(new LocalDate(2012, 11, 24), tmpList.get(0).getDate());
 
