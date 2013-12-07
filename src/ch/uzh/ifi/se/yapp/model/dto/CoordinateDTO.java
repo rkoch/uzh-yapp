@@ -20,49 +20,40 @@
 package ch.uzh.ifi.se.yapp.model.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 
-public class ResultDTO
+public class CoordinateDTO
         extends BaseDTO
         implements Serializable {
 
-    private String           mId;
-    private String           mName;
-    private ResultLabelDTO   mLabel;
-    private List<PolygonDTO> mBoundaries;
+    private double mLatitude;
+    private double mLongitude;
 
 
-    public String getId() {
-        return mId;
+    public CoordinateDTO() {
     }
 
-    public void setId(String pId) {
-        mId = pId;
+    public CoordinateDTO(double pLatitude, double pLongitude) {
+        super();
+        mLatitude = pLatitude;
+        mLongitude = pLongitude;
     }
 
-    public String getName() {
-        return mName;
+
+    public double getLatitude() {
+        return mLatitude;
     }
 
-    public void setName(String pName) {
-        mName = pName;
+    public void setLatitude(double pLatitude) {
+        mLatitude = pLatitude;
     }
 
-    public ResultLabelDTO getLabel() {
-        return mLabel;
+    public double getLongitude() {
+        return mLongitude;
     }
 
-    public void setLabel(ResultLabelDTO pLabel) {
-        mLabel = pLabel;
-    }
-
-    public List<PolygonDTO> getBoundaries() {
-        return mBoundaries;
-    }
-
-    public void setBoundaries(List<PolygonDTO> pBoundaries) {
-        mBoundaries = pBoundaries;
+    public void setLongitude(double pLongitude) {
+        mLongitude = pLongitude;
     }
 
 }

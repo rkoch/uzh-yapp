@@ -19,32 +19,43 @@
  */
 package ch.uzh.ifi.se.yapp.model.dto;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
-public class GeoPointDTO
-        extends BaseDTO
-        implements Serializable {
+public class PolygonDTO {
 
-    private BigDecimal mX;
-    private BigDecimal mY;
+    private final List<CoordinateDTO> mCoordinates;
 
 
-    public BigDecimal getX() {
-        return mX;
+    public PolygonDTO() {
+        mCoordinates = new ArrayList<CoordinateDTO>();
     }
 
-    public void setX(BigDecimal pX) {
-        mX = pX;
+
+    public List<CoordinateDTO> getCoordinates() {
+        return Collections.unmodifiableList(mCoordinates);
     }
 
-    public BigDecimal getY() {
-        return mY;
+    public void addCoordinateBack(CoordinateDTO pCoordinate) {
+        mCoordinates.add(pCoordinate);
     }
 
-    public void setY(BigDecimal pY) {
-        mY = pY;
+    public void addCoordinateFront(CoordinateDTO pCoordinate) {
+        mCoordinates.add(0, pCoordinate);
+    }
+
+    public void putCoordinate(int pIndex, CoordinateDTO pCoordinate) {
+        mCoordinates.add(pIndex, pCoordinate);
+    }
+
+    public void removeCoordinate(CoordinateDTO pCoordinate) {
+        mCoordinates.remove(pCoordinate);
+    }
+
+    public void removeCoordinateAt(int pIndex) {
+        mCoordinates.remove(pIndex);
     }
 
 }

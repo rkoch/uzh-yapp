@@ -26,48 +26,12 @@ public class ResultLabelDTO
         extends BaseDTO
         implements Serializable {
 
-    private int    mYesVoteCount;
-    private int    mNoVoteCount;
-    private int    mValidVoteCount;
-    private int    mTotalEligibleCount;
-    private int    mDeliveredVoteCount;
+    private int mTotalEligibleCount;
+    private int mDeliveredCount;
+    private int mValidCount;
+    private int mYesCount;
+    private int mNoCount;
 
-    private int    mEmptyVoteCount;    // This is a computed value
-    private double mRatio;             // This is a computed value
-    private double mYesVoteRatio;      // This is a computed value
-
-
-    public int getYesVoteCount() {
-        return mYesVoteCount;
-    }
-
-    public void setYesVoteCount(int pYesVoteCount) {
-        mYesVoteCount = pYesVoteCount;
-    }
-
-    public int getNoVoteCount() {
-        return mNoVoteCount;
-    }
-
-    public void setNoVoteCount(int pNoVoteCount) {
-        mNoVoteCount = pNoVoteCount;
-    }
-
-    public int getInvalidVoteCount() {
-        return mValidVoteCount;
-    }
-
-    public void setInvalicVoteCount(int pValidVoteCount) {
-        mValidVoteCount = pValidVoteCount;
-    }
-
-    public int getEmptyVoteCount() {
-        return mEmptyVoteCount;
-    }
-
-    public void setEmtyVoteCount(int pEmptyVoteCount) {
-        mEmptyVoteCount = pEmptyVoteCount;
-    }
 
     public int getTotalEligibleCount() {
         return mTotalEligibleCount;
@@ -77,40 +41,54 @@ public class ResultLabelDTO
         mTotalEligibleCount = pTotalEligibleCount;
     }
 
-    public int getDeliveredVoteCount() {
-        return mDeliveredVoteCount;
+    public int getDeliveredCount() {
+        return mDeliveredCount;
     }
 
-    public void setDeliveredVoteCount(int pDeliveredVoteCount) {
-        mDeliveredVoteCount = pDeliveredVoteCount;
+    public void setDeliveredCount(int pDeliveredCount) {
+        mDeliveredCount = pDeliveredCount;
     }
 
-    public double getRatio() {
-        return mRatio;
+    public int getValidCount() {
+        return mValidCount;
     }
 
-    public void setRatio(double pRatio) {
-        mRatio = pRatio;
+    public void setValidCount(int pValidCount) {
+        mValidCount = pValidCount;
     }
 
-    public double getYesVoteRatio() {
-        return mYesVoteRatio;
+    public int getYesCount() {
+        return mYesCount;
     }
 
-    public void setYesVoteRatio(double pYesVoteRatio) {
-        mYesVoteRatio = pYesVoteRatio;
+    public void setYesCount(int pYesCount) {
+        mYesCount = pYesCount;
     }
 
+    public int getNoCount() {
+        return mNoCount;
+    }
 
-    public void addResultLabels(ResultLabelDTO pLabel) {
-        mYesVoteCount += pLabel.getYesVoteCount();
-        mNoVoteCount += pLabel.getNoVoteCount();
-        mValidVoteCount += pLabel.getInvalidVoteCount();
-        mEmptyVoteCount += pLabel.getEmptyVoteCount();
-        mTotalEligibleCount += pLabel.getTotalEligibleCount();
-        mDeliveredVoteCount += pLabel.getDeliveredVoteCount();
-        mRatio = (double) mYesVoteCount / (double) mNoVoteCount;
-        mYesVoteRatio = (double) mYesVoteCount / (double) mValidVoteCount;
+    public void setNoCount(int pNoCount) {
+        mNoCount = pNoCount;
+    }
+
+    public int getComputedEmptyCount() {
+        return mValidCount - mYesCount - mNoCount;
+    }
+
+    public double getComputedParticipationRation() {
+        if (mTotalEligibleCount == 0) {
+            return mDeliveredCount / (double) mTotalEligibleCount;
+        }
+        return 0d;
+    }
+
+    public double getComputedYesRatio() {
+        if ((mYesCount + mNoCount) == 0) {
+            return mYesCount / (double) (mYesCount + mNoCount);
+        }
+        return 0d;
     }
 
 }
