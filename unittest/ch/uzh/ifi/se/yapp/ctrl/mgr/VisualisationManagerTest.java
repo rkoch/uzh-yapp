@@ -38,7 +38,7 @@ import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
-import ch.uzh.ifi.se.yapp.model.dto.GeoPointDTO;
+import ch.uzh.ifi.se.yapp.model.dto.CoordinateDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
@@ -54,7 +54,7 @@ public class VisualisationManagerTest {
     private Visualization                mVisualization        = new Visualization();
     private Election                     mElection             = new Election();
     private VisualisationManager         mVisualisationManager = new VisualisationManager();
-    private List<GeoPointDTO>            mGeoPoints            = new ArrayList<>();
+    private List<CoordinateDTO>            mGeoPoints            = new ArrayList<>();
     private List<DistrictResult>         mResults              = new ArrayList<>();
 
     @Before

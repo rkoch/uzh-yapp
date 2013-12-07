@@ -36,9 +36,9 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
+import ch.uzh.ifi.se.yapp.model.election.Election;
+import ch.uzh.ifi.se.yapp.model.election.Result;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
-import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
-import ch.uzh.ifi.se.yapp.model.landscape.Election;
 
 
 public class MetaDataManagerTest {
@@ -47,7 +47,7 @@ public class MetaDataManagerTest {
 
     private Election                     mElection     = new Election();
     private MetaDataManager              mMetaDataManager = new MetaDataManager();
-    private List<DistrictResult>         mResults      = new ArrayList<>();
+    private List<Result>         mResults      = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -59,21 +59,21 @@ public class MetaDataManagerTest {
         mElection.setDescription("Description");
         mElection.setId("id");
 
-        DistrictResult dr = new DistrictResult();
-        dr.setDeliveredVoteCount(1);
-        dr.setNoVoteCount(1);
+        Result dr = new Result();
+        dr.setDeliveredCount(1);
+        dr.setNoCount(1);
         dr.setTotalEligibleCount(0);
-        dr.setValidVoteCount(1);
-        dr.setYesVoteCount(0);
+        dr.setValidCount(1);
+        dr.setYesCount(0);
 
         District d = new District();
         d.setCanton("Zürich");
         d.setCantonId("1");
         d.setId("2603");
         d.setName("Test-Bezirk");
-        d.setLocalDate(new LocalDate(2013, 01, 01));
+        d.setDate(new LocalDate(2013, 01, 01));
 
-        dr.setDistrict(d);
+        dr.setLandscape(d);
         mResults.add(dr);
 
         mElection.setResults(mResults);
