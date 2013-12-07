@@ -18,6 +18,8 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
 
   <!-- Other module inherits                                      -->
+  <inherits name="com.google.maps.gwt.GoogleMaps" />
+  <inherits name="com.google.gwt.ajaxloader.AjaxLoader" />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ch.uzh.ifi.se.yapp.facade.gwt.client.ApplicationBootstrap'/>
@@ -30,8 +32,5 @@
 
   <!-- RPC Interfaces -->
   <servlet path='/yapp/api' class='ch.uzh.ifi.se.yapp.facade.gwt.server.YappServiceImpl'/>
-
-  <!-- Module inheriting -->
-  <inherits name="com.google.maps.gwt.GoogleMaps" />
 
 </module>

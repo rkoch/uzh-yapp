@@ -29,7 +29,6 @@ import javax.servlet.ServletContextListener;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImport;
-import ch.uzh.ifi.se.yapp.ctrl.importer.GeoKmlImport;
 import ch.uzh.ifi.se.yapp.ctrl.importer.GeoTextImport;
 import ch.uzh.ifi.se.yapp.ctrl.importer.LandscapeImport;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -76,15 +75,15 @@ public class ImportServlet
             }
         }
 
-        GeoKmlImport geoImporter = new GeoKmlImport(BackendAccessorFactory.getGeoDataAdapter());
-        for (String geo : geoKmlFiles) {
-            InputStream is = getClass().getResourceAsStream(geo);
-            try {
-                geoImporter.runImport(is);
-            } catch (IOException pEx) {
-                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo kml import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
-            }
-        }
+//        GeoKmlImport geoImporter = new GeoKmlImport(BackendAccessorFactory.getGeoDataAdapter());
+//        for (String geo : geoKmlFiles) {
+//            InputStream is = getClass().getResourceAsStream(geo);
+//            try {
+//                geoImporter.runImport(is);
+//            } catch (IOException pEx) {
+//                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo kml import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
+//            }
+//        }
 
         // Import elections
         String[] electionFiles = { "/ch/uzh/ifi/se/yapp/data/election/election-554-20110213.csv", "/ch/uzh/ifi/se/yapp/data/election/election-556-20121125.csv" };

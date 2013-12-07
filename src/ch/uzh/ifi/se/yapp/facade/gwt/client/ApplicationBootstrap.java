@@ -46,6 +46,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.maps.gwt.client.GoogleMap;
+import com.google.maps.gwt.client.LatLng;
 import com.google.maps.gwt.client.MapOptions;
 import com.google.maps.gwt.client.MapTypeId;
 
@@ -62,6 +63,8 @@ import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
  */
 public class ApplicationBootstrap
         implements EntryPoint {
+
+    private static final LatLng     CH_CENTRE = LatLng.create(46.801111111111105, 8.226666666666667);
 
     private final VerticalPanel     mMainPanel;
     private final IYappServiceAsync mRemoteService;
@@ -245,6 +248,7 @@ public class ApplicationBootstrap
 
     private void buildVisualizeMask(final VisualisationDTO pData) {
         mMainPanel.clear();
+        mMainPanel.setSize("100%", "100%");
 
         // heading
         HorizontalPanel panelHeading = new HorizontalPanel();
@@ -265,7 +269,7 @@ public class ApplicationBootstrap
             table.setText(0, 0, "Bezirk");
             table.setText(0, 1, "Ja-Stimmen");
             table.setText(0, 2, "Nein-Stimmen");
-            table.setText(0, 3, "Ungültige Stimmen");
+            table.setText(0, 3, "Gültige Stimmen");
             table.setText(0, 4, "Leere Stimmen");
             table.setText(0, 5, "Anzahl eingegangene Stimmen");
             table.setText(0, 6, "Anzahl Stimmbürger");
@@ -276,35 +280,69 @@ public class ApplicationBootstrap
             for (ResultDTO res : pData.getResults()) {
                 ResultLabelDTO label = res.getLabel();
                 table.setText(rowIdx, 0, res.getName());
-                table.setText(rowIdx, 1, Integer.toString(label.getYesVoteCount()));
-                table.setText(rowIdx, 2, Integer.toString(label.getNoVoteCount()));
-                table.setText(rowIdx, 3, Integer.toString(label.getInvalidVoteCount()));
-                table.setText(rowIdx, 4, Integer.toString(label.getEmptyVoteCount()));
-                table.setText(rowIdx, 5, Integer.toString(label.getDeliveredVoteCount()));
+                table.setText(rowIdx, 1, Integer.toString(label.getYesCount()));
+                table.setText(rowIdx, 2, Integer.toString(label.getNoCount()));
+                table.setText(rowIdx, 3, Integer.toString(label.getValidCount()));
+                table.setText(rowIdx, 4, Integer.toString(label.getComputedEmptyCount()));
+                table.setText(rowIdx, 5, Integer.toString(label.getDeliveredCount()));
                 table.setText(rowIdx, 6, Integer.toString(label.getTotalEligibleCount()));
-                table.setText(rowIdx, 7, Double.toString(label.getRatio()) + "%");
+                table.setText(rowIdx, 7, Double.toString(label.getComputedParticipationRation()) + "%");
                 rowIdx++;
             }
             mMainPanel.add(table);
         } else { // Graphical
             // TODO rko
-            MapOptions options = MapOptions.create();
+
+            SimplePanel map = new SimplePanel();
+            mMainPanel.add(map);
+
+            map.setSize("100%", "500px");
+
+
+
+            MapOptions myOptions = MapOptions.create();
+            myOptions.setZoom(8.0);
+            myOptions.setCenter(CH_CENTRE);
+            myOptions.setMapTypeId(MapTypeId.ROADMAP);
+            GoogleMap.create(map.getElement(), myOptions);
+
+
+//            MapOptions options = MapOptions.create();
+//            options.setZoom(6);
+//            options.setMapTypeId(MapTypeId.ROADMAP);
+//            options.setDraggable(true);
+//            options.setMapTypeControl(true);
+//            options.setScaleControl(true);
+//            options.setScrollwheel(true);
+//
+//            GoogleMap theMap = GoogleMap.create(widg.getElement(), options);
 
 //            options.setCenter(LatLng.create(latCenter, lngCenter));
-            options.setZoom(6);
-            options.setMapTypeId(MapTypeId.ROADMAP);
-            options.setDraggable(true);
-            options.setMapTypeControl(true);
-            options.setScaleControl(true);
-            options.setScrollwheel(true);
 
-            SimplePanel widg = new SimplePanel();
+// https://groups.google.com/forum/#!topic/gwt-google-apis/6SO5kCDqb-k
+            // create a polyline
+//            PolylineOptions polyOpts = PolylineOptions.create();
+//            polyOpts.setStrokeColor("red");
+//            polyOpts.setStrokeOpacity(0.5);
+//            polyOpts.setStrokeWeight(3);
+//            polyOpts.setEditable(true);
+//            Polyline poly = Polyline.create(polyOpts);
+//
+//            //bind the polyline to a line
+//            MVCArray<LatLng> array = MVCArray.create();
+//            Line line = new Line(array);
+//            line.getPath().push(latlng);
+//            poly.setPath(line.getPath());
+//            poly.setMap(map);
+//
+//            //create a marker
+//            MarkerOptions markerOptions = MarkerOptions.create();
+//            markerOptions.setMap(map);
+//            markerOptions.setTitle("Hello World!");
+//            markerOptions.setDraggable(true);
+//            Marker start = Marker.create(markerOptions);
 
-            widg.setSize("100%", "100%");
 
-            GoogleMap theMap = GoogleMap.create(widg.getElement(), options);
-
-            mMainPanel.add(widg);
         }
         // Delete button
         HorizontalPanel panelActions = new HorizontalPanel();
@@ -322,7 +360,7 @@ public class ApplicationBootstrap
         });
 
         // Google+ Button
-        panelActions.add(new HTML("<g:plusone></g:plusone>"));
+        panelActions.add(new HTML("<g:plus action=\"share\"></g:plus>"));
 
     }
 

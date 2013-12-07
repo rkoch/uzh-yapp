@@ -65,7 +65,8 @@ public class YappServiceImpl
             return ret;
         } catch (Exception pEx) {
             // Error happened
-            LOGGER.log(Level.WARNING, String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
+            LOGGER.log(Level.WARNING,
+                    String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
         }
 
         return null;
@@ -80,7 +81,8 @@ public class YappServiceImpl
             return acc.getVisualisationById(pId);
         } catch (Exception pEx) {
             // Not found or some other error happened
-            LOGGER.log(Level.WARNING, String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
+            LOGGER.log(Level.WARNING,
+                    String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "getVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
         }
 
         return null;
@@ -95,7 +97,8 @@ public class YappServiceImpl
             acc.deleteVisualisation(pId);
         } catch (Exception pEx) {
             // Error happened
-            LOGGER.log(Level.WARNING, String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "removeVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
+            LOGGER.log(Level.WARNING,
+                    String.format("%s.%s: Error %s occured (ex=%s)", getClass().getSimpleName(), "removeVisualisation()", pEx.getClass().getSimpleName(), pEx.getMessage()), pEx);
         }
     }
 }
