@@ -1,4 +1,4 @@
-﻿1;Zürich
+1;Zürich
 2;Bern
 3;Luzern
 4;Uri
