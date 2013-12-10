@@ -360,7 +360,6 @@ public class ApplicationBootstrap
 
         panelActions.add(mDeleteButton); // Delete Button
         drawPlusOne();
-        panelActions.add(new HTML("<g:plus action=\"share\"></g:plus>"));
         panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link:"+"'>Share by Email</a>"));
         mMainPanel.add(panelActions);
 
