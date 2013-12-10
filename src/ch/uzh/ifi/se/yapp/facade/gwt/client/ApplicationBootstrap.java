@@ -66,11 +66,11 @@ import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 public class ApplicationBootstrap
         implements EntryPoint {
 
-    private static final LatLng     CH_CENTRE = LatLng.create(46.801111111111105, 8.226666666666667);
+    private static final LatLng     CH_CENTRE    = LatLng.create(46.801111111111105, 8.226666666666667);
 
     private final VerticalPanel     mMainPanel;
     private final IYappServiceAsync mRemoteService;
-    private final HorizontalPanel panelActions = new HorizontalPanel();
+    private final HorizontalPanel   panelActions = new HorizontalPanel();
 
     private TextBox                 mTitleInput;
     private TextBox                 mAuthorInput;
@@ -360,7 +360,8 @@ public class ApplicationBootstrap
 
         panelActions.add(mDeleteButton); // Delete Button
         drawPlusOne();
-        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link:"+"'>Share by Email</a>"));
+        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link: "
+                + getUrl() + "'>Share by Email</a>"));
         mMainPanel.add(panelActions);
 
     }
@@ -377,7 +378,12 @@ public class ApplicationBootstrap
         script.setType("text/javascript");
         script.setLang("javascript");
         doc.getBody().appendChild(script);
-      }
+    }
+
+    private String getUrl() {
+        String ret = Window.Location.getHref();
+        return new String(ret);
+    }
 
 
     private void validateAndSubmitForm() {
