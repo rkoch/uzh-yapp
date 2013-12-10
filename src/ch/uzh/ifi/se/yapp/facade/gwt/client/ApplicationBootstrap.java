@@ -24,6 +24,8 @@ import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.ScriptElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -68,6 +70,7 @@ public class ApplicationBootstrap
 
     private final VerticalPanel     mMainPanel;
     private final IYappServiceAsync mRemoteService;
+    private final HorizontalPanel panelActions = new HorizontalPanel();
 
     private TextBox                 mTitleInput;
     private TextBox                 mAuthorInput;
@@ -345,11 +348,7 @@ public class ApplicationBootstrap
 
         }
         // Delete button
-        HorizontalPanel panelActions = new HorizontalPanel();
-        mMainPanel.add(panelActions);
-
         mDeleteButton = new Button("Löschen");
-        panelActions.add(mDeleteButton);
         mDeleteButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -359,10 +358,27 @@ public class ApplicationBootstrap
 
         });
 
-        // Google+ Button
+        panelActions.add(mDeleteButton); // Delete Button
+        drawPlusOne();
         panelActions.add(new HTML("<g:plus action=\"share\"></g:plus>"));
+        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link:"+"'>Share by Email</a>"));
+        mMainPanel.add(panelActions);
 
     }
+
+    private void drawPlusOne() {
+        String s = "<g:plusone href=\"http://urltoplusone.com\"></g:plusone>";
+        HTML h = new HTML(s);
+        panelActions.add(h);
+
+        // You can insert a script tag this way or via your .gwt.xml
+        Document doc = Document.get();
+        ScriptElement script = doc.createScriptElement();
+        script.setSrc("https://apis.google.com/js/plusone.js");
+        script.setType("text/javascript");
+        script.setLang("javascript");
+        doc.getBody().appendChild(script);
+      }
 
 
     private void validateAndSubmitForm() {
