@@ -64,7 +64,6 @@ public class ElectionMapWidget
 //            String color = "#FFFF00"; // in case of exactly 50.0 percent!
             String color = "#E5B721"; // in case of exactly 50.0 percent!
             double yesRatio = resultLabel.getComputedYesRatio();
-            System.out.println("yes ratio " + result.getName() + ": " + yesRatio);
             if (yesRatio > 0.50) {
 //                color = "#00FF00";
                 color = "#679146";
