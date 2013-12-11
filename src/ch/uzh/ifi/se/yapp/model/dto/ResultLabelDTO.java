@@ -78,14 +78,14 @@ public class ResultLabelDTO
     }
 
     public double getComputedParticipationRation() {
-        if (mTotalEligibleCount == 0) {
+        if (mTotalEligibleCount != 0) {
             return mDeliveredCount / (double) mTotalEligibleCount;
         }
         return 0d;
     }
 
     public double getComputedYesRatio() {
-        if ((mYesCount + mNoCount) == 0) {
+        if ((mYesCount + mNoCount) != 0) {
             return mYesCount / (double) (mYesCount + mNoCount);
         }
         return 0d;
