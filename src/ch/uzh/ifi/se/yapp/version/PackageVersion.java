@@ -26,7 +26,7 @@ package ch.uzh.ifi.se.yapp.version;
  *
  * @author auto-generated
  * **** NEVER CHANGE THE FOLLOWING LINE ****
- * @version 4.4.0
+ * @version 0.1.0
  */
 public final class PackageVersion {
 
@@ -55,7 +55,7 @@ public final class PackageVersion {
      * @return String The package version.
      */
     public static String getPackageVersion() {
-        return PACKAGE_NAME + " V" + VERSION + " [" + BUILD_DATE + "]";
+        return PACKAGE_NAME + " v" + VERSION + " [" + BUILD_DATE + "]";
     }
 
     /**
