@@ -21,13 +21,9 @@ package ch.uzh.ifi.se.yapp.facade.gwt.client;
 
 import java.util.List;
 
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.maps.gwt.client.GoogleMap;
-import com.google.maps.gwt.client.GoogleMap.CenterChangedHandler;
 import com.google.maps.gwt.client.LatLng;
 import com.google.maps.gwt.client.MVCArray;
 import com.google.maps.gwt.client.MapOptions;
@@ -35,7 +31,10 @@ import com.google.maps.gwt.client.MapTypeId;
 import com.google.maps.gwt.client.Polygon;
 import com.google.maps.gwt.client.PolygonOptions;
 
+import ch.uzh.ifi.se.yapp.model.dto.CoordinateDTO;
+import ch.uzh.ifi.se.yapp.model.dto.PolygonDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultDTO;
+import ch.uzh.ifi.se.yapp.model.dto.ResultLabelDTO;
 
 
 public class ElectionMapWidget
@@ -44,33 +43,57 @@ public class ElectionMapWidget
     private final SimplePanel mPanel;
     private final GoogleMap   mMap;
 
-    private boolean           mCenterChanged;
-
 
     public ElectionMapWidget(List<ResultDTO> pResults) {
         mPanel = new SimplePanel();
-//        mMainPanel.add(map);
 
+        // Create map
+        MapOptions mapOpt = MapOptions.create();
+        mapOpt.setZoom(8.0);
+        mapOpt.setMinZoom(7.0);
+        mapOpt.setCenter(HTMLConst.CH_CENTRE);
+        mapOpt.setMapTypeId(MapTypeId.ROADMAP);
+        mMap = GoogleMap.create(mPanel.getElement(), mapOpt);
 
-//        Window.r
-        mPanel.setSize("100%", "100%");
+        // Process each result
+        for (ResultDTO result : pResults) {
+            ResultLabelDTO resultLabel = result.getLabel();
+            PolygonOptions polygonOpt = PolygonOptions.create();
 
-        MapOptions myOptions = MapOptions.create();
-        myOptions.setZoom(8.0);
-        myOptions.setCenter(HTMLConst.CH_CENTRE);
-        myOptions.setMapTypeId(MapTypeId.ROADMAP);
-        mMap = GoogleMap.create(mPanel.getElement(), myOptions);
-        mMap.addCenterChangedListenerOnce(new CenterChangedHandler() {
-
-            @Override
-            public void handle() {
-                mCenterChanged = true;
+            // Set color
+//            String color = "#FFFF00"; // in case of exactly 50.0 percent!
+            String color = "#E5B721"; // in case of exactly 50.0 percent!
+            double yesRatio = resultLabel.getComputedYesRatio();
+            System.out.println("yes ratio " + result.getName() + ": " + yesRatio);
+            if (yesRatio > 0.50) {
+//                color = "#00FF00";
+                color = "#679146";
+            } else if (yesRatio < 0.50) {
+//                color = "#FF0000";
+                color = "#c3161c";
             }
+            polygonOpt.setFillColor(color);
+            polygonOpt.setFillOpacity(0.35);
+            polygonOpt.setStrokeColor(color);
+            polygonOpt.setStrokeWeight(2);
+            polygonOpt.setStrokeOpacity(0.8);
 
-        });
-        PolygonOptions polyOpts = PolygonOptions.create();
+            // Build paths
+            MVCArray<MVCArray<LatLng>> coords = MVCArray.create();
+            for (PolygonDTO p : result.getBoundaries()) {
+                MVCArray<LatLng> path = MVCArray.create();
+                for (CoordinateDTO c : p.getCoordinates()) {
+                    path.push(LatLng.create(c.getLatitude(), c.getLongitude()));
+                }
+                coords.push(path);
+            }
+            polygonOpt.setPaths(coords);
 
-        MVCArray<MVCArray<LatLng>> coords = MVCArray.create();
+            // Build polygon
+            Polygon polygon = Polygon.create(polygonOpt);
+            polygon.setMap(mMap);
+        }
+
 
 //        for (ResultDTO result : pData.getResults()) {
 //            for (PolygonDTO p : result.getBoundaries()) {
@@ -85,15 +108,10 @@ public class ElectionMapWidget
 //        path.push(LatLng.create(25.774252, -80.190262));
 //        coords.push(path);
 
-        polyOpts.setPaths(coords);
-        polyOpts.setStrokeColor("#FF0000");
-        polyOpts.setStrokeOpacity(0.8);
-        polyOpts.setStrokeWeight(2);
-        polyOpts.setFillColor("#FF0000");
-        polyOpts.setFillOpacity(0.35);
 
-        Polygon asdf = Polygon.create(polyOpts);
-        asdf.setMap(mMap);
+
+//        Polygon asdf = Polygon.create(polyOpts);
+//        asdf.setMap(mMap);
 
 //        MapOptions options = MapOptions.create();
 //        options.setZoom(6);
@@ -130,18 +148,6 @@ public class ElectionMapWidget
 //        markerOptions.setDraggable(true);
 //        Marker start = Marker.create(markerOptions);
 
-        Window.addResizeHandler(new ResizeHandler() {
-
-            @Override
-            public void onResize(ResizeEvent pEvent) {
-                if (!mCenterChanged) {
-                    mMap.setCenter(HTMLConst.CH_CENTRE);
-                }
-            }
-
-        });
-
         initWidget(mPanel);
     }
-
 }

@@ -27,6 +27,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ScriptElement;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -38,6 +40,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -49,12 +52,14 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import ch.uzh.ifi.se.yapp.model.base.AdministrativeUnit;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultLabelDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
+import ch.uzh.ifi.se.yapp.version.PackageVersion;
 
 
 /**
@@ -71,6 +76,7 @@ public class ApplicationBootstrap
     private TextBox                 mTitleInput;
     private TextBox                 mAuthorInput;
     private ListBox                 mVisTypeInput;
+    private ListBox                 mDetailGradeInput;
     private ListBox                 mYearInput;
     private ListBox                 mElectionInput;
     private TextArea                mCommentInput;
@@ -85,37 +91,6 @@ public class ApplicationBootstrap
         mRemoteService = GWT.create(IYappService.class);
     }
 
-    private Widget buildHeader() {
-        HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName(HTMLConst.CSS_HEADER_NAV);
-
-        // Add Brand
-        Anchor brand = new Anchor("YAPP", "/");
-        brand.addStyleName(HTMLConst.CSS_HEADER_BRAND);
-        panel.add(brand);
-
-        // Add navigation
-//        Anchor newVis = new Anchor();
-//        Anchor remVis = new Anchor();
-//        Anchor shareGP;
-//        Anchor shareMail;
-
-        return panel;
-    }
-
-    private Widget buildFooter() {
-        HorizontalPanel panel = new HorizontalPanel();
-        panel.addStyleName(HTMLConst.CSS_FOOTER);
-
-        panel.setHorizontalAlignment(Label.ALIGN_CENTER);
-
-        Label l = new Label("© 2013-2014 Imperial Troops");
-        l.addStyleName(HTMLConst.CSS_FOOTER_LABEL);
-
-        panel.add(l);
-
-        return l;
-    }
 
     @Override
     public void onModuleLoad() {
@@ -123,7 +98,7 @@ public class ApplicationBootstrap
         RootLayoutPanel rlp = RootLayoutPanel.get();
 
         mMainPanel.addNorth(buildHeader(), 50d);
-        mMainPanel.addSouth(buildFooter(), 20d);
+        mMainPanel.addSouth(buildFooter(), 25d);
         mMainPanel.add(mContentPanel);
 
         rlp.add(mMainPanel);
@@ -169,6 +144,39 @@ public class ApplicationBootstrap
     }
 
 
+    private Widget buildHeader() {
+        FlowPanel panel = new FlowPanel();
+        panel.addStyleName(HTMLConst.CSS_HEADER_NAV);
+
+        // Add Brand
+        Anchor brand = new Anchor("YAPP", "/");
+        brand.setTabIndex(-1);
+        brand.addStyleName(HTMLConst.CSS_HEADER_BRAND);
+        panel.add(brand);
+
+        // Add navigation
+//        Anchor newVis = new Anchor();
+//        Anchor remVis = new Anchor();
+//        Anchor shareGP;
+//        Anchor shareMail;
+
+        return panel;
+    }
+
+    private Widget buildFooter() {
+        HorizontalPanel panel = new HorizontalPanel();
+        panel.addStyleName(HTMLConst.CSS_FOOTER);
+
+        panel.setHorizontalAlignment(Label.ALIGN_CENTER);
+
+        Label l = new Label("© 2013-2014 Imperial Troops ― " + PackageVersion.getPackageVersion());
+        l.addStyleName(HTMLConst.CSS_FOOTER_LABEL);
+
+        panel.add(l);
+
+        return l;
+    }
+
     private void buildCreateMask(final ElectionDTO[] pData) {
         mContentPanel.clear();
 
@@ -183,49 +191,65 @@ public class ApplicationBootstrap
         };
 
         // Create title
-        HTML heading = new HTML("<h1>Visualisierungsdaten</h1><p>Bitte geben Sie die gewünschten Einstellungen zu Ihrer persönlichen Visualisierung ein.</p>");
-        heading.addStyleName(HTMLConst.CSS_HEADING);
+        HeadingWidget heading = new HeadingWidget("Visualisierungsdaten", "Bitte geben Sie die gewünschten Einstellungen zu Ihrer persönlichen Visualisierung ein.");
         mContentPanel.addNorth(heading, 125);
 
-        // Create huge panel
+        // Create form panel
         VerticalPanel inputFormPanel = new VerticalPanel();
-        mContentPanel.
+        inputFormPanel.addStyleName(HTMLConst.CSS_CONTAINER);
+        mContentPanel.add(inputFormPanel);
 
         // title
-        HorizontalPanel panelTitle = new HorizontalPanel();
-        mContentPanel.add(panelTitle);
+        HorizontalPanel titlePanel = new HorizontalPanel();
+        inputFormPanel.add(titlePanel);
 
-        addFormLabel(panelTitle, "Titel");
+        addFormLabel(titlePanel, "Titel");
         mTitleInput = new TextBox();
-        panelTitle.add(mTitleInput);
+        mTitleInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        titlePanel.add(mTitleInput);
         mTitleInput.addKeyDownHandler(enterHandler);
 
         // author
-        HorizontalPanel panelAuthor = new HorizontalPanel();
-        mContentPanel.add(panelAuthor);
+        HorizontalPanel authorPanel = new HorizontalPanel();
+        inputFormPanel.add(authorPanel);
 
-        addFormLabel(panelAuthor, "Autor");
+        addFormLabel(authorPanel, "Autor");
         mAuthorInput = new TextBox();
-        panelAuthor.add(mAuthorInput);
+        mAuthorInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        authorPanel.add(mAuthorInput);
         mAuthorInput.addKeyDownHandler(enterHandler);
 
         // type
-        HorizontalPanel panelType = new HorizontalPanel();
-        mContentPanel.add(panelType);
+        HorizontalPanel visTypePanel = new HorizontalPanel();
+        inputFormPanel.add(visTypePanel);
 
-        addFormLabel(panelType, "Visualisierungstyp");
+        addFormLabel(visTypePanel, "Visualisierungstyp");
         mVisTypeInput = new ListBox();
-        panelType.add(mVisTypeInput);
+        mVisTypeInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        visTypePanel.add(mVisTypeInput);
         mVisTypeInput.addKeyDownHandler(enterHandler);
         mVisTypeInput.addItem("Graphische Darstellung", VisualizationType.MAP.name());
         mVisTypeInput.addItem("Tabellarische Darstellung", VisualizationType.TABLE.name());
 
+        // detail grade
+        HorizontalPanel detailGradePanel = new HorizontalPanel();
+        inputFormPanel.add(detailGradePanel);
+
+        addFormLabel(detailGradePanel, "Detaillierungsgrad");
+        mDetailGradeInput = new ListBox();
+        mDetailGradeInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        detailGradePanel.add(mDetailGradeInput);
+        mDetailGradeInput.addKeyDownHandler(enterHandler);
+        mDetailGradeInput.addItem("Kanton", AdministrativeUnit.CANTON.name());
+        mDetailGradeInput.addItem("Bezirk", AdministrativeUnit.DISTRICT.name());
+
         // year
         HorizontalPanel panelYear = new HorizontalPanel();
-        mContentPanel.add(panelYear);
+        inputFormPanel.add(panelYear);
 
         addFormLabel(panelYear, "Jahr");
         mYearInput = new ListBox();
+        mYearInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
         panelYear.add(mYearInput);
         mYearInput.addKeyDownHandler(enterHandler);
         mYearInput.addItem(""); // empty item
@@ -248,35 +272,41 @@ public class ApplicationBootstrap
                         }
                     }
                 }
+
+                mElectionInput.setEnabled(mElectionInput.getItemCount() > 0);
+                if (mElectionInput.isEnabled()) {
+                    mElectionInput.setFocus(true);
+                }
             }
 
         });
 
         // election
         HorizontalPanel panelElection = new HorizontalPanel();
-        mContentPanel.add(panelElection);
+        inputFormPanel.add(panelElection);
 
         addFormLabel(panelElection, "Abstimmung");
         mElectionInput = new ListBox();
+        mElectionInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
         panelElection.add(mElectionInput);
+        mElectionInput.setEnabled(false); // Initial state
         mElectionInput.addKeyDownHandler(enterHandler);
 
         // Comment
-        HorizontalPanel panelCommentTitle = new HorizontalPanel();
-        mContentPanel.add(panelCommentTitle);
-        addFormLabel(panelCommentTitle, "Kommentar");
-
-        HorizontalPanel panelComment = new HorizontalPanel();
-        mContentPanel.add(panelComment);
+        HorizontalPanel commentPanel = new HorizontalPanel();
+        inputFormPanel.add(commentPanel);
+        addFormLabel(commentPanel, "Kommentar");
         mCommentInput = new TextArea();
-        panelComment.add(mCommentInput);
+        mCommentInput.addStyleName(HTMLConst.CSS_FORM_TEXTAREA);
+        commentPanel.add(mCommentInput);
 
         // Save button
-        HorizontalPanel panelSave = new HorizontalPanel();
-        mContentPanel.add(panelSave);
+        HorizontalPanel savePanel = new HorizontalPanel();
+        inputFormPanel.add(savePanel);
 
         mSaveButton = new Button("Speichern");
-        panelSave.add(mSaveButton);
+        mSaveButton.addStyleName(HTMLConst.CSS_BUTTON_PRIMARY);
+        savePanel.add(mSaveButton);
         mSaveButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -290,24 +320,14 @@ public class ApplicationBootstrap
     }
 
     private void buildVisualizeMask(final VisualisationDTO pData) {
-        mMainPanel.clear();
-//        mMainPanel.setSize("100%", "100%");
+        mContentPanel.clear();
 
-        // heading
-        HorizontalPanel panelHeading = new HorizontalPanel();
-        mMainPanel.add(panelHeading);
+        // Create title
+        HeadingWidget heading = new HeadingWidget(pData.getTitle() + " von " + pData.getAuthor(), pData.getElection().getTitle());
+        mContentPanel.addNorth(heading, 125);
 
-        panelHeading.add(new HTML("<h1>" + pData.getTitle() + "</h1>"));
-        panelHeading.add(new HTML("<small>von " + pData.getAuthor() + "</small>"));
-
-        // info
-        HorizontalPanel panelInfo = new HorizontalPanel();
-        mMainPanel.add(panelInfo);
-
-        panelInfo.add(new HTML("<p>Abstimmung: " + pData.getElection().getTitle() + "</p>"));
-
-        // show table
         if (pData.getType() == VisualizationType.TABLE) {
+            // show table
             FlexTable table = new FlexTable();
             table.setText(0, 0, "Bezirk");
             table.setText(0, 1, "Ja-Stimmen");
@@ -332,30 +352,29 @@ public class ApplicationBootstrap
                 table.setText(rowIdx, 7, Double.toString(label.getComputedParticipationRation()) + "%");
                 rowIdx++;
             }
-            mMainPanel.add(table);
+            mContentPanel.add(table);
         } else { // Graphical
             ElectionMapWidget map = new ElectionMapWidget(pData.getResults());
-            map.setHeight("100%");
-            mMainPanel.add(map);
+            mContentPanel.add(map);
         }
-
-        HorizontalPanel panelActions = new HorizontalPanel();
-        // Delete button
-        mDeleteButton = new Button("Löschen");
-        mDeleteButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent pEvent) {
-                removeData(pData.getId());
-            }
-
-        });
-
-        panelActions.add(mDeleteButton); // Delete Button
-        drawPlusOne(panelActions);
-        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link: "
-                + getUrl() + "'>Share by Email</a>"));
-        mMainPanel.add(panelActions);
+//
+//        HorizontalPanel panelActions = new HorizontalPanel();
+//        // Delete button
+//        mDeleteButton = new Button("Löschen");
+//        mDeleteButton.addClickHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent pEvent) {
+//                removeData(pData.getId());
+//            }
+//
+//        });
+//
+//        panelActions.add(mDeleteButton); // Delete Button
+//        drawPlusOne(panelActions);
+//        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link: "
+//                + getUrl() + "'>Share by Email</a>"));
+//        mMainPanel.add(panelActions);
 
     }
 
@@ -385,43 +404,64 @@ public class ApplicationBootstrap
         String title = mTitleInput.getValue();
         String author = mAuthorInput.getValue();
         String year = mYearInput.getValue(mYearInput.getSelectedIndex());
-        String electionId = mElectionInput.getValue(mElectionInput.getSelectedIndex());
+        String electionId = mElectionInput.getSelectedIndex() < 0 ? null : mElectionInput.getValue(mElectionInput.getSelectedIndex());
         VisualizationType visType = VisualizationType.valueOf(mVisTypeInput.getValue(mVisTypeInput.getSelectedIndex()));
+        AdministrativeUnit admUnit = AdministrativeUnit.valueOf(mDetailGradeInput.getValue(mDetailGradeInput.getSelectedIndex()));
         String comment = mCommentInput.getValue();
 
         // validate
+        boolean valid = true;
         if (title.isEmpty()) {
-            mTitleInput.setFocus(true);
             mTitleInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mTitleInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mTitleInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
 
         if (author.isEmpty()) {
-            mAuthorInput.setFocus(true);
             mAuthorInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mAuthorInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mAuthorInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
 
+        if (admUnit == null) {
+            mDetailGradeInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            mSaveButton.setEnabled(true);
+            if (valid) {
+                mDetailGradeInput.setFocus(true);
+                valid = false;
+            }
+        } else {
+            mDetailGradeInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
         if (visType == null) {
-            mVisTypeInput.setFocus(true);
             mVisTypeInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mVisTypeInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mVisTypeInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
 
         if ((year == null) || year.isEmpty()) {
-            mYearInput.setFocus(true);
             mYearInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mYearInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mYearInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
@@ -429,10 +469,16 @@ public class ApplicationBootstrap
         if ((electionId == null) || electionId.isEmpty()) {
             mElectionInput.setFocus(true);
             mElectionInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-            mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mSaveButton.setEnabled(true);
+                valid = false;
+            }
         } else {
             mElectionInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
+        if (!valid) {
+            return;
         }
 
         // Submit

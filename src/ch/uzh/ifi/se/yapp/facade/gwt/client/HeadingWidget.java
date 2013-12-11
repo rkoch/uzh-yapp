@@ -19,29 +19,19 @@
  */
 package ch.uzh.ifi.se.yapp.facade.gwt.client;
 
-import com.google.maps.gwt.client.LatLng;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 
 
-public interface HTMLConst {
+public class HeadingWidget
+        extends Composite {
 
-    LatLng CH_CENTRE          = LatLng.create(46.801111111111105, 8.226666666666667);
+    public HeadingWidget(String pTitle, String pSub) {
+        HTML heading = new HTML("<h1>" + pTitle + "</h1><p>" + pSub + "</p>");
+        heading.addStyleName(HTMLConst.CSS_HEADING);
+        heading.addStyleName(HTMLConst.CSS_CONTAINER);
 
-    String CSS_HEADER_NAV     = "yapp-div-header";
-    String CSS_FOOTER         = "yapp-div-footer";
-
-    String CSS_HEADER_BRAND   = "yapp-cont-header-brand";
-
-    String CSS_FOOTER_LABEL   = "yapp-cont-footer-label";
-
-    String CSS_CONTAINER      = "yapp-container";
-    String CSS_HEADING        = "yapp-cont-main-heading";
-
-    String CSS_FORM_LABEL     = "yapp-cont-main-form-label";
-    String CSS_FORM_INPUT     = "yapp-cont-main-form-input";
-    String CSS_FORM_TEXTAREA  = "yapp-cont-main-form-textarea";
-
-    String CSS_FORM_ERROR     = "yapp-cont-main-form-error";
-
-    String CSS_BUTTON_PRIMARY = "yapp-cont-main-btn-primary";
+        initWidget(heading);
+    }
 
 }

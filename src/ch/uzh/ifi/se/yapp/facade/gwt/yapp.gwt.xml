@@ -30,6 +30,7 @@
   <source path='shared'/>
   
   <inherits name='ch.uzh.ifi.se.yapp.model.dto'/>
+  <inherits name='ch.uzh.ifi.se.yapp.version.pkg-version'/>
 
   <!-- RPC Interfaces -->
   <servlet path='/yapp/api' class='ch.uzh.ifi.se.yapp.facade.gwt.server.YappServiceImpl'/>
