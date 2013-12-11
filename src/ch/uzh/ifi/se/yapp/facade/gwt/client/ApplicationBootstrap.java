@@ -26,8 +26,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ScriptElement;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -35,22 +34,20 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.maps.gwt.client.GoogleMap;
-import com.google.maps.gwt.client.LatLng;
-import com.google.maps.gwt.client.MapOptions;
-import com.google.maps.gwt.client.MapTypeId;
+import com.google.gwt.user.client.ui.Widget;
 
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
@@ -66,11 +63,10 @@ import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 public class ApplicationBootstrap
         implements EntryPoint {
 
-    private static final LatLng     CH_CENTRE    = LatLng.create(46.801111111111105, 8.226666666666667);
+    private final DockLayoutPanel   mMainPanel;
+    private final DockLayoutPanel   mContentPanel;
 
-    private final VerticalPanel     mMainPanel;
     private final IYappServiceAsync mRemoteService;
-    private final HorizontalPanel   panelActions = new HorizontalPanel();
 
     private TextBox                 mTitleInput;
     private TextBox                 mAuthorInput;
@@ -83,14 +79,56 @@ public class ApplicationBootstrap
 
 
     public ApplicationBootstrap() {
-        mMainPanel = new VerticalPanel();
+        mMainPanel = new DockLayoutPanel(Unit.PX);
+        mContentPanel = new DockLayoutPanel(Unit.PX);
+
         mRemoteService = GWT.create(IYappService.class);
     }
 
+    private Widget buildHeader() {
+        HorizontalPanel panel = new HorizontalPanel();
+        panel.addStyleName(HTMLConst.CSS_HEADER_NAV);
+
+        // Add Brand
+        Anchor brand = new Anchor("YAPP", "/");
+        brand.addStyleName(HTMLConst.CSS_HEADER_BRAND);
+        panel.add(brand);
+
+        // Add navigation
+//        Anchor newVis = new Anchor();
+//        Anchor remVis = new Anchor();
+//        Anchor shareGP;
+//        Anchor shareMail;
+
+        return panel;
+    }
+
+    private Widget buildFooter() {
+        HorizontalPanel panel = new HorizontalPanel();
+        panel.addStyleName(HTMLConst.CSS_FOOTER);
+
+        panel.setHorizontalAlignment(Label.ALIGN_CENTER);
+
+        Label l = new Label("© 2013-2014 Imperial Troops");
+        l.addStyleName(HTMLConst.CSS_FOOTER_LABEL);
+
+        panel.add(l);
+
+        return l;
+    }
 
     @Override
     public void onModuleLoad() {
-        // Get display type (display or create)
+        // Build main layout
+        RootLayoutPanel rlp = RootLayoutPanel.get();
+
+        mMainPanel.addNorth(buildHeader(), 50d);
+        mMainPanel.addSouth(buildFooter(), 20d);
+        mMainPanel.add(mContentPanel);
+
+        rlp.add(mMainPanel);
+
+        // Visualize content
         String id = Window.Location.getParameter("id");
         if (id == null) {
             // We are in creation state
@@ -128,13 +166,11 @@ public class ApplicationBootstrap
 
             });
         }
-
-        RootPanel.get("main-panel").add(mMainPanel);
     }
 
 
     private void buildCreateMask(final ElectionDTO[] pData) {
-        mMainPanel.clear();
+        mContentPanel.clear();
 
         KeyDownHandler enterHandler = new KeyDownHandler() {
 
@@ -146,14 +182,18 @@ public class ApplicationBootstrap
             }
         };
 
-        // heading
-        HorizontalPanel panelHeading = new HorizontalPanel();
-        panelHeading.add(new HTML("<h1>Visualisierung erzeugen</h1>"));
-        mMainPanel.add(panelHeading);
+        // Create title
+        HTML heading = new HTML("<h1>Visualisierungsdaten</h1><p>Bitte geben Sie die gewünschten Einstellungen zu Ihrer persönlichen Visualisierung ein.</p>");
+        heading.addStyleName(HTMLConst.CSS_HEADING);
+        mContentPanel.addNorth(heading, 125);
+
+        // Create huge panel
+        VerticalPanel inputFormPanel = new VerticalPanel();
+        mContentPanel.
 
         // title
         HorizontalPanel panelTitle = new HorizontalPanel();
-        mMainPanel.add(panelTitle);
+        mContentPanel.add(panelTitle);
 
         addFormLabel(panelTitle, "Titel");
         mTitleInput = new TextBox();
@@ -162,7 +202,7 @@ public class ApplicationBootstrap
 
         // author
         HorizontalPanel panelAuthor = new HorizontalPanel();
-        mMainPanel.add(panelAuthor);
+        mContentPanel.add(panelAuthor);
 
         addFormLabel(panelAuthor, "Autor");
         mAuthorInput = new TextBox();
@@ -171,7 +211,7 @@ public class ApplicationBootstrap
 
         // type
         HorizontalPanel panelType = new HorizontalPanel();
-        mMainPanel.add(panelType);
+        mContentPanel.add(panelType);
 
         addFormLabel(panelType, "Visualisierungstyp");
         mVisTypeInput = new ListBox();
@@ -182,7 +222,7 @@ public class ApplicationBootstrap
 
         // year
         HorizontalPanel panelYear = new HorizontalPanel();
-        mMainPanel.add(panelYear);
+        mContentPanel.add(panelYear);
 
         addFormLabel(panelYear, "Jahr");
         mYearInput = new ListBox();
@@ -214,7 +254,7 @@ public class ApplicationBootstrap
 
         // election
         HorizontalPanel panelElection = new HorizontalPanel();
-        mMainPanel.add(panelElection);
+        mContentPanel.add(panelElection);
 
         addFormLabel(panelElection, "Abstimmung");
         mElectionInput = new ListBox();
@@ -223,17 +263,17 @@ public class ApplicationBootstrap
 
         // Comment
         HorizontalPanel panelCommentTitle = new HorizontalPanel();
-        mMainPanel.add(panelCommentTitle);
+        mContentPanel.add(panelCommentTitle);
         addFormLabel(panelCommentTitle, "Kommentar");
 
         HorizontalPanel panelComment = new HorizontalPanel();
-        mMainPanel.add(panelComment);
+        mContentPanel.add(panelComment);
         mCommentInput = new TextArea();
         panelComment.add(mCommentInput);
 
         // Save button
         HorizontalPanel panelSave = new HorizontalPanel();
-        mMainPanel.add(panelSave);
+        mContentPanel.add(panelSave);
 
         mSaveButton = new Button("Speichern");
         panelSave.add(mSaveButton);
@@ -251,7 +291,7 @@ public class ApplicationBootstrap
 
     private void buildVisualizeMask(final VisualisationDTO pData) {
         mMainPanel.clear();
-        mMainPanel.setSize("100%", "100%");
+//        mMainPanel.setSize("100%", "100%");
 
         // heading
         HorizontalPanel panelHeading = new HorizontalPanel();
@@ -294,59 +334,12 @@ public class ApplicationBootstrap
             }
             mMainPanel.add(table);
         } else { // Graphical
-            // TODO rko
-
-            SimplePanel map = new SimplePanel();
+            ElectionMapWidget map = new ElectionMapWidget(pData.getResults());
+            map.setHeight("100%");
             mMainPanel.add(map);
-
-            map.setSize("100%", "500px");
-
-
-
-            MapOptions myOptions = MapOptions.create();
-            myOptions.setZoom(8.0);
-            myOptions.setCenter(CH_CENTRE);
-            myOptions.setMapTypeId(MapTypeId.ROADMAP);
-            GoogleMap.create(map.getElement(), myOptions);
-
-
-//            MapOptions options = MapOptions.create();
-//            options.setZoom(6);
-//            options.setMapTypeId(MapTypeId.ROADMAP);
-//            options.setDraggable(true);
-//            options.setMapTypeControl(true);
-//            options.setScaleControl(true);
-//            options.setScrollwheel(true);
-//
-//            GoogleMap theMap = GoogleMap.create(widg.getElement(), options);
-
-//            options.setCenter(LatLng.create(latCenter, lngCenter));
-
-// https://groups.google.com/forum/#!topic/gwt-google-apis/6SO5kCDqb-k
-            // create a polyline
-//            PolylineOptions polyOpts = PolylineOptions.create();
-//            polyOpts.setStrokeColor("red");
-//            polyOpts.setStrokeOpacity(0.5);
-//            polyOpts.setStrokeWeight(3);
-//            polyOpts.setEditable(true);
-//            Polyline poly = Polyline.create(polyOpts);
-//
-//            //bind the polyline to a line
-//            MVCArray<LatLng> array = MVCArray.create();
-//            Line line = new Line(array);
-//            line.getPath().push(latlng);
-//            poly.setPath(line.getPath());
-//            poly.setMap(map);
-//
-//            //create a marker
-//            MarkerOptions markerOptions = MarkerOptions.create();
-//            markerOptions.setMap(map);
-//            markerOptions.setTitle("Hello World!");
-//            markerOptions.setDraggable(true);
-//            Marker start = Marker.create(markerOptions);
-
-
         }
+
+        HorizontalPanel panelActions = new HorizontalPanel();
         // Delete button
         mDeleteButton = new Button("Löschen");
         mDeleteButton.addClickHandler(new ClickHandler() {
@@ -359,17 +352,17 @@ public class ApplicationBootstrap
         });
 
         panelActions.add(mDeleteButton); // Delete Button
-        drawPlusOne();
+        drawPlusOne(panelActions);
         panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link: "
                 + getUrl() + "'>Share by Email</a>"));
         mMainPanel.add(panelActions);
 
     }
 
-    private void drawPlusOne() {
+    private void drawPlusOne(Panel pPanel) {
         String s = "<g:plusone href=\"http://urltoplusone.com\"></g:plusone>";
         HTML h = new HTML(s);
-        panelActions.add(h);
+        pPanel.add(h);
 
         // You can insert a script tag this way or via your .gwt.xml
         Document doc = Document.get();

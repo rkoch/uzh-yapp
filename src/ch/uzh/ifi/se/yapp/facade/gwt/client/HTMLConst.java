@@ -19,12 +19,26 @@
  */
 package ch.uzh.ifi.se.yapp.facade.gwt.client;
 
+import com.google.maps.gwt.client.LatLng;
+
 
 public interface HTMLConst {
+
+    LatLng CH_CENTRE         = LatLng.create(46.801111111111105, 8.226666666666667);
+
+    String CSS_HEADER_NAV    = "yapp-div-header";
+    String CSS_FOOTER        = "yapp-div-footer";
+
+    String CSS_HEADER_BRAND  = "yapp-cont-header-brand";
+
+    String CSS_FOOTER_LABEL  = "yapp-cont-footer-label";
+
+    String CSS_HEADING       = "yapp-cont-main-heading";
 
     String CSS_FORM_LABEL    = "yapp-form-label";
     String CSS_FORM_INPUT    = "yapp-form-input";
     String CSS_FORM_TEXTAREA = "yapp-form-textarea";
 
     String CSS_FORM_ERROR    = "yapp-form-error";
+
 }

@@ -1,0 +1,64 @@
+body {
+	margin: 0;
+	min-width: 680px;
+}
+
+body, table td, select, button {
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.yapp-div-header {
+	color: #5e5e5e;
+	background: #f8f8f8;
+	border-bottom: 1px solid #e7e7e7;
+	width: 100%;
+	height: 100%;
+/*	padding: 0 20px; */
+}
+
+.yapp-cont-header-brand {
+  color: #5e5e5e;
+  font-size: 26px;
+  line-height: 49px;
+  padding: 0 30px;
+}
+.yapp-cont-header-brand:hover, .yapp-cont-header-brand:focus {
+	text-decoration: none;
+}
+
+.yapp-cont-footer-label {
+	color: #5e5e5e;
+	text-align: center;
+    cursor: default;
+}
+
+.yapp-cont-main-heading {
+    color: #000;
+    background: #eee;
+    padding: 30px 30px;
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: 400;
+    cursor: default;
+}
+
+.yapp-cont-main-heading h1 {
+	margin: 0 0 10px;
+}
+
+.yapp-cont-main-heading p {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 300;
+	cursor: default;
+}
+
+.clearfix:before, .clearfix:after {
+	content: " ";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
