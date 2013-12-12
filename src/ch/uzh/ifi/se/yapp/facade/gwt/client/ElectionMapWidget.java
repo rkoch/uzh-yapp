@@ -61,18 +61,26 @@ public class ElectionMapWidget
             PolygonOptions polygonOpt = PolygonOptions.create();
 
             // Set color
-//            String color = "#FFFF00"; // in case of exactly 50.0 percent!
             String color = "#E5B721"; // in case of exactly 50.0 percent!
             double yesRatio = resultLabel.getComputedYesRatio();
             if (yesRatio > 0.50) {
-//                color = "#00FF00";
-                color = "#679146";
+                color = "#679146"; // green
             } else if (yesRatio < 0.50) {
-//                color = "#FF0000";
-                color = "#c3161c";
+                color = "#c3161c"; // red
             }
+
+            double opacity = 0.35; // default
+
+            if (yesRatio < 0.2 || yesRatio > 0.8) {
+                opacity = 0.80;
+            } else if (yesRatio < 0.3 || yesRatio > 0.7) {
+                opacity = 0.65;
+            } else if (yesRatio < 0.4 || yesRatio > 0.6) {
+                opacity = 0.50;
+            }
+
             polygonOpt.setFillColor(color);
-            polygonOpt.setFillOpacity(0.35);
+            polygonOpt.setFillOpacity(opacity);
             polygonOpt.setStrokeColor(color);
             polygonOpt.setStrokeWeight(2);
             polygonOpt.setStrokeOpacity(0.8);
