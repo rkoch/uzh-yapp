@@ -29,6 +29,7 @@ import ch.uzh.ifi.se.yapp.util.BaseObject;
 public class Polygon
         extends BaseObject {
 
+    private boolean                mInner;
     private final List<Coordinate> mCoordinates;
 
 
@@ -36,6 +37,14 @@ public class Polygon
         mCoordinates = new ArrayList<>();
     }
 
+
+    public boolean isInner() {
+        return mInner;
+    }
+
+    public void setInner(boolean pInner) {
+        mInner = pInner;
+    }
 
     public List<Coordinate> getCoordinates() {
         return Collections.unmodifiableList(mCoordinates);
