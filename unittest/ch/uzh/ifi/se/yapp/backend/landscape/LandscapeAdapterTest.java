@@ -81,6 +81,18 @@ public class LandscapeAdapterTest {
         assertEquals("Test-Bezirk", result.getName());
     }
 
+    @Test
+    public void getDistrictNameById() throws EntityNotFoundException {
+        insertDistrict();
+        mDistrict.setCanton("2");
+        mDistrict.setCanton("Zürich");
+        mDistrict.setId("120");
+        mDistrict.setName("Test-Bezirk2");
+        mLandscapeAdpt.insertDistrict(mDistrict);
+        String result = mLandscapeAdpt.getDistrictIdByName("Test-Bezirk2");
+        assertEquals("120", result);
+    }
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
     @Test

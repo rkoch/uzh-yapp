@@ -38,10 +38,12 @@ public class MemcachedLandscapeAdapter
 
     private final Map<String, District> mDistrictStorage;
     private final Map<String, Canton> mCantonStorage;
+    private final Map<String, String> mDistrictNameStorage;
 
     public MemcachedLandscapeAdapter() {
         mDistrictStorage = new HashMap<>();
         mCantonStorage = new HashMap<>();
+        mDistrictNameStorage = new HashMap<>();
     }
 
     @Override
@@ -59,6 +61,16 @@ public class MemcachedLandscapeAdapter
     }
 
     @Override
+    public String getDistrictIdByName(String pName)
+            throws EntityNotFoundException {
+        String ret = mDistrictNameStorage.get(pName);
+        if(ret == null) {
+            throw new EntityNotFoundException("District " + pName + " not found.");
+        }
+        return ret;
+    }
+
+    @Override
     public List<District> getAllDistricts() {
         List<District> retList = new ArrayList<>();
         for (Map.Entry<String, District> entry : mDistrictStorage.entrySet()) {
@@ -72,7 +84,9 @@ public class MemcachedLandscapeAdapter
     public District insertDistrict(District pDistrict) {
         District tmp = new District(pDistrict);
         String id = pDistrict.getId();
+        String name =pDistrict.getName();
         mDistrictStorage.put(id, tmp);
+        mDistrictNameStorage.put(name, id);
         return tmp;
     }
 

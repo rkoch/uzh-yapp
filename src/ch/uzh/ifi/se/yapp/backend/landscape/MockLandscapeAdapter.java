@@ -49,6 +49,13 @@ public class MockLandscapeAdapter
 
 
     @Override
+    public String getDistrictIdByName(String pName)
+            throws EntityNotFoundException {
+        String ret = new String();
+        return ret;
+    }
+
+    @Override
     public List<District> getAllDistricts() {
         List<District> tmpList = new ArrayList<>();
         /*

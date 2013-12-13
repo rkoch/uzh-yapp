@@ -40,6 +40,16 @@ public interface ILandscapeDataAdapter
     District getDistrictById(String pId)
             throws EntityNotFoundException;
 
+    /** <b>getDistrictIdByName</b>
+     * <br>Description: returns an Id of a district
+     *
+     * @param pName name of district, ("Zürich")
+     * @return districtId, ("100")
+     * @throws EntityNotFoundException
+     */
+    String getDistrictIdByName(String pName)
+            throws EntityNotFoundException;
+
     /**
      * <b>getAllDistricts</b> <br>
      * Description: returns a List with all districts
