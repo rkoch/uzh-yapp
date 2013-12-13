@@ -19,51 +19,155 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.After;
+import org.joda.time.LocalDate;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import ch.uzh.ifi.se.yapp.backend.accif.IGeoDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
+import ch.uzh.ifi.se.yapp.model.geo.GeoBoundary;
+import ch.uzh.ifi.se.yapp.model.landscape.Canton;
+import ch.uzh.ifi.se.yapp.model.landscape.District;
+
 
 
 public class GeoKmlImportTest {
 
-    private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+    private GeoMockAdapter       mAdpt;
+    private LandscapeMockAdapter mAdpt2;
 
 
     @Before
-    public void setUp() {
-        mHelper.setUp();
+    public void setup() {
+        mAdpt = new GeoMockAdapter();
+        mAdpt2 = new LandscapeMockAdapter();
     }
 
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
-    }
 
     @Test
-    public void test()
-            throws IOException {
-
+    public void importTest() {
         try {
+            InputStream is = getClass().getResourceAsStream("geo_bound_district.kml");
+            Assert.assertNotNull(is);
 
-            String[] ids = { "BZ_13.txt", "KT_09.txt" };
-            InputStream districts = getClass().getResourceAsStream(ids[0]);
-            InputStream cantons = getClass().getResourceAsStream(ids[1]);
+            GeoKmlImport imp = new GeoKmlImport(mAdpt, mAdpt2);
+            imp.runImport(is);
 
-            LandscapeImport imp = new LandscapeImport(districts, cantons);
-
-            GeoImport test = new GeoImport(imp);
-
-            test.parseKml(getClass().getResourceAsStream("geo_bound_district.kml"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            Assert.assertEquals(7, mAdpt.mCallCount);
+            GeoBoundary boundary = mAdpt.mImportedBoundaries.get(0);
+            Assert.assertEquals(new LocalDate("2010-01-01"), boundary.getDate());
+            Assert.assertEquals("Aarau", boundary.getId());
+            Assert.assertEquals(1, boundary.getPolygons().size());
+        } catch (Exception pEx) {
+            pEx.printStackTrace();
+            Assert.fail("Should not have thrown an exception");
         }
     }
+
+    private class GeoMockAdapter
+            implements IGeoDataAdapter {
+
+        List<GeoBoundary> mImportedBoundaries;
+        int               mCallCount;
+
+
+        public GeoMockAdapter() {
+            mImportedBoundaries = new ArrayList<>();
+            mCallCount = 0;
+        }
+
+
+        @Override
+        public void insertGeoBoundary(GeoBoundary pGeoBoundary) {
+            mImportedBoundaries.add(pGeoBoundary);
+            mCallCount++;
+        }
+
+        @Override
+        public List<GeoBoundary> getAllGeoBoundary() {
+            // Not relevant
+            return null;
+        }
+
+        @Override
+        public List<GeoBoundary> getAllGeoBoundaryByDate(LocalDate pDate) {
+            // Not relevant
+            return null;
+        }
+
+        @Override
+        public GeoBoundary getGeoBoundaryByDistrictAndDate(String pDistrictId, LocalDate pDate) {
+            // Not relevant
+            return null;
+        }
+
+        @Override
+        public void cleanup() {
+            // Not relevant
+        }
+
+    }
+
+    public class LandscapeMockAdapter
+            implements ILandscapeDataAdapter {
+
+        @Override
+        public String getDistrictIdByName(String pName)
+                throws EntityNotFoundException {
+            return pName;
+        }
+
+        @Override
+        public District getDistrictById(String pId)
+                throws EntityNotFoundException {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public District insertDistrict(District pDistrict) {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public Canton insertCanton(Canton pCanton) {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public List<District> getAllDistricts() {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public Canton getCantonById(String pId)
+                throws EntityNotFoundException {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public List<Canton> getAllCantons() {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public void cleanup() {
+            // not relevant
+        }
+
+    }
+
+
 
 }

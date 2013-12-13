@@ -19,60 +19,94 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import org.junit.After;
+import org.joda.time.LocalDate;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
+import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
+import ch.uzh.ifi.se.yapp.model.election.Election;
 
 
 public class ElectionImportTest {
 
-    private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalTaskQueueTestConfig());
+    private ElectionMockAdapter mAdpt;
 
     @Before
     public void setUp() {
-        mHelper.setUp();
+        mAdpt = new ElectionMockAdapter();
     }
 
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
-    }
 
     @Test
-    public void test()
-            throws IOException {
-
-        File f1 = new File("unittest/ch/uzh/ifi/se/yapp/ctrl/importer/test.csv");
-        System.out.println(f1.exists());
-
-        ElectionImport test = null;
-
+    public void importTest() {
         try {
-            String[] ids = { "BZ_13.txt", "KT_09.txt" };
-            InputStream districts = getClass().getResourceAsStream(ids[0]);
-            InputStream cantons = getClass().getResourceAsStream(ids[1]);
+            InputStream is = getClass().getResourceAsStream("test.csv");
+            Assert.assertNotNull(is);
 
-            LandscapeImport imp = new LandscapeImport(districts, cantons);
+            ElectionImport imp = new ElectionImport(mAdpt);
+            imp.runImport(is);
 
-            test = new ElectionImport(imp);
-            test.importElection(getClass().getResourceAsStream("test.csv"));
-        } catch (NullPointerException e) {
-            System.out.println(e.toString());
+            Assert.assertEquals(1, mAdpt.mCallCount);
+            Election election = mAdpt.mImportedElections.get(0);
+            Assert.assertEquals(new LocalDate("2012-11-25"), election.getDate());
+            Assert.assertEquals("566", election.getId());
+            Assert.assertEquals("Änderung des Tierseuchengesetzes (TSG)", election.getTitle());
+            Assert.assertEquals(12, election.getResults().size());
+        } catch (Exception pEx) {
+            pEx.printStackTrace();
+            Assert.fail("Should not have thrown an exception");
         }
 
-        // test exception(?)
-        try {
-            test.importElection(getClass().getResourceAsStream("notexisting.txt"));
-        } catch (NullPointerException e) {
-            System.out.println(e.toString());
+    }
+
+    private class ElectionMockAdapter
+            implements IElectionDataAdapter {
+
+        List<Election> mImportedElections;
+        int            mCallCount;
+
+        public ElectionMockAdapter() {
+            mImportedElections = new ArrayList<>();
+            mCallCount = 0;
         }
+
+        @Override
+        public void insertElection(Election pElection) {
+            mImportedElections.add(pElection);
+            mCallCount++;
+        }
+
+        @Override
+        public Map<String, Election> listElections() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Election getElectionById(String pId)
+                throws EntityNotFoundException {
+            //not relevant
+            return null;
+        }
+
+        @Override
+        public List<Election> getElectionsByDateRange(LocalDate pDate1, LocalDate pDate2) {
+            //not relevant
+            return null;
+        }
+
+        @Override
+        public void cleanup() {
+            //not relevant
+        }
+
     }
 
 }
