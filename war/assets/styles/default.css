@@ -116,7 +116,7 @@ select.yapp-cont-main-form-input {
 .yapp-cont-main-form-textarea {
 	/* override height */
 	height: 100px;
-	resizable: none;
+	resize: none;
 }
 
 .yapp-cont-main-form-error {
