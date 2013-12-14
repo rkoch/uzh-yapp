@@ -371,10 +371,9 @@ public class ApplicationBootstrap
             table.setText(0, 1, "Ja-Stimmen");
             table.setText(0, 2, "Nein-Stimmen");
             table.setText(0, 3, "Gültige Stimmen");
-            table.setText(0, 4, "Leere Stimmen");
-            table.setText(0, 5, "Anzahl eingegangene Stimmen");
-            table.setText(0, 6, "Anzahl Stimmbürger");
-            table.setText(0, 7, "Stimmbeteiligung");
+            table.setText(0, 4, "Anzahl eingegangene Stimmen");
+            table.setText(0, 5, "Anzahl Stimmbürger");
+            table.setText(0, 6, "Stimmbeteiligung");
 
             int rowIdx = 1;
 
@@ -384,10 +383,9 @@ public class ApplicationBootstrap
                 table.setText(rowIdx, 1, Integer.toString(label.getYesCount()));
                 table.setText(rowIdx, 2, Integer.toString(label.getNoCount()));
                 table.setText(rowIdx, 3, Integer.toString(label.getValidCount()));
-                table.setText(rowIdx, 4, Integer.toString(label.getComputedEmptyCount()));
-                table.setText(rowIdx, 5, Integer.toString(label.getDeliveredCount()));
-                table.setText(rowIdx, 6, Integer.toString(label.getTotalEligibleCount()));
-                table.setText(rowIdx, 7, Double.toString(label.getComputedParticipationRation()) + "%");
+                table.setText(rowIdx, 4, Integer.toString(label.getDeliveredCount()));
+                table.setText(rowIdx, 5, Integer.toString(label.getTotalEligibleCount()));
+                table.setText(rowIdx, 6, Double.toString(label.getComputedParticipationRation()) + "%");
                 rowIdx++;
             }
             mContentPanel.add(table);
