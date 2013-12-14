@@ -19,7 +19,6 @@
  */
 package ch.uzh.ifi.se.yapp.facade.servlet;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +56,7 @@ public class ImportServlet
         LandscapeImport landscapeImporter = new LandscapeImport(BackendAccessorFactory.getLandscapeDataAdapter());
         try {
             landscapeImporter.runImport(cantonStream, districtStream);
-        } catch (IOException pEx) {
+        } catch (Exception pEx) {
             LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during landscape import (ex=%s)", pEx.getMessage()), pEx);
         }
 
@@ -70,7 +69,7 @@ public class ImportServlet
             InputStream is = getClass().getResourceAsStream(geo);
             try {
                 geoTxtImporter.runImport(is);
-            } catch (IOException pEx) {
+            } catch (Exception pEx) {
                 LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo text import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
             }
         }
@@ -80,7 +79,7 @@ public class ImportServlet
 //            InputStream is = getClass().getResourceAsStream(geo);
 //            try {
 //                geoImporter.runImport(is);
-//            } catch (IOException pEx) {
+//            } catch (Exception pEx) {
 //                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo kml import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
 //            }
 //        }
@@ -98,8 +97,7 @@ public class ImportServlet
                 "/ch/uzh/ifi/se/yapp/data/election/election-561-20120617.csv", "/ch/uzh/ifi/se/yapp/data/election/election-562-20120617.csv",
                 "/ch/uzh/ifi/se/yapp/data/election/election-563-20120923.csv", "/ch/uzh/ifi/se/yapp/data/election/election-564-20120922.csv",
                 "/ch/uzh/ifi/se/yapp/data/election/election-565-20120923.csv", "/ch/uzh/ifi/se/yapp/data/election/election-566-20121125.csv",
-                "/ch/uzh/ifi/se/yapp/data/election/election-570-20130609.csv",
-                "/ch/uzh/ifi/se/yapp/data/election/election-571-20130609.csv" };
+                "/ch/uzh/ifi/se/yapp/data/election/election-570-20130609.csv", "/ch/uzh/ifi/se/yapp/data/election/election-571-20130609.csv" };
         ElectionImport electionImporter = new ElectionImport(BackendAccessorFactory.getElectionDataAdapter());
         for (String election : electionFiles) {
             InputStream is = getClass().getResourceAsStream(election);
