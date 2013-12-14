@@ -67,9 +67,23 @@ public class GeoTextImport
             for (int i = 2; i < split.length; i++) {
                 String[] coords = split[i].split("\\s");
                 Polygon p = new Polygon();
+                boolean skip = false;
+                if ((coords.length > 0) && "inner".equalsIgnoreCase(coords[0])) {
+                    p.setInner(true);
+                    skip = true;
+                }
                 for (String co : coords) {
+                    if (skip) {
+                        skip = false;
+                        continue; // skip first if there is an inner text
+                    }
                     int idx = co.indexOf(",");
-                    p.addCoordinateBack(new Coordinate(Double.parseDouble(co.substring(idx + 1)), Double.parseDouble(co.substring(0, idx))));
+                    Coordinate c = new Coordinate(Double.parseDouble(co.substring(idx + 1)), Double.parseDouble(co.substring(0, idx)));
+                    if (p.isInner()) {
+                        p.addCoordinateFront(c);
+                    } else {
+                        p.addCoordinateBack(c);
+                    }
                 }
                 boundary.addPolygon(p);
             }

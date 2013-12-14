@@ -1,0 +1,185 @@
+/* apply a natural box layout model to all elements
+ * http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+ */
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-width: 680px;
+}
+
+body, table td, select, button {
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.yapp-div-header {
+	color: #5e5e5e;
+	background: #f8f8f8;
+	border-bottom: 1px solid #e7e7e7;
+	width: 100%;
+	height: 100%;
+/*	padding: 0 20px; */
+}
+
+.yapp-cont-header-brand {
+  color: #5e5e5e;
+  font-size: 26px;
+  line-height: 49px;
+  padding: 0 30px;
+}
+.yapp-cont-header-brand:hover, .yapp-cont-header-brand:focus {
+	text-decoration: none;
+}
+.yapp-cont-header-brand:visited {
+	color:inherit;
+}
+
+.yapp-cont-header-link {
+	color: #5e5e5e;
+	font-size: 15px;
+	line-height: 49px;
+	height: 49px;
+	margin: 0;
+	padding: 0 15px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.gwt-HTML.yapp-cont-header-link {
+	vertical-align: middle;
+}
+
+.yapp-cont-footer-label {
+	color: #5e5e5e;
+	text-align: center;
+    cursor: default;
+    line-height: 25px;
+    background-color: #f8f8f8;
+    -webkit-box-shadow: inset 0 10px 10px -10px rgba(0,0,0,0.5);
+    box-shadow: inset 0 10px 10px -10px rgba(0,0,0,0.5);
+}
+
+.yapp-container {
+	padding: 20px 30px;
+}
+
+.yapp-cont-main-heading {
+    color: #000;
+    background: #eee;
+    padding: 30px;
+    -webkit-box-shadow: inset 0 -10px 10px -10px rgba(0,0,0,0.5);
+    box-shadow: inset 0 -10px 10px -10px rgba(0,0,0,0.5);
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: 400;
+    cursor: default;
+}
+
+.yapp-cont-main-heading h1 {
+	margin: 0 0 5px;
+}
+
+.yapp-cont-main-heading p {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 300;
+	cursor: default;
+}
+
+.yapp-cont-main-form-input, .yapp-cont-main-form-label {
+   font-size: 15px;
+   margin: 0 0 10px;
+}
+
+.yapp-cont-main-form-label {
+	width: 140px;
+	line-height: 34px;
+	cursor: default;
+}
+
+.yapp-cont-main-form-input, .yapp-cont-main-form-textarea {
+    display: block;
+	width: 450px;
+	font-size: 15px;
+	padding: 6px 12px;
+	height: 34px;
+	cursor: pointer;
+	vertical-align: middle;
+	background-color: #fff;
+	background-image: none;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+input.yapp-cont-main-form-input:focus, .yapp-cont-main-form-textarea:focus {
+	cursor: inherit;
+}
+
+select.yapp-cont-main-form-input {
+	cursor: pointer;
+}
+
+.yapp-cont-main-form-textarea:disabled, .yapp-cont-main-form-input:disabled {
+	cursor: default;
+}
+
+.yapp-cont-main-form-textarea {
+	/* override height */
+	height: 100px;
+	resize: none;
+}
+
+.yapp-cont-main-form-error {
+	border: 1px solid red;
+}
+
+.yapp-cont-main-btn-primary {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 15px;
+    font-weight: 400;
+    /*line-height: @line-height-base;*/
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    white-space: nowrap;
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+}
+
+.yapp-cont-main-btn-primary:hover,
+.yapp-cont-main-btn-primary:focus,
+.yapp-cont-main-btn-primary:active {
+    color: #fff;
+    background-color: #3276b1;
+    border-color: #285e8e;
+    text-decoration: none;
+}
+
+.yapp-cont-main-btn-primary[disabled] {
+	color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    opacity: .65;
+    box-shadow: none;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.clearfix:before, .clearfix:after {
+	content: " ";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}

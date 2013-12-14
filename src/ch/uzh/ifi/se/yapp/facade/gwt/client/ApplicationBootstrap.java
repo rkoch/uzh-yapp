@@ -26,6 +26,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ScriptElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -35,29 +36,30 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.maps.gwt.client.GoogleMap;
-import com.google.maps.gwt.client.LatLng;
-import com.google.maps.gwt.client.MapOptions;
-import com.google.maps.gwt.client.MapTypeId;
+import com.google.gwt.user.client.ui.Widget;
 
+import ch.uzh.ifi.se.yapp.model.base.AdministrativeUnit;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.ElectionDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultDTO;
 import ch.uzh.ifi.se.yapp.model.dto.ResultLabelDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
+import ch.uzh.ifi.se.yapp.version.PackageVersion;
 
 
 /**
@@ -66,33 +68,46 @@ import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 public class ApplicationBootstrap
         implements EntryPoint {
 
-    private static final LatLng     CH_CENTRE    = LatLng.create(46.801111111111105, 8.226666666666667);
+    private final DockLayoutPanel   mMainPanel;
+    private final DockLayoutPanel   mContentPanel;
 
-    private final VerticalPanel     mMainPanel;
     private final IYappServiceAsync mRemoteService;
-    private final HorizontalPanel   panelActions = new HorizontalPanel();
 
     private TextBox                 mTitleInput;
     private TextBox                 mAuthorInput;
     private ListBox                 mVisTypeInput;
+    private ListBox                 mDetailGradeInput;
     private ListBox                 mYearInput;
     private ListBox                 mElectionInput;
     private TextArea                mCommentInput;
     private Button                  mSaveButton;
-    private Button                  mDeleteButton;
+    private Anchor                  mDeleteLink;
+    private Anchor                  mSendMailLink;
+    private HTML                    mGPlusButton;
 
 
     public ApplicationBootstrap() {
-        mMainPanel = new VerticalPanel();
+        mMainPanel = new DockLayoutPanel(Unit.PX);
+        mContentPanel = new DockLayoutPanel(Unit.PX);
+
         mRemoteService = GWT.create(IYappService.class);
     }
 
 
     @Override
     public void onModuleLoad() {
-        // Get display type (display or create)
+        // Build main layout
+        RootLayoutPanel rlp = RootLayoutPanel.get();
+
+        mMainPanel.addNorth(buildHeader(), 50d);
+        mMainPanel.addSouth(buildFooter(), 25d);
+        mMainPanel.add(mContentPanel);
+
+        rlp.add(mMainPanel);
+
+        // Visualize content
         String id = Window.Location.getParameter("id");
-        if (id == null) {
+        if ((id == null) || id.isEmpty()) {
             // We are in creation state
             mRemoteService.getElections(new AsyncCallback<ElectionDTO[]>() {
 
@@ -116,7 +131,7 @@ public class ApplicationBootstrap
                     if (pResult != null) {
                         buildVisualizeMask(pResult);
                     } else {
-                        build404Mask();
+                        buildErrorMask();
                     }
                 }
 
@@ -128,13 +143,79 @@ public class ApplicationBootstrap
 
             });
         }
-
-        RootPanel.get("main-panel").add(mMainPanel);
     }
 
 
+    private Widget buildHeader() {
+        FlowPanel panel = new FlowPanel();
+        panel.addStyleName(HTMLConst.CSS_HEADER_NAV);
+
+        // Add Brand
+        Anchor brand = new Anchor("YAPP", "/");
+        brand.setTabIndex(-1);
+        brand.addStyleName(HTMLConst.CSS_HEADER_BRAND);
+        panel.add(brand);
+
+        // Add navigation
+        mDeleteLink = new Anchor("Visualisierung Löschen");
+        mDeleteLink.addStyleName(HTMLConst.CSS_HEADER_LINK);
+        mDeleteLink.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent pEvent) {
+                String id = Window.Location.getParameter("id");
+                if ((id != null) && !id.isEmpty()) {
+                    removeData(id);
+                }
+            }
+
+        });
+
+        panel.add(mDeleteLink); // Delete Button
+
+        mSendMailLink = new Anchor("Als E-Mail versenden");
+        mSendMailLink.addStyleName(HTMLConst.CSS_HEADER_LINK);
+        panel.add(mSendMailLink);
+
+        drawPlusOne(panel);
+        mGPlusButton.addStyleName(HTMLConst.CSS_HEADER_LINK);
+
+        updateHeader();
+
+        return panel;
+    }
+
+    private void updateHeader() {
+        String id = Window.Location.getParameter("id");
+        if ((id != null) && !id.isEmpty()) {
+            mDeleteLink.setVisible(true);
+            mSendMailLink.setVisible(true);
+            mSendMailLink.setHref(HTMLConst.MAILTO_PFX + getUrl());
+            mGPlusButton.setVisible(true);
+        } else {
+            mDeleteLink.setVisible(false);
+            mSendMailLink.setVisible(false);
+            mGPlusButton.setVisible(false);
+        }
+    }
+
+    private Widget buildFooter() {
+        HorizontalPanel panel = new HorizontalPanel();
+        panel.addStyleName(HTMLConst.CSS_FOOTER);
+
+        panel.setHorizontalAlignment(Label.ALIGN_CENTER);
+
+        Label l = new Label("© 2013-2014 Imperial Troops ― " + PackageVersion.getPackageVersion());
+        l.addStyleName(HTMLConst.CSS_FOOTER_LABEL);
+
+        panel.add(l);
+
+        return l;
+    }
+
     private void buildCreateMask(final ElectionDTO[] pData) {
-        mMainPanel.clear();
+        mContentPanel.clear();
+        updateHeader();
 
         KeyDownHandler enterHandler = new KeyDownHandler() {
 
@@ -146,46 +227,66 @@ public class ApplicationBootstrap
             }
         };
 
-        // heading
-        HorizontalPanel panelHeading = new HorizontalPanel();
-        panelHeading.add(new HTML("<h1>Visualisierung erzeugen</h1>"));
-        mMainPanel.add(panelHeading);
+        // Create title
+        HeadingWidget heading = new HeadingWidget("Visualisierungsdaten", "Bitte geben Sie die gewünschten Einstellungen zu Ihrer persönlichen Visualisierung ein.");
+        mContentPanel.addNorth(heading, 125);
+
+        // Create form panel
+        VerticalPanel inputFormPanel = new VerticalPanel();
+        inputFormPanel.addStyleName(HTMLConst.CSS_CONTAINER);
+        mContentPanel.add(inputFormPanel);
 
         // title
-        HorizontalPanel panelTitle = new HorizontalPanel();
-        mMainPanel.add(panelTitle);
+        HorizontalPanel titlePanel = new HorizontalPanel();
+        inputFormPanel.add(titlePanel);
 
-        addFormLabel(panelTitle, "Titel");
+        addFormLabel(titlePanel, "Titel");
         mTitleInput = new TextBox();
-        panelTitle.add(mTitleInput);
+        mTitleInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        titlePanel.add(mTitleInput);
         mTitleInput.addKeyDownHandler(enterHandler);
 
         // author
-        HorizontalPanel panelAuthor = new HorizontalPanel();
-        mMainPanel.add(panelAuthor);
+        HorizontalPanel authorPanel = new HorizontalPanel();
+        inputFormPanel.add(authorPanel);
 
-        addFormLabel(panelAuthor, "Autor");
+        addFormLabel(authorPanel, "Autor");
         mAuthorInput = new TextBox();
-        panelAuthor.add(mAuthorInput);
+        mAuthorInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        authorPanel.add(mAuthorInput);
         mAuthorInput.addKeyDownHandler(enterHandler);
 
         // type
-        HorizontalPanel panelType = new HorizontalPanel();
-        mMainPanel.add(panelType);
+        HorizontalPanel visTypePanel = new HorizontalPanel();
+        inputFormPanel.add(visTypePanel);
 
-        addFormLabel(panelType, "Visualisierungstyp");
+        addFormLabel(visTypePanel, "Visualisierungstyp");
         mVisTypeInput = new ListBox();
-        panelType.add(mVisTypeInput);
+        mVisTypeInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        visTypePanel.add(mVisTypeInput);
         mVisTypeInput.addKeyDownHandler(enterHandler);
         mVisTypeInput.addItem("Graphische Darstellung", VisualizationType.MAP.name());
         mVisTypeInput.addItem("Tabellarische Darstellung", VisualizationType.TABLE.name());
 
+        // detail grade
+        HorizontalPanel detailGradePanel = new HorizontalPanel();
+        inputFormPanel.add(detailGradePanel);
+
+        addFormLabel(detailGradePanel, "Detaillierungsgrad");
+        mDetailGradeInput = new ListBox();
+        mDetailGradeInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
+        detailGradePanel.add(mDetailGradeInput);
+        mDetailGradeInput.addKeyDownHandler(enterHandler);
+        mDetailGradeInput.addItem("Kanton", AdministrativeUnit.CANTON.name());
+        mDetailGradeInput.addItem("Bezirk", AdministrativeUnit.DISTRICT.name());
+
         // year
         HorizontalPanel panelYear = new HorizontalPanel();
-        mMainPanel.add(panelYear);
+        inputFormPanel.add(panelYear);
 
         addFormLabel(panelYear, "Jahr");
         mYearInput = new ListBox();
+        mYearInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
         panelYear.add(mYearInput);
         mYearInput.addKeyDownHandler(enterHandler);
         mYearInput.addItem(""); // empty item
@@ -208,35 +309,41 @@ public class ApplicationBootstrap
                         }
                     }
                 }
+
+                mElectionInput.setEnabled(mElectionInput.getItemCount() > 0);
+                if (mElectionInput.isEnabled()) {
+                    mElectionInput.setFocus(true);
+                }
             }
 
         });
 
         // election
         HorizontalPanel panelElection = new HorizontalPanel();
-        mMainPanel.add(panelElection);
+        inputFormPanel.add(panelElection);
 
         addFormLabel(panelElection, "Abstimmung");
         mElectionInput = new ListBox();
+        mElectionInput.addStyleName(HTMLConst.CSS_FORM_INPUT);
         panelElection.add(mElectionInput);
+        mElectionInput.setEnabled(false); // Initial state
         mElectionInput.addKeyDownHandler(enterHandler);
 
         // Comment
-        HorizontalPanel panelCommentTitle = new HorizontalPanel();
-        mMainPanel.add(panelCommentTitle);
-        addFormLabel(panelCommentTitle, "Kommentar");
-
-        HorizontalPanel panelComment = new HorizontalPanel();
-        mMainPanel.add(panelComment);
+        HorizontalPanel commentPanel = new HorizontalPanel();
+        inputFormPanel.add(commentPanel);
+        addFormLabel(commentPanel, "Kommentar");
         mCommentInput = new TextArea();
-        panelComment.add(mCommentInput);
+        mCommentInput.addStyleName(HTMLConst.CSS_FORM_TEXTAREA);
+        commentPanel.add(mCommentInput);
 
         // Save button
-        HorizontalPanel panelSave = new HorizontalPanel();
-        mMainPanel.add(panelSave);
+        HorizontalPanel savePanel = new HorizontalPanel();
+        inputFormPanel.add(savePanel);
 
         mSaveButton = new Button("Speichern");
-        panelSave.add(mSaveButton);
+        mSaveButton.addStyleName(HTMLConst.CSS_BUTTON_PRIMARY);
+        savePanel.add(mSaveButton);
         mSaveButton.addClickHandler(new ClickHandler() {
 
             @Override
@@ -250,24 +357,15 @@ public class ApplicationBootstrap
     }
 
     private void buildVisualizeMask(final VisualisationDTO pData) {
-        mMainPanel.clear();
-        mMainPanel.setSize("100%", "100%");
+        mContentPanel.clear();
+        updateHeader();
 
-        // heading
-        HorizontalPanel panelHeading = new HorizontalPanel();
-        mMainPanel.add(panelHeading);
+        // Create title
+        HeadingWidget heading = new HeadingWidget(pData.getTitle() + " von " + pData.getAuthor(), pData.getElection().getTitle());
+        mContentPanel.addNorth(heading, 125);
 
-        panelHeading.add(new HTML("<h1>" + pData.getTitle() + "</h1>"));
-        panelHeading.add(new HTML("<small>von " + pData.getAuthor() + "</small>"));
-
-        // info
-        HorizontalPanel panelInfo = new HorizontalPanel();
-        mMainPanel.add(panelInfo);
-
-        panelInfo.add(new HTML("<p>Abstimmung: " + pData.getElection().getTitle() + "</p>"));
-
-        // show table
         if (pData.getType() == VisualizationType.TABLE) {
+            // show table
             FlexTable table = new FlexTable();
             table.setText(0, 0, "Bezirk");
             table.setText(0, 1, "Ja-Stimmen");
@@ -292,84 +390,36 @@ public class ApplicationBootstrap
                 table.setText(rowIdx, 7, Double.toString(label.getComputedParticipationRation()) + "%");
                 rowIdx++;
             }
-            mMainPanel.add(table);
+            mContentPanel.add(table);
         } else { // Graphical
-            // TODO rko
-
-            SimplePanel map = new SimplePanel();
-            mMainPanel.add(map);
-
-            map.setSize("100%", "500px");
-
-
-
-            MapOptions myOptions = MapOptions.create();
-            myOptions.setZoom(8.0);
-            myOptions.setCenter(CH_CENTRE);
-            myOptions.setMapTypeId(MapTypeId.ROADMAP);
-            GoogleMap.create(map.getElement(), myOptions);
-
-
-//            MapOptions options = MapOptions.create();
-//            options.setZoom(6);
-//            options.setMapTypeId(MapTypeId.ROADMAP);
-//            options.setDraggable(true);
-//            options.setMapTypeControl(true);
-//            options.setScaleControl(true);
-//            options.setScrollwheel(true);
-//
-//            GoogleMap theMap = GoogleMap.create(widg.getElement(), options);
-
-//            options.setCenter(LatLng.create(latCenter, lngCenter));
-
-// https://groups.google.com/forum/#!topic/gwt-google-apis/6SO5kCDqb-k
-            // create a polyline
-//            PolylineOptions polyOpts = PolylineOptions.create();
-//            polyOpts.setStrokeColor("red");
-//            polyOpts.setStrokeOpacity(0.5);
-//            polyOpts.setStrokeWeight(3);
-//            polyOpts.setEditable(true);
-//            Polyline poly = Polyline.create(polyOpts);
-//
-//            //bind the polyline to a line
-//            MVCArray<LatLng> array = MVCArray.create();
-//            Line line = new Line(array);
-//            line.getPath().push(latlng);
-//            poly.setPath(line.getPath());
-//            poly.setMap(map);
-//
-//            //create a marker
-//            MarkerOptions markerOptions = MarkerOptions.create();
-//            markerOptions.setMap(map);
-//            markerOptions.setTitle("Hello World!");
-//            markerOptions.setDraggable(true);
-//            Marker start = Marker.create(markerOptions);
-
-
+            ElectionMapWidget map = new ElectionMapWidget(pData.getResults());
+            mContentPanel.add(map);
         }
-        // Delete button
-        mDeleteButton = new Button("Löschen");
-        mDeleteButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent pEvent) {
-                removeData(pData.getId());
-            }
-
-        });
-
-        panelActions.add(mDeleteButton); // Delete Button
-        drawPlusOne();
-        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link: "
-                + getUrl() + "'>Share by Email</a>"));
-        mMainPanel.add(panelActions);
+//
+//        HorizontalPanel panelActions = new HorizontalPanel();
+//        // Delete button
+//        mDeleteButton = new Button("Löschen");
+//        mDeleteButton.addClickHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent pEvent) {
+//                removeData(pData.getId());
+//            }
+//
+//        });
+//
+//        panelActions.add(mDeleteButton); // Delete Button
+//        drawPlusOne(panelActions);
+//        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link: "
+//                + getUrl() + "'>Share by Email</a>"));
+//        mMainPanel.add(panelActions);
 
     }
 
-    private void drawPlusOne() {
+    private void drawPlusOne(Panel pPanel) {
         String s = "<g:plusone href=\"http://urltoplusone.com\"></g:plusone>";
-        HTML h = new HTML(s);
-        panelActions.add(h);
+        mGPlusButton = new HTML(s);
+        pPanel.add(mGPlusButton);
 
         // You can insert a script tag this way or via your .gwt.xml
         Document doc = Document.get();
@@ -392,43 +442,64 @@ public class ApplicationBootstrap
         String title = mTitleInput.getValue();
         String author = mAuthorInput.getValue();
         String year = mYearInput.getValue(mYearInput.getSelectedIndex());
-        String electionId = mElectionInput.getValue(mElectionInput.getSelectedIndex());
+        String electionId = mElectionInput.getSelectedIndex() < 0 ? null : mElectionInput.getValue(mElectionInput.getSelectedIndex());
         VisualizationType visType = VisualizationType.valueOf(mVisTypeInput.getValue(mVisTypeInput.getSelectedIndex()));
+        AdministrativeUnit admUnit = AdministrativeUnit.valueOf(mDetailGradeInput.getValue(mDetailGradeInput.getSelectedIndex()));
         String comment = mCommentInput.getValue();
 
         // validate
+        boolean valid = true;
         if (title.isEmpty()) {
-            mTitleInput.setFocus(true);
             mTitleInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mTitleInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mTitleInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
 
         if (author.isEmpty()) {
-            mAuthorInput.setFocus(true);
             mAuthorInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mAuthorInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mAuthorInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
 
+        if (admUnit == null) {
+            mDetailGradeInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
+            mSaveButton.setEnabled(true);
+            if (valid) {
+                mDetailGradeInput.setFocus(true);
+                valid = false;
+            }
+        } else {
+            mDetailGradeInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
         if (visType == null) {
-            mVisTypeInput.setFocus(true);
             mVisTypeInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mVisTypeInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mVisTypeInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
 
         if ((year == null) || year.isEmpty()) {
-            mYearInput.setFocus(true);
             mYearInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
             mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mYearInput.setFocus(true);
+                valid = false;
+            }
         } else {
             mYearInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
         }
@@ -436,10 +507,16 @@ public class ApplicationBootstrap
         if ((electionId == null) || electionId.isEmpty()) {
             mElectionInput.setFocus(true);
             mElectionInput.addStyleName(HTMLConst.CSS_FORM_ERROR);
-            mSaveButton.setEnabled(true);
-            return;
+            if (valid) {
+                mSaveButton.setEnabled(true);
+                valid = false;
+            }
         } else {
             mElectionInput.removeStyleName(HTMLConst.CSS_FORM_ERROR);
+        }
+
+        if (!valid) {
+            return;
         }
 
         // Submit
@@ -450,6 +527,7 @@ public class ApplicationBootstrap
         dto.setElectionId(electionId);
         dto.setComment(comment);
         dto.setVisualizationType(visType);
+        dto.setDetail(admUnit);
 
         mRemoteService.createVisualisation(dto, new AsyncCallback<VisualisationDTO>() {
 
@@ -460,23 +538,24 @@ public class ApplicationBootstrap
                     String newUrl = Window.Location.createUrlBuilder().setParameter("id", pResult.getId()).buildString();
                     Window.Location.assign(newUrl);
                 } else {
-                    build404Mask();
+                    buildErrorMask();
                 }
             }
 
             @Override
             public void onFailure(Throwable pCaught) {
+                buildErrorMask();
                 // TODO Display error message
-                Window.alert("There was an error on the server: " + pCaught.getMessage());
+//                Window.alert("There was an error on the server: " + pCaught.getMessage());
                 // Ensure that the button is enabled again on leaving
-                mSaveButton.setEnabled(true);
+//                mSaveButton.setEnabled(true);
             }
 
         });
     }
 
     private void removeData(String pId) {
-        mDeleteButton.setEnabled(false);
+        mDeleteLink.setEnabled(false);
 
         mRemoteService.removeVisualisation(pId, new AsyncCallback<Void>() {
 
@@ -491,13 +570,13 @@ public class ApplicationBootstrap
                 // TODO Display error message
                 Window.alert("Could not remove visualisation: " + pCaught.getMessage());
                 // Ensure that the button is enabled again on leaving
-                mDeleteButton.setEnabled(true);
+                mDeleteLink.setEnabled(true);
             }
 
         });
     }
 
-    private void build404Mask() {
+    private void buildErrorMask() {
         mMainPanel.clear();
         Window.alert("Visualization not found or any other error occured.");
     }
