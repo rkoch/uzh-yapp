@@ -19,7 +19,6 @@
  */
 package ch.uzh.ifi.se.yapp.facade.servlet;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +28,7 @@ import javax.servlet.ServletContextListener;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.ctrl.importer.ElectionImport;
+import ch.uzh.ifi.se.yapp.ctrl.importer.GeoKmlImport;
 import ch.uzh.ifi.se.yapp.ctrl.importer.GeoTextImport;
 import ch.uzh.ifi.se.yapp.ctrl.importer.LandscapeImport;
 import ch.uzh.ifi.se.yapp.util.BaseObject;
@@ -57,7 +57,7 @@ public class ImportServlet
         LandscapeImport landscapeImporter = new LandscapeImport(BackendAccessorFactory.getLandscapeDataAdapter());
         try {
             landscapeImporter.runImport(cantonStream, districtStream);
-        } catch (IOException pEx) {
+        } catch (Exception pEx) {
             LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during landscape import (ex=%s)", pEx.getMessage()), pEx);
         }
 
@@ -70,29 +70,41 @@ public class ImportServlet
             InputStream is = getClass().getResourceAsStream(geo);
             try {
                 geoTxtImporter.runImport(is);
-            } catch (IOException pEx) {
+            } catch (Exception pEx) {
                 LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo text import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
             }
         }
 
-//        GeoKmlImport geoImporter = new GeoKmlImport(BackendAccessorFactory.getGeoDataAdapter());
-//        for (String geo : geoKmlFiles) {
-//            InputStream is = getClass().getResourceAsStream(geo);
-//            try {
-//                geoImporter.runImport(is);
-//            } catch (IOException pEx) {
-//                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo kml import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
-//            }
-//        }
+        GeoKmlImport geoImporter = new GeoKmlImport(BackendAccessorFactory.getGeoDataAdapter(), BackendAccessorFactory.getLandscapeDataAdapter());
+        for (String geo : geoKmlFiles) {
+            InputStream is = getClass().getResourceAsStream(geo);
+            try {
+                geoImporter.runImport(is);
+            } catch (Exception pEx) {
+                LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during geo kml import of %s (ex=%s)", geo, pEx.getMessage()), pEx);
+            }
+        }
 
         // Import elections
-        String[] electionFiles = { "/ch/uzh/ifi/se/yapp/data/election/election-554-20110213.csv", "/ch/uzh/ifi/se/yapp/data/election/election-556-20121125.csv" };
+        String[] electionFiles = { "/ch/uzh/ifi/se/yapp/data/election/election-540-20090208.csv", "/ch/uzh/ifi/se/yapp/data/election/election-541-20090517.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-542-20090517.csv", "/ch/uzh/ifi/se/yapp/data/election/election-543-20090927.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-544-20090927.csv", "/ch/uzh/ifi/se/yapp/data/election/election-545-20091129.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-546-20091129.csv", "/ch/uzh/ifi/se/yapp/data/election/election-547-20091129.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-548-20100307.csv", "/ch/uzh/ifi/se/yapp/data/election/election-549-20100307.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-550-20100307.csv", "/ch/uzh/ifi/se/yapp/data/election/election-551-20100926.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-552.1-20101128.csv", "/ch/uzh/ifi/se/yapp/data/election/election-552.2-20101128.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-553-20101128.csv", "/ch/uzh/ifi/se/yapp/data/election/election-554-20110213.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-556-20121125.csv", "/ch/uzh/ifi/se/yapp/data/election/election-560-20120617.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-561-20120617.csv", "/ch/uzh/ifi/se/yapp/data/election/election-562-20120617.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-563-20120923.csv", "/ch/uzh/ifi/se/yapp/data/election/election-564-20120922.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-565-20120923.csv", "/ch/uzh/ifi/se/yapp/data/election/election-566-20121125.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-570-20130609.csv", "/ch/uzh/ifi/se/yapp/data/election/election-571-20130609.csv" };
         ElectionImport electionImporter = new ElectionImport(BackendAccessorFactory.getElectionDataAdapter());
         for (String election : electionFiles) {
             InputStream is = getClass().getResourceAsStream(election);
             try {
                 electionImporter.runImport(is);
-            } catch (IOException pEx) {
+            } catch (Exception pEx) {
                 LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during election import of %s (ex=%s)", election, pEx.getMessage()), pEx);
             }
         }

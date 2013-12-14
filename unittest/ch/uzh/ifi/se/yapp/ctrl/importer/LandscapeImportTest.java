@@ -19,52 +19,122 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.importer;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
-
+import ch.uzh.ifi.se.yapp.backend.accif.ILandscapeDataAdapter;
+import ch.uzh.ifi.se.yapp.backend.base.EntityNotFoundException;
+import ch.uzh.ifi.se.yapp.model.landscape.Canton;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 
 public class LandscapeImportTest {
 
-    private final LocalServiceTestHelper mHelper = new LocalServiceTestHelper(new LocalTaskQueueTestConfig());
+    private LandscapeMockAdapter mAdpt;
 
     @Before
     public void setUp() {
-        mHelper.setUp();
-    }
-
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
+        mAdpt = new LandscapeMockAdapter();
     }
 
     @Test
-    public void test()
-            throws IOException {
-        String[] ids = { "BZ_13.txt", "KT_09.txt" };
-        InputStream district = getClass().getResourceAsStream(ids[0]);
-        InputStream cantons = getClass().getResourceAsStream(ids[1]);
+    public void test() {
+        try {
+            InputStream is = getClass().getResourceAsStream("BZ_13.txt");
+            InputStream is2 = getClass().getResourceAsStream("KT_09.txt");
+            Assert.assertNotNull(is);
+            Assert.assertNotNull(is2);
 
-        LandscapeImport test = new LandscapeImport(district, cantons);
+            LandscapeImport imp = new LandscapeImport(mAdpt);
+            imp.runImport(is2, is);
 
-        Map<String, District> districts = test.getDistricts();
-        Map<String, String> invertedDistricts = test.getInvertedDistricts();
+            Assert.assertEquals(147, mAdpt.mDistrictCallCount);
+            Assert.assertEquals(26, mAdpt.mCantonCallCount);
+            Assert.assertEquals("Martigny", mAdpt.mDistrictStorage.get("2307").getName());
+            Assert.assertEquals("1004", mAdpt.mDistrictNameStorage.get("La Sarine"));
+            Assert.assertEquals("Schaffhausen", mAdpt.mCantonStorage.get("14").getName());
+            Assert.assertEquals("5" ,mAdpt.mDistrictStorage.get("505").getCanton());
+        } catch (Exception pEx) {
+            pEx.printStackTrace();
+            Assert.fail("Should not have thrown an exception");
+        }
+    }
 
-        District pDistrict = districts.get("101");
-        System.out.println(pDistrict.toString());
-        pDistrict = districts.get("1824");
-        System.out.println(pDistrict.toString());
+    public class LandscapeMockAdapter
+            implements ILandscapeDataAdapter {
 
-        String pId = invertedDistricts.get("Imboden");
-        System.out.println(pId);
+        Map<String, District> mDistrictStorage;
+        Map<String, String>   mDistrictNameStorage;
+        Map<String, Canton>   mCantonStorage;
+        int                   mDistrictCallCount;
+        int                   mCantonCallCount;
+
+        public LandscapeMockAdapter() {
+            mDistrictStorage = new HashMap<>();
+            mDistrictNameStorage = new HashMap<>();
+            mCantonStorage = new HashMap<>();
+            mDistrictCallCount = 0;
+            mCantonCallCount = 0;
+        }
+
+        @Override
+        public District insertDistrict(District pDistrict) {
+            mDistrictStorage.put(pDistrict.getId(), pDistrict);
+            mDistrictNameStorage.put(pDistrict.getName(), pDistrict.getId());
+            mDistrictCallCount++;
+            return null;
+        }
+
+        @Override
+        public Canton insertCanton(Canton pCanton) {
+            mCantonStorage.put(pCanton.getId(), pCanton);
+            mCantonCallCount++;
+            return null;
+        }
+
+        @Override
+        public District getDistrictById(String pId)
+                throws EntityNotFoundException {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public String getDistrictIdByName(String pName)
+                throws EntityNotFoundException {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public List<District> getAllDistricts() {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public Canton getCantonById(String pId)
+                throws EntityNotFoundException {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public List<Canton> getAllCantons() {
+            // not relevant
+            return null;
+        }
+
+        @Override
+        public void cleanup() {
+            // not relevant
+        }
+
     }
 }
