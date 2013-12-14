@@ -38,6 +38,21 @@ body, table td, select, button {
 	color:inherit;
 }
 
+.yapp-cont-header-link {
+	color: #5e5e5e;
+	font-size: 15px;
+	line-height: 49px;
+	height: 49px;
+	margin: 0;
+	padding: 0 15px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.gwt-HTML.yapp-cont-header-link {
+	vertical-align: middle;
+}
+
 .yapp-cont-footer-label {
 	color: #5e5e5e;
 	text-align: center;

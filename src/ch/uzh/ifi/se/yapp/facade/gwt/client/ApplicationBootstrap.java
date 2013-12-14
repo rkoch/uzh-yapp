@@ -81,7 +81,9 @@ public class ApplicationBootstrap
     private ListBox                 mElectionInput;
     private TextArea                mCommentInput;
     private Button                  mSaveButton;
-    private Button                  mDeleteButton;
+    private Anchor                  mDeleteLink;
+    private Anchor                  mSendMailLink;
+    private HTML                    mGPlusButton;
 
 
     public ApplicationBootstrap() {
@@ -105,7 +107,7 @@ public class ApplicationBootstrap
 
         // Visualize content
         String id = Window.Location.getParameter("id");
-        if (id == null) {
+        if ((id == null) || id.isEmpty()) {
             // We are in creation state
             mRemoteService.getElections(new AsyncCallback<ElectionDTO[]>() {
 
@@ -129,7 +131,7 @@ public class ApplicationBootstrap
                     if (pResult != null) {
                         buildVisualizeMask(pResult);
                     } else {
-                        build404Mask();
+                        buildErrorMask();
                     }
                 }
 
@@ -155,12 +157,46 @@ public class ApplicationBootstrap
         panel.add(brand);
 
         // Add navigation
-//        Anchor newVis = new Anchor();
-//        Anchor remVis = new Anchor();
-//        Anchor shareGP;
-//        Anchor shareMail;
+        mDeleteLink = new Anchor("Visualisierung Löschen");
+        mDeleteLink.addStyleName(HTMLConst.CSS_HEADER_LINK);
+        mDeleteLink.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent pEvent) {
+                String id = Window.Location.getParameter("id");
+                if ((id != null) && !id.isEmpty()) {
+                    removeData(id);
+                }
+            }
+
+        });
+
+        panel.add(mDeleteLink); // Delete Button
+
+        mSendMailLink = new Anchor("Als E-Mail versenden");
+        mSendMailLink.addStyleName(HTMLConst.CSS_HEADER_LINK);
+        panel.add(mSendMailLink);
+
+        drawPlusOne(panel);
+        mGPlusButton.addStyleName(HTMLConst.CSS_HEADER_LINK);
+
+        updateHeader();
 
         return panel;
+    }
+
+    private void updateHeader() {
+        String id = Window.Location.getParameter("id");
+        if ((id != null) && !id.isEmpty()) {
+            mDeleteLink.setVisible(true);
+            mSendMailLink.setVisible(true);
+            mSendMailLink.setHref(HTMLConst.MAILTO_PFX + getUrl());
+            mGPlusButton.setVisible(true);
+        } else {
+            mDeleteLink.setVisible(false);
+            mSendMailLink.setVisible(false);
+            mGPlusButton.setVisible(false);
+        }
     }
 
     private Widget buildFooter() {
@@ -179,6 +215,7 @@ public class ApplicationBootstrap
 
     private void buildCreateMask(final ElectionDTO[] pData) {
         mContentPanel.clear();
+        updateHeader();
 
         KeyDownHandler enterHandler = new KeyDownHandler() {
 
@@ -321,6 +358,7 @@ public class ApplicationBootstrap
 
     private void buildVisualizeMask(final VisualisationDTO pData) {
         mContentPanel.clear();
+        updateHeader();
 
         // Create title
         HeadingWidget heading = new HeadingWidget(pData.getTitle() + " von " + pData.getAuthor(), pData.getElection().getTitle());
@@ -380,8 +418,8 @@ public class ApplicationBootstrap
 
     private void drawPlusOne(Panel pPanel) {
         String s = "<g:plusone href=\"http://urltoplusone.com\"></g:plusone>";
-        HTML h = new HTML(s);
-        pPanel.add(h);
+        mGPlusButton = new HTML(s);
+        pPanel.add(mGPlusButton);
 
         // You can insert a script tag this way or via your .gwt.xml
         Document doc = Document.get();
@@ -500,23 +538,24 @@ public class ApplicationBootstrap
                     String newUrl = Window.Location.createUrlBuilder().setParameter("id", pResult.getId()).buildString();
                     Window.Location.assign(newUrl);
                 } else {
-                    build404Mask();
+                    buildErrorMask();
                 }
             }
 
             @Override
             public void onFailure(Throwable pCaught) {
+                buildErrorMask();
                 // TODO Display error message
-                Window.alert("There was an error on the server: " + pCaught.getMessage());
+//                Window.alert("There was an error on the server: " + pCaught.getMessage());
                 // Ensure that the button is enabled again on leaving
-                mSaveButton.setEnabled(true);
+//                mSaveButton.setEnabled(true);
             }
 
         });
     }
 
     private void removeData(String pId) {
-        mDeleteButton.setEnabled(false);
+        mDeleteLink.setEnabled(false);
 
         mRemoteService.removeVisualisation(pId, new AsyncCallback<Void>() {
 
@@ -531,13 +570,13 @@ public class ApplicationBootstrap
                 // TODO Display error message
                 Window.alert("Could not remove visualisation: " + pCaught.getMessage());
                 // Ensure that the button is enabled again on leaving
-                mDeleteButton.setEnabled(true);
+                mDeleteLink.setEnabled(true);
             }
 
         });
     }
 
-    private void build404Mask() {
+    private void buildErrorMask() {
         mMainPanel.clear();
         Window.alert("Visualization not found or any other error occured.");
     }

@@ -26,10 +26,13 @@ public interface HTMLConst {
 
     LatLng CH_CENTRE          = LatLng.create(46.801111111111105, 8.226666666666667);
 
+    String MAILTO_PFX         = "mailto:?subject=YAPP Visualisierung&body=Schau dir diese YAPP Visualisierung an: ";
+
     String CSS_HEADER_NAV     = "yapp-div-header";
     String CSS_FOOTER         = "yapp-div-footer";
 
     String CSS_HEADER_BRAND   = "yapp-cont-header-brand";
+    String CSS_HEADER_LINK    = "yapp-cont-header-link";
 
     String CSS_FOOTER_LABEL   = "yapp-cont-footer-label";
 
