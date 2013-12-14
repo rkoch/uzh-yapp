@@ -105,7 +105,9 @@ public class ElectionImport
             int month = 0;
             int year = Integer.parseInt(fragments[4]);
 
-            switch (fragments[3]) {
+            String strMonth = fragments[3].trim();
+
+            switch (strMonth) {
                 case "Januar":
                     month = 1;
                     break;

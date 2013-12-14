@@ -86,13 +86,26 @@ public class ImportServlet
 //        }
 
         // Import elections
-        String[] electionFiles = { "/ch/uzh/ifi/se/yapp/data/election/election-554-20110213.csv", "/ch/uzh/ifi/se/yapp/data/election/election-556-20121125.csv" };
+        String[] electionFiles = { "/ch/uzh/ifi/se/yapp/data/election/election-540-20090208.csv", "/ch/uzh/ifi/se/yapp/data/election/election-541-20090517.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-542-20090517.csv", "/ch/uzh/ifi/se/yapp/data/election/election-543-20090927.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-544-20090927.csv", "/ch/uzh/ifi/se/yapp/data/election/election-545-20091129.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-546-20091129.csv", "/ch/uzh/ifi/se/yapp/data/election/election-547-20091129.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-548-20100307.csv", "/ch/uzh/ifi/se/yapp/data/election/election-549-20100307.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-550-20100307.csv", "/ch/uzh/ifi/se/yapp/data/election/election-551-20100926.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-552.1-20101128.csv", "/ch/uzh/ifi/se/yapp/data/election/election-552.2-20101128.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-553-20101128.csv", "/ch/uzh/ifi/se/yapp/data/election/election-554-20110213.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-556-20121125.csv", "/ch/uzh/ifi/se/yapp/data/election/election-560-20120617.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-561-20120617.csv", "/ch/uzh/ifi/se/yapp/data/election/election-562-20120617.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-563-20120923.csv", "/ch/uzh/ifi/se/yapp/data/election/election-564-20120922.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-565-20120923.csv", "/ch/uzh/ifi/se/yapp/data/election/election-566-20121125.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-570-20130609.csv",
+                "/ch/uzh/ifi/se/yapp/data/election/election-571-20130609.csv" };
         ElectionImport electionImporter = new ElectionImport(BackendAccessorFactory.getElectionDataAdapter());
         for (String election : electionFiles) {
             InputStream is = getClass().getResourceAsStream(election);
             try {
                 electionImporter.runImport(is);
-            } catch (IOException pEx) {
+            } catch (Exception pEx) {
                 LOGGER.log(Level.SEVERE, String.format("I/O Exception occured during election import of %s (ex=%s)", election, pEx.getMessage()), pEx);
             }
         }
