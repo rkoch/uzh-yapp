@@ -55,6 +55,10 @@ public class GeoTextImport
         // read boundaries in each line
         String line;
         while ((line = br.readLine()) != null) {
+            if (line.startsWith("#")) { // skip commented lines
+                continue;
+            }
+
             String[] split = line.split(";");
             if (split.length < 3) {
                 LOGGER.log(Level.WARNING, String.format("Could not parse the following line to a geo boundary: %s", line));
