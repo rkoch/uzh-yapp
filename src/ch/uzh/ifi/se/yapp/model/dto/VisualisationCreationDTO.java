@@ -21,6 +21,7 @@ package ch.uzh.ifi.se.yapp.model.dto;
 
 import java.io.Serializable;
 
+import ch.uzh.ifi.se.yapp.model.base.AdministrativeUnit;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 
 
@@ -28,11 +29,12 @@ public class VisualisationCreationDTO
         extends BaseDTO
         implements Serializable {
 
-    private String            mTitle;
-    private String            mAuthor;
-    private String            mElectionId;
-    private VisualizationType mVisualizationType;
-    private String            mComment;
+    private String             mTitle;
+    private String             mAuthor;
+    private String             mElectionId;
+    private VisualizationType  mVisualizationType;
+    private AdministrativeUnit mDetail;
+    private String             mComment;
 
 
     public String getTitle() {
@@ -65,6 +67,14 @@ public class VisualisationCreationDTO
 
     public void setVisualizationType(VisualizationType pVisualizationType) {
         mVisualizationType = pVisualizationType;
+    }
+
+    public AdministrativeUnit getDetail() {
+        return mDetail;
+    }
+
+    public void setDetail(AdministrativeUnit pDetail) {
+        mDetail = pDetail;
     }
 
     public String getComment() {

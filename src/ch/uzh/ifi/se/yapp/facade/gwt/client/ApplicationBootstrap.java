@@ -489,6 +489,7 @@ public class ApplicationBootstrap
         dto.setElectionId(electionId);
         dto.setComment(comment);
         dto.setVisualizationType(visType);
+        dto.setDetail(admUnit);
 
         mRemoteService.createVisualisation(dto, new AsyncCallback<VisualisationDTO>() {
 

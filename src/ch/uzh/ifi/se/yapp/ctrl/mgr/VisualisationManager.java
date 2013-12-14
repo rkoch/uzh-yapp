@@ -25,7 +25,6 @@ import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.ctrl.accif.IVisualisationAccessor;
 import ch.uzh.ifi.se.yapp.ctrl.mapper.VisualisationMapper;
-import ch.uzh.ifi.se.yapp.model.base.AdministrativeUnit;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
@@ -65,7 +64,7 @@ public class VisualisationManager
         entity.setAuthor(pVisualisationCreationDTO.getAuthor());
         entity.setComment(pVisualisationCreationDTO.getComment());
         entity.setTitle(pVisualisationCreationDTO.getTitle());
-        entity.setDetail(AdministrativeUnit.CANTON);
+        entity.setDetail(pVisualisationCreationDTO.getDetail());
 
         Visualisation created = adpt.insertVisualisation(entity);
         VisualisationDTO ret = VisualisationMapper.map(BackendAccessorFactory.getGeoDataAdapter(), BackendAccessorFactory.getElectionDataAdapter(),
