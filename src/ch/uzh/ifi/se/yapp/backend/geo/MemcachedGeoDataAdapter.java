@@ -67,7 +67,7 @@ public class MemcachedGeoDataAdapter
                 GeoBoundary tmpGb = entry.getValue();
                 // get newest GeoBoundary for each GeoBoundary
                 for (Map.Entry<String, GeoBoundary> innerEntry : mStorage.entrySet()) {
-                    if (innerEntry.getValue().getDate().isAfter(tmpGb.getDate()) && entry.getValue().getId() == innerEntry.getValue().getId()) {
+                    if (innerEntry.getValue().getDate().isAfter(tmpGb.getDate()) && entry.getValue().getId().equals(innerEntry.getValue().getId())) {
                         tmpGb = innerEntry.getValue();
                     }
                 }
