@@ -67,18 +67,18 @@ public class ElectionImport
             String[] cells = line.split(";");
 
             if (lineCount == 0) {
-                election.setDate(extractDate(cells[0]));
+                election.setDate(extractDate(cells[0].trim()));
                 election.setId(cells[2]);
             } else if (lineCount == 1) {
-                election.setTitle(cells[0]);
+                election.setTitle(cells[0].trim());
             } else {
                 Result result = new Result();
-                result.setLandscape(cells[0]);
-                result.setTotalEligibleCount(Integer.parseInt(cells[2]));
-                result.setDeliveredCount(Integer.parseInt(cells[3]));
-                result.setValidCount(Integer.parseInt(cells[5]));
-                result.setYesCount(Integer.parseInt(cells[6]));
-                result.setNoCount(Integer.parseInt(cells[7]));
+                result.setLandscape(cells[0].trim());
+                result.setTotalEligibleCount(Integer.parseInt(cells[2].trim()));
+                result.setDeliveredCount(Integer.parseInt(cells[3].trim()));
+                result.setValidCount(Integer.parseInt(cells[5].trim()));
+                result.setYesCount(Integer.parseInt(cells[6].trim()));
+                result.setNoCount(Integer.parseInt(cells[7].trim()));
                 election.addResult(result);
             }
             lineCount++;
