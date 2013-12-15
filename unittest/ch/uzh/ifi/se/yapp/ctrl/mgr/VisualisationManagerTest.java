@@ -41,21 +41,21 @@ import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
 import ch.uzh.ifi.se.yapp.model.dto.CoordinateDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
+import ch.uzh.ifi.se.yapp.model.election.Election;
+import ch.uzh.ifi.se.yapp.model.election.Result;
 import ch.uzh.ifi.se.yapp.model.landscape.District;
-import ch.uzh.ifi.se.yapp.model.landscape.DistrictResult;
-import ch.uzh.ifi.se.yapp.model.landscape.Election;
-import ch.uzh.ifi.se.yapp.model.visualisation.Visualization;
+import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 
 
 public class VisualisationManagerTest {
 
     private final LocalServiceTestHelper mHelper               = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    private Visualization                mVisualization        = new Visualization();
+    private Visualisation                mVisualization        = new Visualisation();
     private Election                     mElection             = new Election();
     private VisualisationManager         mVisualisationManager = new VisualisationManager();
-    private List<CoordinateDTO>            mGeoPoints            = new ArrayList<>();
-    private List<DistrictResult>         mResults              = new ArrayList<>();
+    private List<CoordinateDTO>          mGeoPoints            = new ArrayList<>();
+    private List<Result>                 mResults              = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -68,55 +68,47 @@ public class VisualisationManagerTest {
         mElection.setDescription("Description");
         mElection.setId("elecId");
 
-        DistrictResult dr = new DistrictResult();
-        dr.setDeliveredVoteCount(1);
-        dr.setNoVoteCount(1);
+        Result dr = new Result();
+        dr.setDeliveredCount(1);
+        dr.setNoCount(1);
         dr.setTotalEligibleCount(1);
-        dr.setValidVoteCount(1);
-        dr.setYesVoteCount(0);
-        dr.setRatio();
-        dr.setEmptyVoteCount();
-        dr.setYesVoteRatio();
+        dr.setValidCount(1);
+        dr.setYesCount(0);
 
         District d = new District();
         d.setCanton("Zürich");
-        d.setCantonId("1");
+        d.setCanton("1");
         d.setId("2603");
         d.setName("Test-Bezirk");
-        d.setLocalDate(new LocalDate(2013, 01, 01));
 
-        dr.setDistrict(d);
+        dr.setLandscape(d.getId());
 
-        DistrictResult dr2 = new DistrictResult();
-        dr2.setDeliveredVoteCount(2);
-        dr2.setNoVoteCount(2);
+        Result dr2 = new Result();
+        dr2.setDeliveredCount(2);
+        dr2.setNoCount(2);
         dr2.setTotalEligibleCount(2);
-        dr2.setValidVoteCount(2);
-        dr2.setYesVoteCount(0);
-        dr2.setRatio();
-        dr2.setEmptyVoteCount();
-        dr2.setYesVoteRatio();
+        dr2.setValidCount(2);
+        dr2.setYesCount(0);
 
 
         District d2 = new District();
         d2.setCanton("Zürich");
-        d2.setCantonId("1");
+        d2.setCanton("1");
         d2.setId("2604");
         d2.setName("Test-Bezirk2");
-        d2.setLocalDate(new LocalDate(2013, 01, 01));
 
-        dr2.setDistrict(d2);
+        dr2.setLandscape(d2.getId());
 
         mResults.add(dr);
         mResults.add(dr2);
 
-
-        mElection.setResults(mResults);
+        mElection.addResult(dr);
+        mElection.addResult(dr2);
         mElection.setTitle("title");
 
         elecAdpt.insertElection(mElection);
 
-        mVisualization.setElectionId("elecId");
+        mVisualization.setElection("elecId");
         mVisualization.setType(VisualizationType.TABLE);
 
         visAdpt.insertVisualisation(mVisualization);
@@ -144,7 +136,7 @@ public class VisualisationManagerTest {
         assertTrue(visualDTO.getElection().getId().equals("elecId"));
         assertTrue(visualDTO.getId().equals(id));
 
-        assertEquals(1, visualDTO.getResults().get(0).getLabel().getDeliveredVoteCount());
+        assertEquals(1, visualDTO.getResults().get(0).getLabel().getDeliveredCount());
 //        assertEquals(3, visualDTO.getCantonResultList().get(0).getLabel().getDeliveredVoteCount());
         assertEquals(2, visualDTO.getResults().size());
         assertTrue(visualDTO.getElection().getDate().equals("2013-01-01"));

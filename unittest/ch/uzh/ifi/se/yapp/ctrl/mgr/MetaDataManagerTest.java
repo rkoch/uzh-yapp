@@ -43,11 +43,11 @@ import ch.uzh.ifi.se.yapp.model.landscape.District;
 
 public class MetaDataManagerTest {
 
-    private final LocalServiceTestHelper mHelper       = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+    private final LocalServiceTestHelper mHelper          = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    private Election                     mElection     = new Election();
+    private Election                     mElection        = new Election();
     private MetaDataManager              mMetaDataManager = new MetaDataManager();
-    private List<Result>         mResults      = new ArrayList<>();
+    private List<Result>                 mResults         = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -68,15 +68,13 @@ public class MetaDataManagerTest {
 
         District d = new District();
         d.setCanton("Zürich");
-        d.setCantonId("1");
+        d.setCanton("1");
         d.setId("2603");
         d.setName("Test-Bezirk");
-        d.setDate(new LocalDate(2013, 01, 01));
 
-        dr.setLandscape(d);
-        mResults.add(dr);
+        dr.setLandscape(d.getId());
 
-        mElection.setResults(mResults);
+        mElection.addResult(dr);
         mElection.setTitle("title");
 
         elecAdpt.insertElection(mElection);
@@ -89,35 +87,35 @@ public class MetaDataManagerTest {
 
     @Test
     public void testGetElectionList() {
-/*
-        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
-
-        mElection.setDate(new LocalDate(2013, 01, 01));
-        mElection.setDescription("Description");
-        mElection.setId("id");
-
-        DistrictResult dr = new DistrictResult();
-        dr.setDeliveredVoteCount(1);
-        dr.setNoVoteCount(1);
-        dr.setTotalEligibleCount(0);
-        dr.setValidVoteCount(1);
-        dr.setYesVoteCount(0);
-
-        District d = new District();
-        d.setCanton("Zürich");
-        d.setCantonId("1");
-        d.setId("2603");
-        d.setName("Test-Bezirk");
-        d.setLocalDate(new LocalDate(2013, 01, 01));
-
-        dr.setDistrict(d);
-        mResults.add(dr);
-
-        mElection.setResults(mResults);
-        mElection.setTitle("title");
-
-        elecAdpt.insertElection(mElection);
-*/
+        /*
+         * IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
+         *
+         * mElection.setDate(new LocalDate(2013, 01, 01));
+         * mElection.setDescription("Description");
+         * mElection.setId("id");
+         *
+         * DistrictResult dr = new DistrictResult();
+         * dr.setDeliveredVoteCount(1);
+         * dr.setNoVoteCount(1);
+         * dr.setTotalEligibleCount(0);
+         * dr.setValidVoteCount(1);
+         * dr.setYesVoteCount(0);
+         *
+         * District d = new District();
+         * d.setCanton("Zürich");
+         * d.setCantonId("1");
+         * d.setId("2603");
+         * d.setName("Test-Bezirk");
+         * d.setLocalDate(new LocalDate(2013, 01, 01));
+         *
+         * dr.setDistrict(d);
+         * mResults.add(dr);
+         *
+         * mElection.setResults(mResults);
+         * mElection.setTitle("title");
+         *
+         * elecAdpt.insertElection(mElection);
+         */
         List<ElectionDTO> list = mMetaDataManager.getElectionList();
 
         assertEquals(1, list.size());
@@ -125,36 +123,36 @@ public class MetaDataManagerTest {
 
     @Test
     public void testGetElectionsByDateRange() {
-/*
-        IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
-
-        mElection.setDate(new LocalDate(2013, 01, 01));
-        mElection.setDescription("Description");
-        mElection.setId("id");
-
-        DistrictResult dr = new DistrictResult();
-        dr.setDeliveredVoteCount(1);
-        dr.setNoVoteCount(1);
-        dr.setTotalEligibleCount(0);
-        dr.setValidVoteCount(1);
-        dr.setYesVoteCount(0);
-
-        District d = new District();
-        d.setCanton("Zürich");
-        d.setCantonId("1");
-        d.setId("2603");
-        d.setName("Test-Bezirk");
-        d.setLocalDate(new LocalDate(2013, 01, 01));
-
-        dr.setDistrict(d);
-        mResults.add(dr);
-
-        mElection.setResults(mResults);
-        mElection.setTitle("title");
-
-        elecAdpt.insertElection(mElection);
-*/
-        List<ElectionDTO> list = mMetaDataManager.getElectionsByDateRange("2013-02-02","1900-01-01");
+        /*
+         * IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
+         *
+         * mElection.setDate(new LocalDate(2013, 01, 01));
+         * mElection.setDescription("Description");
+         * mElection.setId("id");
+         *
+         * DistrictResult dr = new DistrictResult();
+         * dr.setDeliveredVoteCount(1);
+         * dr.setNoVoteCount(1);
+         * dr.setTotalEligibleCount(0);
+         * dr.setValidVoteCount(1);
+         * dr.setYesVoteCount(0);
+         *
+         * District d = new District();
+         * d.setCanton("Zürich");
+         * d.setCantonId("1");
+         * d.setId("2603");
+         * d.setName("Test-Bezirk");
+         * d.setLocalDate(new LocalDate(2013, 01, 01));
+         *
+         * dr.setDistrict(d);
+         * mResults.add(dr);
+         *
+         * mElection.setResults(mResults);
+         * mElection.setTitle("title");
+         *
+         * elecAdpt.insertElection(mElection);
+         */
+        List<ElectionDTO> list = mMetaDataManager.getElectionsByDateRange("2013-02-02", "1900-01-01");
 
         assertTrue(list.get(0).getId().equals("id"));
         assertTrue(list.get(0).getTitle().equals("title"));
