@@ -47,4 +47,10 @@ public interface HTMLConst {
 
     String CSS_BUTTON_PRIMARY = "yapp-cont-main-btn-primary";
 
+
+    String CSS_ERROR_FLAG       = "yapp-error";
+    String CSS_ERROR_PAGE       = "yapp-div-error";
+    String CSS_ERROR_LABEL      = "yapp-cont-error-label";
+    String CSS_ERROR_IMG        = "yapp-cont-error-image";
+
 }

@@ -43,6 +43,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
@@ -85,6 +86,8 @@ public class ApplicationBootstrap
     private Anchor                  mSendMailLink;
     private HTML                    mGPlusButton;
 
+    private boolean                 mErrorMode;
+
 
     public ApplicationBootstrap() {
         mMainPanel = new DockLayoutPanel(Unit.PX);
@@ -118,8 +121,7 @@ public class ApplicationBootstrap
 
                 @Override
                 public void onFailure(Throwable pCaught) {
-                    // TODO Display error message
-                    Window.alert("There was an error on the server: " + pCaught.getMessage());
+                    buildErrorMask();
                 }
             });
         } else {
@@ -137,8 +139,7 @@ public class ApplicationBootstrap
 
                 @Override
                 public void onFailure(Throwable pCaught) {
-                    // TODO Display error message
-                    Window.alert("There was an error on the server: " + pCaught.getMessage());
+                    buildErrorMask();
                 }
 
             });
@@ -187,7 +188,7 @@ public class ApplicationBootstrap
 
     private void updateHeader() {
         String id = Window.Location.getParameter("id");
-        if ((id != null) && !id.isEmpty()) {
+        if (!mErrorMode && (id != null) && !id.isEmpty()) {
             mDeleteLink.setVisible(true);
             mSendMailLink.setVisible(true);
             mSendMailLink.setHref(HTMLConst.MAILTO_PFX + getUrl());
@@ -543,10 +544,6 @@ public class ApplicationBootstrap
             @Override
             public void onFailure(Throwable pCaught) {
                 buildErrorMask();
-                // TODO Display error message
-//                Window.alert("There was an error on the server: " + pCaught.getMessage());
-                // Ensure that the button is enabled again on leaving
-//                mSaveButton.setEnabled(true);
             }
 
         });
@@ -565,18 +562,31 @@ public class ApplicationBootstrap
 
             @Override
             public void onFailure(Throwable pCaught) {
-                // TODO Display error message
-                Window.alert("Could not remove visualisation: " + pCaught.getMessage());
-                // Ensure that the button is enabled again on leaving
-                mDeleteLink.setEnabled(true);
+                buildErrorMask();
             }
 
         });
     }
 
     private void buildErrorMask() {
-        mMainPanel.clear();
-        Window.alert("Visualization not found or any other error occured.");
+        mErrorMode = true;
+
+        mContentPanel.clear();
+        mMainPanel.addStyleName(HTMLConst.CSS_ERROR_FLAG);
+        updateHeader();
+
+        mContentPanel.addStyleName(HTMLConst.CSS_ERROR_PAGE);
+
+        // Error label
+        Label l = new Label("OH NOES..SOMETHING WENT HORRIBLY WRONG!");
+        l.addStyleName(HTMLConst.CSS_ERROR_LABEL);
+        mContentPanel.addNorth(l, 100d);
+
+        // Error image
+        Image img = new Image("/assets/images/error.png");
+        img.addStyleName(HTMLConst.CSS_ERROR_IMG);
+
+        mContentPanel.add(img);
     }
 
 

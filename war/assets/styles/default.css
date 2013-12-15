@@ -25,6 +25,12 @@ body, table td, select, button {
 /*	padding: 0 20px; */
 }
 
+.yapp-error .yapp-div-header {
+	color: #fff;
+	background: #000;
+	border-bottom: 1px solid #fff;
+}
+
 .yapp-cont-header-brand {
   color: #5e5e5e;
   font-size: 26px;
@@ -36,6 +42,10 @@ body, table td, select, button {
 }
 .yapp-cont-header-brand:visited {
 	color:inherit;
+}
+
+.yapp-error .yapp-cont-header-brand {
+	color: #fff;
 }
 
 .yapp-cont-header-link {
@@ -61,6 +71,13 @@ body, table td, select, button {
     background-color: #f8f8f8;
     -webkit-box-shadow: inset 0 10px 10px -10px rgba(0,0,0,0.5);
     box-shadow: inset 0 10px 10px -10px rgba(0,0,0,0.5);
+}
+
+.yapp-error .yapp-cont-footer-label {
+	color: #fff;
+	background-color: #000;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 .yapp-container {
@@ -174,6 +191,24 @@ select.yapp-cont-main-form-input {
     box-shadow: none;
     pointer-events: none;
     cursor: not-allowed;
+}
+
+
+
+.yapp-div-error {
+	background-color: #000;
+}
+
+.yapp-cont-error-label {
+	color: #fff;
+	text-align: center;
+	font-size: 50px;
+	line-height: 150px;
+}
+
+.yapp-cont-error-image {
+	height: 100%;
+	margin: 20px auto;
 }
 
 .clearfix:before, .clearfix:after {
