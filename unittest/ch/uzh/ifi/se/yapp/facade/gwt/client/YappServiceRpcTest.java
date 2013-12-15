@@ -34,5 +34,6 @@ public class YappServiceRpcTest
     }
 
     // TODO rko: How do I test RPC calls?
+    // TODO rko: Go home!
 
 }
