@@ -19,151 +19,107 @@
  */
 package ch.uzh.ifi.se.yapp.ctrl.mgr;
 
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joda.time.LocalDate;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 import ch.uzh.ifi.se.yapp.backend.accif.BackendAccessorFactory;
 import ch.uzh.ifi.se.yapp.backend.accif.IElectionDataAdapter;
 import ch.uzh.ifi.se.yapp.backend.accif.IVisualisationDataAdapter;
 import ch.uzh.ifi.se.yapp.model.base.VisualizationType;
-import ch.uzh.ifi.se.yapp.model.dto.CoordinateDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationCreationDTO;
 import ch.uzh.ifi.se.yapp.model.dto.VisualisationDTO;
 import ch.uzh.ifi.se.yapp.model.election.Election;
 import ch.uzh.ifi.se.yapp.model.election.Result;
-import ch.uzh.ifi.se.yapp.model.landscape.District;
 import ch.uzh.ifi.se.yapp.model.visualisation.Visualisation;
 
 
 public class VisualisationManagerTest {
 
-    private final LocalServiceTestHelper mHelper               = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-
-    private Visualisation                mVisualization        = new Visualisation();
-    private Election                     mElection             = new Election();
-    private VisualisationManager         mVisualisationManager = new VisualisationManager();
-    private List<CoordinateDTO>          mGeoPoints            = new ArrayList<>();
-    private List<Result>                 mResults              = new ArrayList<>();
+    private Visualisation        mVisualisation        = new Visualisation();
+    private Election             mElection             = new Election();
+    private VisualisationManager mVisualisationManager = new VisualisationManager();
 
     @Before
     public void setUp() {
-        mHelper.setUp();
-
         IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
         IVisualisationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
-        mElection.setDate(new LocalDate(2013, 01, 01));
-        mElection.setDescription("Description");
         mElection.setId("elecId");
-
-        Result dr = new Result();
-        dr.setDeliveredCount(1);
-        dr.setNoCount(1);
-        dr.setTotalEligibleCount(1);
-        dr.setValidCount(1);
-        dr.setYesCount(0);
-
-        District d = new District();
-        d.setCanton("Zürich");
-        d.setCanton("1");
-        d.setId("2603");
-        d.setName("Test-Bezirk");
-
-        dr.setLandscape(d.getId());
-
-        Result dr2 = new Result();
-        dr2.setDeliveredCount(2);
-        dr2.setNoCount(2);
-        dr2.setTotalEligibleCount(2);
-        dr2.setValidCount(2);
-        dr2.setYesCount(0);
-
-
-        District d2 = new District();
-        d2.setCanton("Zürich");
-        d2.setCanton("1");
-        d2.setId("2604");
-        d2.setName("Test-Bezirk2");
-
-        dr2.setLandscape(d2.getId());
-
-        mResults.add(dr);
-        mResults.add(dr2);
-
-        mElection.addResult(dr);
-        mElection.addResult(dr2);
         mElection.setTitle("title");
+        mElection.setDescription("Description");
+        mElection.setDate(new LocalDate(2013, 01, 01));
+
+        Result res1 = new Result();
+        res1.setDeliveredCount(1);
+        res1.setNoCount(1);
+        res1.setTotalEligibleCount(1);
+        res1.setValidCount(1);
+        res1.setYesCount(0);
+        res1.setLandscape("2603");
+
+        Result res2 = new Result();
+        res2.setDeliveredCount(2);
+        res2.setNoCount(2);
+        res2.setTotalEligibleCount(2);
+        res2.setValidCount(2);
+        res2.setYesCount(0);
+        res2.setLandscape("2604");
+
+        mElection.addResult(res1);
+        mElection.addResult(res2);
 
         elecAdpt.insertElection(mElection);
 
-        mVisualization.setElection("elecId");
-        mVisualization.setType(VisualizationType.TABLE);
+        mVisualisation.setId("visId");
+        mVisualisation.setElection("elecId");
+        mVisualisation.setType(VisualizationType.TABLE);
 
-        visAdpt.insertVisualisation(mVisualization);
-    }
-
-    @After
-    public void tearDown() {
-        mHelper.tearDown();
+        visAdpt.insertVisualisation(mVisualisation);
     }
 
 
     @Test
     public void testGetVisualisationById() {
+        String id = mVisualisation.getId();
 
-        String id = mVisualization.getId().toString();
-
-
-        VisualisationDTO visualDTO = null;
+        VisualisationDTO dto = null;
         try {
-            visualDTO = mVisualisationManager.getVisualisationById(id);
+            dto = mVisualisationManager.getVisualisationById(id);
         } catch (Exception pEx) {
             fail();
         }
 
-        assertTrue(visualDTO.getElection().getId().equals("elecId"));
-        assertTrue(visualDTO.getId().equals(id));
+        assertEquals(id, dto.getId());
+        assertEquals("elecId", dto.getElection().getId());
 
-        assertEquals(1, visualDTO.getResults().get(0).getLabel().getDeliveredCount());
-//        assertEquals(3, visualDTO.getCantonResultList().get(0).getLabel().getDeliveredVoteCount());
-        assertEquals(2, visualDTO.getResults().size());
-        assertTrue(visualDTO.getElection().getDate().equals("2013-01-01"));
-
+//        assertTrue(dto.getResults().size() >= 1);
+//        assertEquals(1, dto.getResults().get(0).getLabel().getDeliveredCount());
+        assertEquals("2013-01-01", dto.getElection().getDate());
     }
 
     @Test
     public void testCreateVisualisation() {
-
         VisualisationCreationDTO visCre = new VisualisationCreationDTO();
-        visCre.setAuthor("Author");
-        visCre.setComment("Comment");
-        visCre.setElectionId("elecId");
         visCre.setTitle("title");
+        visCre.setAuthor("author");
+        visCre.setComment("comment");
+        visCre.setElectionId("elecId");
         visCre.setVisualizationType(VisualizationType.TABLE);
 
-        VisualisationDTO visual = null;
+        VisualisationDTO dto = null;
         try {
-            visual = mVisualisationManager.createVisualisation(visCre);
+            dto = mVisualisationManager.createVisualisation(visCre);
         } catch (Exception pEx) {
             fail();
         }
 
-        assertTrue(visual.getAuthor().equals("Author"));
-        assertTrue(visual.getComment().equals("Comment"));
-        assertTrue(visual.getElection().getId().equals("elecId"));
-
-
+        assertEquals("author", dto.getAuthor());
+        assertEquals("comment", dto.getComment());
+        assertEquals("elecId", dto.getElection().getId());
     }
+
 }
