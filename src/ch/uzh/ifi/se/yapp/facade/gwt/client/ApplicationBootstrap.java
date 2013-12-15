@@ -199,6 +199,7 @@ public class ApplicationBootstrap
             mSendMailLink.setVisible(false);
             mGPlusButton.setVisible(false);
         }
+
     }
 
     private Widget buildFooter() {
@@ -417,25 +418,6 @@ public class ApplicationBootstrap
             ElectionMapWidget map = new ElectionMapWidget(pData.getResults());
             mContentPanel.add(map);
         }
-//
-//        HorizontalPanel panelActions = new HorizontalPanel();
-//        // Delete button
-//        mDeleteButton = new Button("Löschen");
-//        mDeleteButton.addClickHandler(new ClickHandler() {
-//
-//            @Override
-//            public void onClick(ClickEvent pEvent) {
-//                removeData(pData.getId());
-//            }
-//
-//        });
-//
-//        panelActions.add(mDeleteButton); // Delete Button
-//        drawPlusOne(panelActions);
-//        panelActions.add(new HTML("<a href='mailto:?subject=Share YAPP Visualization&body=Hi there, there might be a YAPP Visualization you like. See link: "
-//                + getUrl() + "'>Share by Email</a>"));
-//        mMainPanel.add(panelActions);
-
     }
 
     private void drawPlusOne(Panel pPanel) {
