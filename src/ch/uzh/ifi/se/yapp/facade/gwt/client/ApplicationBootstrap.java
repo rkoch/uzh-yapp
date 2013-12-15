@@ -282,6 +282,8 @@ public class ApplicationBootstrap
         mDetailGradeInput.addKeyDownHandler(enterHandler);
         mDetailGradeInput.addItem("Kanton", AdministrativeUnit.CANTON.name());
         mDetailGradeInput.addItem("Bezirk", AdministrativeUnit.DISTRICT.name());
+        mDetailGradeInput.setSelectedIndex(0);
+        mDetailGradeInput.setEnabled(false);
 
         // year
         HorizontalPanel panelYear = new HorizontalPanel();
