@@ -21,14 +21,19 @@ package ch.uzh.ifi.se.yapp.facade.gwt.client;
 
 import java.util.List;
 
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.maps.gwt.client.GoogleMap;
+import com.google.maps.gwt.client.InfoWindow;
+import com.google.maps.gwt.client.InfoWindowOptions;
 import com.google.maps.gwt.client.LatLng;
 import com.google.maps.gwt.client.MVCArray;
 import com.google.maps.gwt.client.MapOptions;
 import com.google.maps.gwt.client.MapTypeId;
+import com.google.maps.gwt.client.MouseEvent;
 import com.google.maps.gwt.client.Polygon;
+import com.google.maps.gwt.client.Polygon.ClickHandler;
 import com.google.maps.gwt.client.PolygonOptions;
 
 import ch.uzh.ifi.se.yapp.model.dto.CoordinateDTO;
@@ -43,6 +48,7 @@ public class ElectionMapWidget
     private final SimplePanel mPanel;
     private final GoogleMap   mMap;
 
+    private InfoWindow        mCurrentlyOpenInfoWindow;
 
     public ElectionMapWidget(List<ResultDTO> pResults) {
         mPanel = new SimplePanel();
@@ -56,7 +62,7 @@ public class ElectionMapWidget
         mMap = GoogleMap.create(mPanel.getElement(), mapOpt);
 
         // Process each result
-        for (ResultDTO result : pResults) {
+        for (final ResultDTO result : pResults) {
             ResultLabelDTO resultLabel = result.getLabel();
             PolygonOptions polygonOpt = PolygonOptions.create();
 
@@ -99,62 +105,44 @@ public class ElectionMapWidget
             // Build polygon
             Polygon polygon = Polygon.create(polygonOpt);
             polygon.setMap(mMap);
+
+            // build label
+            polygon.addClickListener(new ClickHandler() {
+
+                @Override
+                public void handle(MouseEvent pEvent) {
+                    if (mCurrentlyOpenInfoWindow != null) {
+                        mCurrentlyOpenInfoWindow.close();
+                        mCurrentlyOpenInfoWindow = null;
+                    }
+
+                    InfoWindowOptions infoOpt = InfoWindowOptions.create();
+                    infoOpt.setContent(buildResultLabel(result));
+                    InfoWindow iw = InfoWindow.create(infoOpt);
+                    iw.setPosition(pEvent.getLatLng());
+                    iw.open(mMap);
+                    mCurrentlyOpenInfoWindow = iw;
+                }
+            });
+
         }
-
-
-//        for (ResultDTO result : pData.getResults()) {
-//            for (PolygonDTO p : result.getBoundaries()) {
-//                MVCArray<LatLng> path = MVCArray.create();
-//                for (CoordinateDTO c : p.getCoordinates()) {
-//                    path.push(LatLng.create(c.getLatitude(), c.getLongitude()));
-//                }
-//                coords.push(path);
-//            }
-//        }
-//        MVCArray<LatLng> path = MVCArray.create();
-//        path.push(LatLng.create(25.774252, -80.190262));
-//        coords.push(path);
-
-
-
-//        Polygon asdf = Polygon.create(polyOpts);
-//        asdf.setMap(mMap);
-
-//        MapOptions options = MapOptions.create();
-//        options.setZoom(6);
-//        options.setMapTypeId(MapTypeId.ROADMAP);
-//        options.setDraggable(true);
-//        options.setMapTypeControl(true);
-//        options.setScaleControl(true);
-//        options.setScrollwheel(true);
-//
-//        GoogleMap theMap = GoogleMap.create(widg.getElement(), options);
-
-//        options.setCenter(LatLng.create(latCenter, lngCenter));
-
-//https://groups.google.com/forum/#!topic/gwt-google-apis/6SO5kCDqb-k
-        // create a polyline
-//        PolylineOptions polyOpts = PolylineOptions.create();
-//        polyOpts.setStrokeColor("red");
-//        polyOpts.setStrokeOpacity(0.5);
-//        polyOpts.setStrokeWeight(3);
-//        polyOpts.setEditable(true);
-//        Polyline poly = Polyline.create(polyOpts);
-//
-//        //bind the polyline to a line
-//        MVCArray<LatLng> array = MVCArray.create();
-//        Line line = new Line(array);
-//        line.getPath().push(latlng);
-//        poly.setPath(line.getPath());
-//        poly.setMap(map);
-//
-//        //create a marker
-//        MarkerOptions markerOptions = MarkerOptions.create();
-//        markerOptions.setMap(map);
-//        markerOptions.setTitle("Hello World!");
-//        markerOptions.setDraggable(true);
-//        Marker start = Marker.create(markerOptions);
 
         initWidget(mPanel);
     }
+
+
+    private String buildResultLabel(ResultDTO pResult) {
+        ResultLabelDTO label = pResult.getLabel();
+
+        String ret = "<b>" + pResult.getName() + "</b><br><br>";
+        ret += "<b>Ja-Stimmen:</b> " + label.getYesCount() + "<br>";
+        ret += "<b>Nein-Stimmen:</b> " + label.getYesCount() + "<br>";
+        ret += "<b>Gültige Stimmen:</b> " + label.getValidCount() + "<br>";
+        ret += "<b>Eingegangene Stimmen:</b> " + label.getDeliveredCount() + "<br>";
+        ret += "<b>Anzahl Stimmbürger:</b> " + label.getTotalEligibleCount() + "<br>";
+        ret += "<b>Stimmbeteiligung:</b> " + NumberFormat.getFormat("00.00").format(label.getComputedParticipationRation() * 100) + "%<br>";
+
+        return ret;
+    }
+
 }
