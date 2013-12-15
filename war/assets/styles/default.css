@@ -84,6 +84,10 @@ body, table td, select, button {
 	padding: 20px 30px;
 }
 
+.yapp-scroll {
+	overflow-y: auto;
+}
+
 .yapp-cont-main-heading {
     color: #000;
     background: #eee;
@@ -193,6 +197,36 @@ select.yapp-cont-main-form-input {
     cursor: not-allowed;
 }
 
+.yapp-cont-main-table {
+   border: 1px solid #000;
+}
+
+.yapp-cont-main-table th, .yapp-cont-main-table td {
+	padding: 6px 12px;
+}
+.yapp-cont-main-table-header {
+	background: #eee;
+	font-weight: bold;
+	border-bottom: 1px solid #e7e7e7;
+}
+
+.yapp-cont-main-table-row-alt {
+    background: #f8f8f8;
+}
+
+.yapp-cont-main-table-row-yes {
+    background: rgba(103, 145, 70, 0.85);
+}
+.yapp-cont-main-table-row-alt.yapp-cont-main-table-row-yes {
+	background: rgba(103, 145, 70, 0.95);
+}
+
+.yapp-cont-main-table-row-no {
+    background: rgba(195, 97, 28, 0.85);
+}
+.yapp-cont-main-table-row-alt.yapp-cont-main-table-row-no {
+    background: rgba(195, 97, 28, 0.95);
+}
 
 
 .yapp-div-error {

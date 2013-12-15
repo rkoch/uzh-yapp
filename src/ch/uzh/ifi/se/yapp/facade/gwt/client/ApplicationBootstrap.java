@@ -34,6 +34,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -367,8 +368,17 @@ public class ApplicationBootstrap
 
         if (pData.getType() == VisualizationType.TABLE) {
             // show table
+            FlowPanel wrap = new FlowPanel();
+            wrap.addStyleName(HTMLConst.CSS_CONTAINER);
+            wrap.addStyleName(HTMLConst.CSS_SCROLL);
+
             FlexTable table = new FlexTable();
-            table.setText(0, 0, "Bezirk");
+            table.addStyleName(HTMLConst.CSS_TABLE);
+            table.setCellPadding(0);
+            table.setCellSpacing(0);
+
+            // header
+            table.setText(0, 0, "Kanton/Bezirk");
             table.setText(0, 1, "Ja-Stimmen");
             table.setText(0, 2, "Nein-Stimmen");
             table.setText(0, 3, "Gültige Stimmen");
@@ -376,8 +386,11 @@ public class ApplicationBootstrap
             table.setText(0, 5, "Anzahl Stimmbürger");
             table.setText(0, 6, "Stimmbeteiligung");
 
-            int rowIdx = 1;
+            table.getRowFormatter().addStyleName(0, HTMLConst.CSS_TABLE_HEADER_ROW);
 
+            NumberFormat percentFormat = NumberFormat.getFormat("00.00");
+
+            int rowIdx = 1;
             for (ResultDTO res : pData.getResults()) {
                 ResultLabelDTO label = res.getLabel();
                 table.setText(rowIdx, 0, res.getName());
@@ -386,10 +399,20 @@ public class ApplicationBootstrap
                 table.setText(rowIdx, 3, Integer.toString(label.getValidCount()));
                 table.setText(rowIdx, 4, Integer.toString(label.getDeliveredCount()));
                 table.setText(rowIdx, 5, Integer.toString(label.getTotalEligibleCount()));
-                table.setText(rowIdx, 6, Double.toString(label.getComputedParticipationRation()) + "%");
+                table.setText(rowIdx, 6, percentFormat.format(label.getComputedParticipationRation() * 100) + "%");
+                if (label.getComputedYesRatio() > 0.5) {
+                    table.getRowFormatter().addStyleName(rowIdx, HTMLConst.CSS_TABLE_YES_ROW);
+                } else if (label.getComputedYesRatio() < 0.5) {
+                    table.getRowFormatter().addStyleName(rowIdx, HTMLConst.CSS_TABLE_NO_ROW);
+                }
+                if ((rowIdx % 2) == 0) {
+                    table.getRowFormatter().addStyleName(rowIdx, HTMLConst.CSS_TABLE_ALT_ROW);
+                }
                 rowIdx++;
             }
-            mContentPanel.add(table);
+
+            wrap.add(table);
+            mContentPanel.add(wrap);
         } else { // Graphical
             ElectionMapWidget map = new ElectionMapWidget(pData.getResults());
             mContentPanel.add(map);

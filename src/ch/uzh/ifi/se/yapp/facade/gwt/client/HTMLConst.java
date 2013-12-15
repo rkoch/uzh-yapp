@@ -24,29 +24,35 @@ import com.google.maps.gwt.client.LatLng;
 
 public interface HTMLConst {
 
-    LatLng CH_CENTRE          = LatLng.create(46.801111111111105, 8.226666666666667);
+    LatLng CH_CENTRE            = LatLng.create(46.801111111111105, 8.226666666666667);
 
-    String MAILTO_PFX         = "mailto:?subject=YAPP Visualisierung&body=Schau dir diese YAPP Visualisierung an: ";
+    String MAILTO_PFX           = "mailto:?subject=YAPP Visualisierung&body=Schau dir diese YAPP Visualisierung an: ";
 
-    String CSS_HEADER_NAV     = "yapp-div-header";
-    String CSS_FOOTER         = "yapp-div-footer";
+    String CSS_HEADER_NAV       = "yapp-div-header";
+    String CSS_FOOTER           = "yapp-div-footer";
 
-    String CSS_HEADER_BRAND   = "yapp-cont-header-brand";
-    String CSS_HEADER_LINK    = "yapp-cont-header-link";
+    String CSS_HEADER_BRAND     = "yapp-cont-header-brand";
+    String CSS_HEADER_LINK      = "yapp-cont-header-link";
 
-    String CSS_FOOTER_LABEL   = "yapp-cont-footer-label";
+    String CSS_FOOTER_LABEL     = "yapp-cont-footer-label";
 
-    String CSS_CONTAINER      = "yapp-container";
-    String CSS_HEADING        = "yapp-cont-main-heading";
+    String CSS_CONTAINER        = "yapp-container";
+    String CSS_SCROLL           = "yapp-scroll";
+    String CSS_HEADING          = "yapp-cont-main-heading";
 
-    String CSS_FORM_LABEL     = "yapp-cont-main-form-label";
-    String CSS_FORM_INPUT     = "yapp-cont-main-form-input";
-    String CSS_FORM_TEXTAREA  = "yapp-cont-main-form-textarea";
+    String CSS_FORM_LABEL       = "yapp-cont-main-form-label";
+    String CSS_FORM_INPUT       = "yapp-cont-main-form-input";
+    String CSS_FORM_TEXTAREA    = "yapp-cont-main-form-textarea";
 
-    String CSS_FORM_ERROR     = "yapp-cont-main-form-error";
+    String CSS_FORM_ERROR       = "yapp-cont-main-form-error";
 
-    String CSS_BUTTON_PRIMARY = "yapp-cont-main-btn-primary";
+    String CSS_BUTTON_PRIMARY   = "yapp-cont-main-btn-primary";
 
+    String CSS_TABLE            = "yapp-cont-main-table";
+    String CSS_TABLE_HEADER_ROW = "yapp-cont-main-table-header";
+    String CSS_TABLE_ALT_ROW    = "yapp-cont-main-table-row-alt";
+    String CSS_TABLE_YES_ROW    = "yapp-cont-main-table-row-yes";
+    String CSS_TABLE_NO_ROW     = "yapp-cont-main-table-row-no";
 
     String CSS_ERROR_FLAG       = "yapp-error";
     String CSS_ERROR_PAGE       = "yapp-div-error";

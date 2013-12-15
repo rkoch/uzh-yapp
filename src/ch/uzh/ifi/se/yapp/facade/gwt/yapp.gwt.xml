@@ -21,6 +21,7 @@
   <!-- Other module inherits                                      -->
   <inherits name="com.google.maps.gwt.GoogleMaps" />
   <inherits name="com.google.gwt.ajaxloader.AjaxLoader" />
+  <inherits name="com.google.gwt.i18n.I18N"/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ch.uzh.ifi.se.yapp.facade.gwt.client.ApplicationBootstrap'/>
