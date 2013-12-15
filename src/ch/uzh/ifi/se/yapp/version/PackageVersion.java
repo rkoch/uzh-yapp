@@ -26,18 +26,18 @@ package ch.uzh.ifi.se.yapp.version;
  *
  * @author auto-generated
  * **** NEVER CHANGE THE FOLLOWING LINE ****
- * @version 0.2.0
+ * @version 0.2.1
  */
 public final class PackageVersion {
 
     /** The name of the package (YAPP Platform). */
     private static final String PACKAGE_NAME = "YAPP Platform";
 
-    /** The version of the package (0.2.0). */
-    private static final String VERSION     = "0.2.0";
+    /** The version of the package (0.2.1). */
+    private static final String VERSION     = "0.2.1";
 
-    /** The build date of the package (15.12.2013 02:29:37). */
-    private static final String BUILD_DATE   = "15.12.2013 02:29:37";
+    /** The build date of the package (15.12.2013 02:46:37). */
+    private static final String BUILD_DATE   = "15.12.2013 02:46:37";
 
 
     /**
