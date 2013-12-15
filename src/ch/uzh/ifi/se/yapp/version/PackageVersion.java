@@ -20,24 +20,24 @@
 package ch.uzh.ifi.se.yapp.version;
 
 /**
- * Contains version information for the package TERCO Client Hub.
+ * Contains version information for the package YAPP Platform.
  *
  * @formatter:off
  *
  * @author auto-generated
  * **** NEVER CHANGE THE FOLLOWING LINE ****
- * @version 0.2.1
+ * @version 0.9.0
  */
 public final class PackageVersion {
 
     /** The name of the package (YAPP Platform). */
     private static final String PACKAGE_NAME = "YAPP Platform";
 
-    /** The version of the package (0.2.1). */
-    private static final String VERSION     = "0.2.1";
+    /** The version of the package (0.9.0). */
+    private static final String VERSION     = "0.9.0";
 
-    /** The build date of the package (15.12.2013 02:46:37). */
-    private static final String BUILD_DATE   = "15.12.2013 02:46:37";
+    /** The build date of the package (15.12.2013 20:47:37). */
+    private static final String BUILD_DATE   = "15.12.2013 20:47:37";
 
 
     /**
