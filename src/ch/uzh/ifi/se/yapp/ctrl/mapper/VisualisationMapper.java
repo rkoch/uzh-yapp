@@ -91,6 +91,7 @@ public class VisualisationMapper {
                 if (c == null) {
                     throw new NotFoundException("Canton " + resultId + " was not found");
                 }
+                resultName = c.getName();
             }
             ResultDTO res = results.get(resultId);
             if (res == null) {
