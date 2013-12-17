@@ -48,7 +48,7 @@ public class VisualisationManagerTest {
         IElectionDataAdapter elecAdpt = BackendAccessorFactory.getElectionDataAdapter();
         IVisualisationDataAdapter visAdpt = BackendAccessorFactory.getVisualisationDataAdapter();
 
-        mElection.setId("elecId");
+        mElection.setId("555");
         mElection.setTitle("title");
         mElection.setDescription("Description");
         mElection.setDate(new LocalDate(2013, 01, 01));
@@ -75,7 +75,7 @@ public class VisualisationManagerTest {
         elecAdpt.insertElection(mElection);
 
         mVisualisation.setId("visId");
-        mVisualisation.setElection("elecId");
+        mVisualisation.setElection("555");
         mVisualisation.setType(VisualizationType.TABLE);
 
         visAdpt.insertVisualisation(mVisualisation);
@@ -94,7 +94,7 @@ public class VisualisationManagerTest {
         }
 
         assertEquals(id, dto.getId());
-        assertEquals("elecId", dto.getElection().getId());
+        assertEquals("555", dto.getElection().getId());
 
 //        assertTrue(dto.getResults().size() >= 1);
 //        assertEquals(1, dto.getResults().get(0).getLabel().getDeliveredCount());
@@ -107,7 +107,7 @@ public class VisualisationManagerTest {
         visCre.setTitle("title");
         visCre.setAuthor("author");
         visCre.setComment("comment");
-        visCre.setElectionId("elecId");
+        visCre.setElectionId("555");
         visCre.setVisualizationType(VisualizationType.TABLE);
 
         VisualisationDTO dto = null;
@@ -119,7 +119,7 @@ public class VisualisationManagerTest {
 
         assertEquals("author", dto.getAuthor());
         assertEquals("comment", dto.getComment());
-        assertEquals("elecId", dto.getElection().getId());
+        assertEquals("555", dto.getElection().getId());
     }
 
 }
